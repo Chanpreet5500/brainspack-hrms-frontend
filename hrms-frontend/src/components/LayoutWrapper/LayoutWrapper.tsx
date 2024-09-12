@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { NavbarNested } from '../navbar/NavbarNested';
 import { Logo } from '../navbar/Logo';
 import { IconSearch } from '@tabler/icons-react';
+import NewNavbar from '../NewNavbar/NewNavbar';
 
 export function LayoutWrapper({ children }: { children: React.ReactNode }) {
     const [opened, { toggle }] = useDisclosure();
@@ -13,23 +14,24 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
     return (
         <>
             <AppShell
-                header={{ height: { base: 60, md: 70, lg: 80 } }}
+                header={{ height: { base: 60, md: 70, lg: 200 } }}
                 navbar={{
                     width: { base: 100, md: 200, lg: 300 },
                     breakpoint: 'sm',
                     collapsed: { mobile: !opened },
                 }}
                 padding="md"
+                style={{ backgroundColor: '#e8ecef' }}
             >
-                <AppShell.Header>
+                <AppShell.Header style={{ backgroundColor: '#e8ecef' }}>
                     <Flex h="100%" px="md" style={{ width: '100%' }} align="center">
-                        <Flex style={{ width: '20%' }}>
-                            <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-                            {/* <Logo style={{ width: rem(120) }} /> */}
-                            <h2>HRMS</h2>
-                        </Flex>
-                        <Box style={{ width: '80%' }}>
-                            <Flex
+                        {/* <Flex style={{ width: '20%' }}> */}
+                        <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
+                        {/* <Logo style={{ width: rem(120) }} /> */}
+                        {/* <h2>HRMS</h2> */}
+                        {/* </Flex> */}
+                        {/* <Box style={{ width: '80%' }}> */}
+                        {/* <Flex
                                 justify="space-between"
                                 align="center"
                                 style={{ padding: rem(16) }}
@@ -42,8 +44,9 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
                                 />
 
                                 <Avatar src={null} alt="no image here" radius="xl" />
-                            </Flex>
-                        </Box>
+                            </Flex> */}
+                        <NewNavbar />
+                        {/* </Box> */}
 
                     </Flex>
                 </AppShell.Header>
