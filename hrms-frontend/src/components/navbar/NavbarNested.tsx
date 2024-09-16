@@ -53,7 +53,7 @@ const mockdata = [
 
 
 export function NavbarNested() {
-    const links = mockdata.map((item) => <LinksGroup {...item} key={item.label} />);
+    // const links = mockdata.map((item) => <LinksGroup {...item} key={item.label} />);
 
     return (
         <>
@@ -66,7 +66,7 @@ export function NavbarNested() {
                 </div> */}
 
             {/* <ScrollArea className={classes.links}> */}
-            <div className={classes.linksInner}>{links}</div>
+            {/* <div className={classes.linksInner}>{links}</div> */}
             {/* </ScrollArea> */}
 
             {/* <div className={classes.footer}>

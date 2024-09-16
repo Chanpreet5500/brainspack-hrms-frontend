@@ -14,9 +14,9 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
     return (
         <>
             <AppShell
-                header={{ height: { base: 60, md: 70, lg: 200 } }}
+                header={{ height: { base: 60, md: 70, lg: 200 }     }}
                 navbar={{
-                    width: { base: 100, md: 200, lg: 300 },
+                    width: 0,
                     breakpoint: 'sm',
                     collapsed: { mobile: !opened },
                 }}
@@ -25,36 +25,16 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
             >
                 <AppShell.Header style={{ backgroundColor: '#e8ecef' }}>
                     <Flex h="100%" px="md" style={{ width: '100%' }} align="center">
-                        {/* <Flex style={{ width: '20%' }}> */}
                         <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-                        {/* <Logo style={{ width: rem(120) }} /> */}
-                        {/* <h2>HRMS</h2> */}
-                        {/* </Flex> */}
-                        {/* <Box style={{ width: '80%' }}> */}
-                        {/* <Flex
-                                justify="space-between"
-                                align="center"
-                                style={{ padding: rem(16) }}
-                            >
-                                <Autocomplete
-                                    placeholder="Search"
-                                    leftSection={<IconSearch style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
-                                    data={['React', 'Angular', 'Vue', 'Next.js', 'Riot.js', 'Svelte', 'Blitz.js']}
-                                    style={{ width: '70%' }}
-                                />
-
-                                <Avatar src={null} alt="no image here" radius="xl" />
-                            </Flex> */}
+                       
                         <NewNavbar />
-                        {/* </Box> */}
 
                     </Flex>
                 </AppShell.Header>
 
-                <AppShell.Navbar p="md" style={{}}>
-                    <NavbarNested />
+                <AppShell.Navbar  style={{}}>
                 </AppShell.Navbar>
-                <AppShell.Main>
+                <AppShell.Main class='w-full'>
                     <main>
                         {children}
                     </main>
