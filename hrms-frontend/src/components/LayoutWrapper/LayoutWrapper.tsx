@@ -1,12 +1,9 @@
 'use client';
 
 import { useDisclosure } from '@mantine/hooks';
-import { AppShell, Autocomplete, Avatar, Box, Burger, Flex, Group, rem } from '@mantine/core';
-import { useState } from 'react';
-import { NavbarNested } from '../navbar/NavbarNested';
-import { Logo } from '../navbar/Logo';
-import { IconSearch } from '@tabler/icons-react';
-import NewNavbar from '../NewNavbar/NewNavbar';
+import { AppShell, Flex, } from '@mantine/core';
+import Sidebar from '../Sidebar/Sidebar';
+import Navbar from '../Navbar/Navbar';
 
 export function LayoutWrapper({ children }: { children: React.ReactNode }) {
     const [opened, { toggle }] = useDisclosure();
@@ -14,27 +11,25 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
     return (
         <>
             <AppShell
-                header={{ height: { base: 60, md: 70, lg: 200 }     }}
+                header={{ height: { base: 60, md: 60, lg: 70 } }}
                 navbar={{
-                    width: 0,
-                    breakpoint: 'sm',
+                    width: { base: 100, md: 200, lg: 240 },
+                    breakpoint: 'md',
                     collapsed: { mobile: !opened },
                 }}
                 padding="md"
-                style={{ backgroundColor: '#e8ecef' }}
+
             >
                 <AppShell.Header style={{ backgroundColor: '#e8ecef' }}>
                     <Flex h="100%" px="md" style={{ width: '100%' }} align="center">
-                        <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-                       
-                        <NewNavbar />
-
+                        <Navbar opened={opened} toggle={toggle} />
                     </Flex>
                 </AppShell.Header>
 
-                <AppShell.Navbar  style={{}}>
+                <AppShell.Navbar p="md" style={{ backgroundColor: '#e8ecef' }}>
+                    <Sidebar />
                 </AppShell.Navbar>
-                <AppShell.Main class='w-full'>
+                <AppShell.Main style={{ backgroundColor: '#e8ecef' }}>
                     <main>
                         {children}
                     </main>
