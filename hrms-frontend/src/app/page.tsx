@@ -1,4 +1,8 @@
 import Image from "next/image";
+import Sign from "./sign/page";
+import Sign2 from "./sign2/page";
+import Sign3 from "./sign3/page";
+import SimpleSlider from "@/components/owlcarousel/Carousel";
 
 export default function Home() {
   return (
@@ -110,6 +114,10 @@ export default function Home() {
         </a>
       </div>
     </main> */}
+      {/* <Sign /> */}
+      {/* <Sign2 /> */}
+      {/* <Sign3 /> */}
+      <SimpleSlider />
     </>
   );
 }

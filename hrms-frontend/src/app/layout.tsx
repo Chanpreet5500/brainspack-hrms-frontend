@@ -6,7 +6,6 @@ import '@mantine/core/styles.css';
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
 import { LayoutWrapper } from '@/components/LayoutWrapper/LayoutWrapper';
 
-
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -16,8 +15,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  pageProps
 }: Readonly<{
   children: React.ReactNode;
+  pageProps: { session?: any; }
 }>) {
   return (
     <html lang="en">
@@ -27,13 +28,26 @@ export default function RootLayout({
           name="viewport"
           content="width=device-width, initial-scale=1.0"
         />
+
         <title>My awesome app</title>
 
         <ColorSchemeScript />
+        <link
+          rel="stylesheet"
+          type="text/css"
+          charSet="UTF-8"
+          href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css"
+        />
+        <link
+          rel="stylesheet"
+          type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css"
+        />
+
       </head>
       <body className={inter.className}>
         <MantineProvider>
-          <LayoutWrapper>
+          <LayoutWrapper session={pageProps?.session}>
             {children}
           </LayoutWrapper>
         </MantineProvider>

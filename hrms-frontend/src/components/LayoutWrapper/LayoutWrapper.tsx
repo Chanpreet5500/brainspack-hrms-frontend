@@ -4,12 +4,13 @@ import { useDisclosure } from '@mantine/hooks';
 import { AppShell, Flex, } from '@mantine/core';
 import Sidebar from '../Sidebar/Sidebar';
 import Navbar from '../Navbar/Navbar';
+import { SessionProvider } from 'next-auth/react';
 
-export function LayoutWrapper({ children }: { children: React.ReactNode }) {
+export function LayoutWrapper({ children, session }: { children: React.ReactNode, session: any }) {
     const [opened, { toggle }] = useDisclosure();
 
     return (
-        <>
+        <SessionProvider session={session}>
             <AppShell
                 header={{ height: { base: 60, md: 60, lg: 70 } }}
                 navbar={{
@@ -35,7 +36,7 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
                     </main>
                 </AppShell.Main>
             </AppShell>
-        </>
+        </SessionProvider>
     );
 }
 
