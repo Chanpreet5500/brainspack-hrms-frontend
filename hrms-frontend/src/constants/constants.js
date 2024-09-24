@@ -73,7 +73,18 @@ export const sidebarlinks = [
     { id: 0, icon: <IconHome2 size={22} stroke={1.5} />, name: 'Dashboard', link: '/dashboard' },
     { id: 1, icon: <IconUsers size={22} stroke={1.5} />, name: 'Employees', link: '/employees' },
     { id: 2, icon: <IconUsers size={22} stroke={1.5} />, name: 'Register', link: '/register' },
+    { id: 2, icon: <IconUsers size={22} stroke={1.5} />, name: 'Leaves Management', link: '/leaves' }
 ]
+
+export const TableRenderData = [
+    { name: 'Athena Weissnat', designation: 'Little - Rippin', email: 'Elouise.Prohaska@yahoo.com' },
+    { name: 'Deangelo Runolfsson', designation: 'Greenfelder - Krajcik', email: 'Kadin_Trantow87@yahoo.com' },
+    { name: 'Danny Carter', designation: 'Kohler and Sons', email: 'Marina3@hotmail.com' },
+];
+
+export const TableHeadiingForLeaves = ["Name", "Email", "Designation", "Action"]
+
+export const TableHeadiingForEmployee = ["Name", "Email", "Designation", ""]
 
 export const attendancedata = [
     {
