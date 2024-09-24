@@ -1,13 +1,15 @@
 import { Avatar, Box, Flex, Table, Text } from "@mantine/core";
-import { IconDotsVertical } from "@tabler/icons-react";
+import { IconDotsVertical , IconCheck, IconBan } from '@tabler/icons-react';
 
 interface CustomTableProps<T> {
     data: T[]
     headingdata: string[]
+    showConfirmRejectButton: boolean
+    showDotIcon: boolean
 }
 
 
-const CustomTable = <T,>({ data, headingdata }: CustomTableProps<T>): JSX.Element => {
+const CustomTable = <T,>({ data, headingdata, showConfirmRejectButton, showDotIcon }: CustomTableProps<T>): JSX.Element => {
     const rows = data?.map((row: any) => (
         <Table.Tr key={row.name}>
             <Table.Td>
@@ -18,7 +20,14 @@ const CustomTable = <T,>({ data, headingdata }: CustomTableProps<T>): JSX.Elemen
             </Table.Td>
             <Table.Td>{row.email}</Table.Td>
             <Table.Td>{row.designation}</Table.Td>
-            <Table.Td><IconDotsVertical /></Table.Td>
+            {showDotIcon && <Table.Td><IconDotsVertical /></Table.Td>}
+            {showConfirmRejectButton && <Table.Td>
+            <div className="flex gap-2">
+            <button className=" flex items-center justify-center h-[35px] w-[15%] bg-[green] text-white cursor-pointer"><IconCheck/></button>
+            <button className=" flex items-center justify-center h-[35px] w-[15%] bg-[red] text-white cursor-pointer"><IconBan/></button>
+            </div>
+          </Table.Td>}
+
         </Table.Tr>
     ))
     return (

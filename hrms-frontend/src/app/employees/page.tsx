@@ -2,18 +2,11 @@
 import { useState } from "react";
 import {
   keys,
-  Table,
-  Text,
-  Avatar,
-  Flex,
-  Box,
   Button,
   Modal,
 } from "@mantine/core";
 import CustomTable from "@/components/CustomTable/CustomTable";
-import { employeedata } from "@/constants/constants";
-
-import { IconDotsVertical } from "@tabler/icons-react";
+import { TableHeadiingForEmployee, employeedata } from "@/constants/constants";
 import Searchbar from "@/components/Searchbar/Searchbar";
 import { useDisclosure } from "@mantine/hooks";
 import UserForm from "@/components/modal/page";
@@ -58,13 +51,14 @@ export default function Employees() {
           <Modal opened={opened} onClose={close} title="User Form">
             <UserForm />
           </Modal>
-
           <Button onClick={open}>Add</Button>
         </div>
       </div>
       <CustomTable
         data={filteredData}
-        headingdata={["Name", "Email", "Designation", ""]}
+        headingdata={TableHeadiingForEmployee}
+        showConfirmRejectButton={false}
+        showDotIcon={true}
       />
     </>
   );
