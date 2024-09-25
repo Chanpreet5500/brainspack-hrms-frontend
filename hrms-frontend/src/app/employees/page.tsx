@@ -1,10 +1,6 @@
 "use client";
 import { useState } from "react";
-import {
-  keys,
-  Button,
-  Modal,
-} from "@mantine/core";
+import { keys, Button, Modal } from "@mantine/core";
 import CustomTable from "@/components/CustomTable/CustomTable";
 import { TableHeadiingForEmployee, employeedata } from "@/constants/constants";
 import Searchbar from "@/components/Searchbar/Searchbar";
@@ -38,21 +34,33 @@ export default function Employees() {
 
   return (
     <>
-      <div className="flex justify-between p-2 max-sm:flex-col-reverse">
+      <div className="flex justify-between items-center p-2 max-sm:flex-col-reverse max-sm:items-start">
         <div>My Team ({employeedata.length})</div>
-        <div className="w-[30%] max-sm:w-full">
-          <Searchbar
-            value={search}
-            handleSearch={handleSearchChange}
-            placeholder="Search"
-            iconcolor="#9ca3af"
-            classname=""
-          />
-          <Modal opened={opened} onClose={close} title="User Form">
-            <UserForm />
-          </Modal>
-          <Button onClick={open}>Add</Button>
+        <div className="flex items-center gap-3 max-sm:w-full 2xl:w-[40%]">
+          <div className="flex  lg:justify-end max-sm:w-[30%] max-sm:justify-between ">
+            <Button onClick={open} className="max-sm:!w-full !rounded-full">
+              Add
+            </Button>
+          </div>
+          <div className=" max-sm:w-full">
+            <Searchbar
+              value={search}
+              handleSearch={handleSearchChange}
+              placeholder="Search"
+              iconcolor="#9ca3af"
+              classname=""
+            />
+          </div>
         </div>
+
+        <Modal
+          opened={opened}
+          onClose={close}
+          className="flex justify-center"
+          title="User Form"
+        >
+          <UserForm />
+        </Modal>
       </div>
       <CustomTable
         data={filteredData}

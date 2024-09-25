@@ -1,11 +1,11 @@
-"use client"
+"use client";
 import React from "react";
 import Slider from "react-slick";
 
-const SimpleSlider =() => {
+const SimpleSlider = () => {
   const settings = {
-    adaptiveHeight:false,
-    variableWidth:false,
+    adaptiveHeight: false,
+    variableWidth: false,
     dots: false,
     fade: true,
     infinite: true,
@@ -13,23 +13,27 @@ const SimpleSlider =() => {
     slidesToShow: 1,
     slidesToScroll: 1,
     waitForAnimate: true,
-    autoplay:true,
+    autoplay: true,
     autoplaySpeed: 3000,
-    height:true,
-    arrows:false,
+    height: true,
+    arrows: false,
     pauseOnHover: false,
   };
-  const images = ['/images/admin-bg.jpg', '/images/galaxy.jpg']
+  const images = ["/images/admin-bg.jpg", "/images/admin2-bg.jpg"];
   return (
     <Slider {...settings}>
-      {images.map((ele,index)=>{
-        return(
+      {images.map((ele, index) => {
+        return (
           <div className="w-full h-screen" key={index}>
-        <img src={ele} alt='background-image' className="w-full h-full object-cover"/>
-      </div>
-        )
+            <img
+              src={ele}
+              alt="background-image"
+              className="w-full h-full object-cover"
+            />
+          </div>
+        );
       })}
-      
+
       {/* <div>
         <h3 className="text-3xl">2</h3>
       </div>
@@ -47,5 +51,5 @@ const SimpleSlider =() => {
       </div> */}
     </Slider>
   );
-}
+};
 export default SimpleSlider;
