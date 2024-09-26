@@ -1,10 +1,15 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import '@mantine/dates/styles.css';
-import '@mantine/core/styles.css';
-import { ColorSchemeScript, MantineProvider } from '@mantine/core';
-import { LayoutWrapper } from '@/components/LayoutWrapper/LayoutWrapper';
+import "@mantine/dates/styles.css";
+import "@mantine/core/styles.css";
+import { ColorSchemeScript, MantineProvider } from "@mantine/core";
+import { LayoutWrapper } from "@/components/LayoutWrapper/LayoutWrapper";
+// import { ApiProvider } from "@reduxjs/toolkit/query/react";
+// import userRegisterApi from "@/services/user/allApis/regiterUser";
+// import { Provider } from "react-redux";
+// import { useRef } from "react";
+import ReduxProvider from "@/services/user/reduxProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,19 +20,21 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-  pageProps
+  pageProps,
 }: Readonly<{
   children: React.ReactNode;
-  pageProps: { session?: any; }
+  pageProps: { session?: any };
 }>) {
+  // const storeRef = useRef();
+  // if (!storeRef.current) {
+  //   storeRef.current = store();
+  // }
+
   return (
     <html lang="en">
       <head>
         <meta charSet="UTF-8" />
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1.0"
-        />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
         <title>My awesome app</title>
 
@@ -43,14 +50,17 @@ export default function RootLayout({
           type="text/css"
           href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css"
         />
-
       </head>
       <body className={inter.className}>
-        <MantineProvider>
-          <LayoutWrapper session={pageProps?.session}>
-            {children}
-          </LayoutWrapper>
-        </MantineProvider>
+        {/* <ApiProvider api={userRegisterApi}> */}
+        <ReduxProvider>
+          <MantineProvider>
+            <LayoutWrapper session={pageProps?.session}>
+              {children}
+            </LayoutWrapper>
+          </MantineProvider>
+        </ReduxProvider>
+        {/* </ApiProvider> */}
       </body>
     </html>
   );

@@ -59,7 +59,7 @@ export default function Employees() {
           className="flex justify-center"
           title="User Form"
         >
-          <UserForm />
+          <UserForm onClose={close} />
         </Modal>
       </div>
       <CustomTable

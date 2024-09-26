@@ -5,8 +5,35 @@ import { notifications } from "@mantine/notifications";
 import TextInputField from "../Inputs/textInput/Input";
 import SelectInputField from "../Inputs/selectInput/Select";
 import { employeeDepartment, employeProfetion } from "@/constants/constants";
-
-const UserForm = () => {
+import { useGetCreateUserMutation } from "@/services/user/allApis/regiterUser";
+import { useLazyGetAllDataApiByNameQuery } from "@/services/user/allApis/getUser";
+import { useSelectedLayoutSegments } from "next/navigation";
+// import { manageUserSelector } from "@/services/user/slices/allUser/userSelector";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { setUser } from "@/services/user/slices/allUser/user";
+interface value {
+  onClose: any;
+}
+const UserForm: React.FC<value> = (props) => {
+  // const [postData, { data, isSuccess, isError }] = useGetCreateUserMutation();
+  const [fatchUser, { data, isLoading }] = useLazyGetAllDataApiByNameQuery();
+  console.log(data, "d");
+  const dispatch = useDispatch();
+  // const { user } = useSelector(manageUserSelector);
+  useEffect(() => {
+    try {
+      fatchUser("s");
+      if (data) {
+        dispatch(setUser(data));
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
+  const user = useSelector((state: any) => state.userSlice.user);
+  console.log(user, "final");
+  const { onClose } = props;
   const form = useForm({
     mode: "uncontrolled",
     validateInputOnChange: true,
@@ -53,8 +80,9 @@ const UserForm = () => {
 
   return (
     <form
-      onSubmit={form.onSubmit((handleError) => {
-        console.log(handleError);
+      onSubmit={form.onSubmit((localUserDetails) => {
+        // postData(localUserDetails);
+
         return form.reset();
       })}
     >
@@ -104,7 +132,9 @@ const UserForm = () => {
 
         <Group className=" !flex !justify-between !w-full ">
           <Button type="submit">Submit</Button>
-          <Button onClick={() => form.reset()}>Cancel</Button>
+          <Button onClick={() => form.reset()}>Reset</Button>
+          {/* <Button onClick={onClose}>Cancel</Button> */}
+          <Button onClick={() => dispatch(setUser(data))}>Cancel</Button>
         </Group>
       </div>
     </form>
@@ -112,156 +142,3 @@ const UserForm = () => {
 };
 
 export default UserForm;
-
-// import { Button, Group } from "@mantine/core";
-// import { useForm } from "@mantine/form";
-// import { notifications } from "@mantine/notifications";
-// import TextInputField from "../Inputs/textInput/Input";
-// import SelectInputField from "../Inputs/selectInput/Select";
-// import { employeeDepartment, employeProfetion } from "@/constants/constants";
-
-// const UserForm = () => {
-//   const form = useForm({
-//     mode: "uncontrolled",
-//     validateInputOnChange: true,
-//     initialValues: {
-//       fname: "",
-//       lname: "",
-//       email: "",
-//       role: "",
-//       department: "",
-//     },
-//     validate: {
-//       fname: (value) => {
-//         if (!value) {
-//           return (
-//             <div className="absolute bottom-[-8px]">"field is required"</div>
-//           );
-//         }
-//         if (value.length < 3) {
-//           return (
-//             <div className="absolute bottom-[-8px]">
-//               "Name atlest 3 letters"
-//             </div>
-//           );
-//         } else {
-//           return value.length > 50 ? "Name shoud not exceed 50 letters" : null;
-//         }
-//       },
-
-//       lname: (value) => {
-//         if (!value) {
-//           return (
-//             <div className="absolute bottom-[-8px]">"field is required"</div>
-//           );
-//         }
-//         if (value.length < 3) {
-//           return (
-//             <div className="absolute bottom-[-8px]">
-//               "Name atlest 3 letters"
-//             </div>
-//           );
-//         } else {
-//           return value.length > 50 ? (
-//             <div className="absolute bottom-[-8px]">
-//               "Name shoud not exceed 50 letters"
-//             </div>
-//           ) : null;
-//         }
-//       },
-//       email: (value) => {
-//         if (!value) {
-//           return (
-//             <div className="absolute bottom-[-8px]">"field is required"</div>
-//           );
-//         } else {
-//           return /^\S+@\S+$/.test(value) ? null : (
-//             <div className="absolute bottom-[-8px]">"Invalid email"</div>
-//           );
-//         }
-//       },
-//       role: (value) =>
-//         value ? null : (
-//           <div className="absolute bottom-[-8px]">
-//             "select field are requird"
-//           </div>
-//         ),
-//       department: (value) =>
-//         value ? null : (
-//           <div className="absolute bottom-[-8px]">
-//             "select field are requird"
-//           </div>
-//         ),
-//     },
-//   });
-//   // const handleError = (errors: typeof form.errors) => {
-//   //   if (errors.name) {
-//   //     notifications.show({ message: "Please fill name field", color: "red" });
-//   //   } else if (errors.email) {
-//   //     notifications.show({
-//   //       message: "Please provide a valid email",
-//   //       color: "red",
-//   //     });
-//   //   }
-//   // };
-
-//   return (
-//     <form
-//       onSubmit={form.onSubmit((handleError) => {
-//         console.log(handleError);
-//         return form.reset();
-//       })}
-//     >
-//       <div className=" flex flex-col m-auto gap-3 ">
-//         <div className="flex justify-between">
-//           <TextInputField
-//             withAsterisk={true}
-//             name={"fname"}
-//             label={"First Name"}
-//             placeholder={"Enter your first name"}
-//             key={form.key("fname")}
-//             validateKey={form.getInputProps("fname")}
-//           />
-
-//           <TextInputField
-//             withAsterisk
-//             name={"lname"}
-//             label={"Last Name"}
-//             placeholder={"Enter your last name"}
-//             key={form.key("lname")}
-//             validateKey={form.getInputProps("lname")}
-//           />
-//         </div>
-
-//         <TextInputField
-//           withAsterisk
-//           label={"Email"}
-//           name={"email"}
-//           placeholder={"Enter your email address"}
-//           key={form.key("email")}
-//           validateKey={form.getInputProps("email")}
-//         />
-//         <SelectInputField
-//           label={"Role"}
-//           placeholder={"role"}
-//           data={employeProfetion}
-//           key={form.key("role")}
-//           validateKey={form.getInputProps("role")}
-//         />
-//         <SelectInputField
-//           label={"Department"}
-//           placeholder={"Select a department"}
-//           data={employeeDepartment}
-//           key={form.key("department")}
-//           validateKey={form.getInputProps("department")}
-//         />
-
-//         <Group className=" !flex !justify-between !w-full ">
-//           <Button type="submit">Submit</Button>
-//           <Button onClick={() => form.reset()}>Cancel</Button>
-//         </Group>
-//       </div>
-//     </form>
-//   );
-// };
-// export default UserForm;
