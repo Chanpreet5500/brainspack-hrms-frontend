@@ -3,6 +3,9 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   user: null,
   status: "idle",
+  selectedMode: "",
+  editData: {},
+  modalVisibility: false,
 };
 
 const userSlice = createSlice({
@@ -10,14 +13,28 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUser(state, action) {
-      // console.log(state, action.payload, "m");
       state.user = action.payload;
+    },
+    updateSelectedMode(state, action) {
+      state.selectedMode = action.payload;
+    },
+    updateEditData(state, action) {
+      state.editData = action.payload;
     },
     clearUser(state) {
       state.user = null;
     },
+    updateModalVisibility(state, action) {
+      state.modalVisibility = action.payload;
+    },
   },
 });
 
-export const { setUser, clearUser } = userSlice.actions;
+export const {
+  updateEditData,
+  updateSelectedMode,
+  setUser,
+  clearUser,
+  updateModalVisibility,
+} = userSlice.actions;
 export default userSlice.reducer;

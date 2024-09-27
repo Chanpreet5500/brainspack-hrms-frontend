@@ -1,9 +1,9 @@
 import { Select } from "@mantine/core";
+import { useEffect } from "react";
 
 interface Role {
   id: number;
   label: string;
-  value: string;
 }
 
 interface SelectValue {
@@ -11,7 +11,12 @@ interface SelectValue {
   placeholder?: string;
   className?: string;
   validateKey?: any;
+  value?: string | null;
+  name: string;
+  defaultValue?: string;
   data: Role[];
+  key?: string;
+  form: any;
 }
 
 const SelectInputField: React.FC<SelectValue> = ({
@@ -20,7 +25,15 @@ const SelectInputField: React.FC<SelectValue> = ({
   className,
   validateKey,
   data,
+  form,
+  key,
+  value,
+  name,
 }) => {
+  useEffect(() => {
+    form.getValues();
+  }, []);
+
   return (
     <div className="relative mb-2">
       <Select
@@ -28,14 +41,13 @@ const SelectInputField: React.FC<SelectValue> = ({
         placeholder={placeholder}
         className={className || "flex flex-col gap-1"}
         data={data}
-        {...validateKey}
+        name={name}
+        value={value || null}
         error={false}
+        key={form.key(name)}
+        {...validateKey}
+        clearable={true}
       />
-      {validateKey?.error && (
-        <div className="absolute text-red-500 text-[12px] bottom-[-20px]">
-          {validateKey.error}
-        </div>
-      )}
     </div>
   );
 };

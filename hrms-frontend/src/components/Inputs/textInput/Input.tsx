@@ -1,4 +1,6 @@
+import { manageUserSelector } from "@/services/user/slices/allUser/userSelector";
 import { TextInput } from "@mantine/core";
+import { useSelector } from "react-redux";
 
 interface Value {
   withAsterisk: boolean;
@@ -6,8 +8,9 @@ interface Value {
   name: string;
   className?: string;
   placeholder: string;
-  key: string;
+  key?: string;
   validateKey?: any;
+  value?: any;
 }
 
 const TextInputField: React.FC<Value> = (props) => {
@@ -17,9 +20,10 @@ const TextInputField: React.FC<Value> = (props) => {
     withAsterisk,
     label,
     placeholder,
-    key,
     validateKey,
+    value,
   } = props;
+  const { selectedMode, editData } = useSelector(manageUserSelector);
 
   return (
     <div className="relative mb-2">
@@ -28,8 +32,8 @@ const TextInputField: React.FC<Value> = (props) => {
         placeholder={placeholder}
         name={name}
         withAsterisk={withAsterisk}
+        value={value}
         className={className || "flex flex-col gap-1 "}
-        key={key}
         {...validateKey}
         error={false}
       />

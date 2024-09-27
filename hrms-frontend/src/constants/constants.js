@@ -114,30 +114,47 @@ export const sidebarlinks = [
 
 export const TableRenderData = [
   {
-    name: "Athena Weissnat",
-    designation: "Little - Rippin",
+    id: 1,
+    fname: "Athena",
+    lname: "Weissnat",
     email: "Elouise.Prohaska@yahoo.com",
+    role: "Admin",
+    department: "Software Engineer",
   },
   {
-    name: "Deangelo Runolfsson",
-    designation: "Greenfelder - Krajcik",
-    email: "Kadin_Trantow87@yahoo.com",
+    id: 2,
+    fname: "Athena",
+    lname: "Weissnat",
+    email: "Elouise.Prohaska@yahoo.com",
+    role: "Admin",
+    department: "Software Engineer",
   },
   {
-    name: "Danny Carter",
-    designation: "Kohler and Sons",
-    email: "Marina3@hotmail.com",
+    id: 3,
+    fname: "Athena",
+    lname: "Weissnat",
+    email: "Elouise.Prohaska@yahoo.com",
+    role: "Admin",
+    department: "Software Engineer",
   },
 ];
 
 export const TableHeadiingForLeaves = [
-  "Name",
+  "First Name",
+  "Last Name",
   "Email",
-  "Designation",
-  "Action",
+  "Role",
+  "Department",
 ];
 
-export const TableHeadiingForEmployee = ["Name", "Email", "Designation", ""];
+export const TableHeadiingForEmployee = [
+  "First Name",
+  "Last Name",
+  "Email",
+  "Role",
+  "Department",
+  "Action",
+];
 
 export const attendancedata = [
   {
@@ -163,19 +180,28 @@ export const attendancedata = [
 ];
 export const employeedata = [
   {
-    name: "Athena Weissnat",
-    designation: "Little - Rippin",
+    id: 1,
+    fname: "Athena",
+    lname: "Weissnat",
     email: "Elouise.Prohaska@yahoo.com",
+    role: "admin",
+    department: "software engineering",
   },
   {
-    name: "Deangelo Runolfsson",
-    designation: "Greenfelder - Krajcik",
-    email: "Kadin_Trantow87@yahoo.com",
+    id: 2,
+    fname: "Athena",
+    lname: "Weissnat",
+    email: "Elouise.Prohaska@yahoo.com",
+    role: "admin",
+    department: "software engineering",
   },
   {
-    name: "Danny Carter",
-    designation: "Kohler and Sons",
-    email: "Marina3@hotmail.com",
+    id: 3,
+    fname: "Athena",
+    lname: "Weissnat",
+    email: "Elouise.Prohaska@yahoo.com",
+    role: "admin",
+    department: "software engineering",
   },
 ];
 export const employeeDepartment = [

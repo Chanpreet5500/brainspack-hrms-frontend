@@ -1,4 +1,3 @@
-// export const manageUserSelector = (state: any) => {
-//   console.log(state, "k");
-//   return state;
-// };
+export const manageUserSelector = (state: any) => {
+  return state.userSlice;
+};
