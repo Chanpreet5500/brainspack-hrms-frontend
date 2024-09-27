@@ -1,27 +1,22 @@
 "use client";
 import { useState } from "react";
-import {
-  keys,
-  Button,
-  Modal,
-} from "@mantine/core";
+import { keys, Button, Modal } from "@mantine/core";
 import CustomTable from "@/components/CustomTable/CustomTable";
 import { TableHeadiingForEmployee, employeedata } from "@/constants/constants";
 import Searchbar from "@/components/Searchbar/Searchbar";
 import { useDisclosure } from "@mantine/hooks";
 import UserForm from "@/components/modal/page";
+import { useForm } from "@mantine/form";
+import { updateSelectedMode } from "@/services/user/slices/allUser/user";
+import { useDispatch } from "react-redux";
 
 interface RowData {
-  name: string;
+  id?: number;
+  fname: string;
+  lname: string;
   email: string;
-  designation: string;
-}
-
-function filterData(data: RowData[], search: string) {
-  const query = search.toLowerCase().trim();
-  return data.filter((item) =>
-    keys(data[0]).some((key) => item[key].toLowerCase().includes(query))
-  );
+  role: string;
+  department: string;
 }
 
 export default function Employees() {
@@ -29,36 +24,105 @@ export default function Employees() {
   const [filteredData, setFilteredData] = useState(employeedata);
 
   const [opened, { open, close }] = useDisclosure(false);
+  const dispatch = useDispatch();
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.currentTarget;
     setSearch(value);
-    setFilteredData(filterData(employeedata, value));
   };
+
+  const handleOpenModal = () => {
+    open();
+    form.reset();
+    dispatch(updateSelectedMode("add"));
+  };
+
+  const form = useForm({
+    mode: "controlled",
+    validateInputOnChange: true,
+    initialValues: {
+      fname: "",
+      lname: "",
+      email: "",
+      role: "",
+      department: "",
+    },
+    validate: {
+      fname: (value) => {
+        if (!value) {
+          return "Field is required";
+        }
+        if (value.length < 3) {
+          return "Name should be at least 3 letters";
+        } else {
+          return value.length > 50 ? "Name should not exceed 50 letters" : null;
+        }
+      },
+
+      lname: (value) => {
+        if (!value) {
+          return "Field is required";
+        }
+        if (value.length < 3) {
+          return "Name should be at least 3 letters";
+        } else {
+          return value.length > 50 ? "Name should not exceed 50 letters" : null;
+        }
+      },
+      email: (value) => {
+        if (!value) {
+          return "Field is required";
+        } else {
+          return /^\S+@\S+$/.test(value) ? null : "Invalid email";
+        }
+      },
+      role: (value) => (value ? null : "Select field is required"),
+      department: (value) => (value ? null : "Select field is required"),
+    },
+  });
+
+  console.log(form.getValues(), "JJ");
 
   return (
     <>
-      <div className="flex justify-between p-2 max-sm:flex-col-reverse">
+      <div className="flex justify-between items-center p-2 max-sm:flex-col-reverse max-sm:items-start">
         <div>My Team ({employeedata.length})</div>
-        <div className="w-[30%] max-sm:w-full">
-          <Searchbar
-            value={search}
-            handleSearch={handleSearchChange}
-            placeholder="Search"
-            iconcolor="#9ca3af"
-            classname=""
-          />
-          <Modal opened={opened} onClose={close} title="User Form">
-            <UserForm />
-          </Modal>
-          <Button onClick={open}>Add</Button>
+        <div className="flex items-center gap-3 max-sm:w-full 2xl:w-[40%]">
+          <div className="flex  lg:justify-end max-sm:w-[30%] max-sm:justify-between ">
+            <Button
+              onClick={handleOpenModal}
+              className="max-sm:!w-full !rounded-full"
+            >
+              Add
+            </Button>
+          </div>
+          <div className=" max-sm:w-full">
+            <Searchbar
+              value={search}
+              handleSearch={handleSearchChange}
+              placeholder="Search"
+              iconcolor="#9ca3af"
+              classname=""
+            />
+          </div>
         </div>
+
+        <Modal
+          opened={opened}
+          onClose={close}
+          className="flex justify-center"
+          title="User Form"
+        >
+          <UserForm onClose={close} form={form} />
+        </Modal>
       </div>
       <CustomTable
         data={filteredData}
         headingdata={TableHeadiingForEmployee}
-        showConfirmRejectButton={false}
-        showDotIcon={true}
+        showConfirmRejectButton={true}
+        showDotIcon={false}
+        opened={open}
+        form={form}
       />
     </>
   );
