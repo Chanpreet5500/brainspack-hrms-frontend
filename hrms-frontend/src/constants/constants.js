@@ -140,14 +140,17 @@ export const TableRenderData = [
 ];
 
 export const TableHeadiingForLeaves = [
-  "First Name",
-  "Last Name",
-  "Email",
-  "Role",
-  "Department",
+  "Sr. No",
+  "Employee Name",
+  "Leave Type",
+  "Start Date",
+  "End Date",
+  "Status",
+  "Actions"
 ];
 
 export const TableHeadiingForEmployee = [
+  "Sr. No",
   "First Name",
   "Last Name",
   "Email",
@@ -180,7 +183,7 @@ export const attendancedata = [
 ];
 export const employeedata = [
   {
-    id: 1,
+    // id: 1,
     fname: "Athena",
     lname: "Weissnat",
     email: "Elouise.Prohaska@yahoo.com",
@@ -188,7 +191,7 @@ export const employeedata = [
     department: "software engineering",
   },
   {
-    id: 2,
+    // id: 2,
     fname: "Athena",
     lname: "Weissnat",
     email: "Elouise.Prohaska@yahoo.com",
@@ -196,7 +199,7 @@ export const employeedata = [
     department: "software engineering",
   },
   {
-    id: 3,
+    // id: 3,
     fname: "Athena",
     lname: "Weissnat",
     email: "Elouise.Prohaska@yahoo.com",
@@ -230,3 +233,57 @@ export const employeProfetion = [
   { id: 2, label: "HR", value: "hr" },
   { id: 3, label: "Employee", value: "employee" },
 ];
+
+export const leavedata = [
+  {
+    name: 'Athena Weissnat',
+    leavetype: 'Casual Leave',
+    startdate: "12/43/2022",
+    enddate: "13/67/7809",
+    status: 'Pending',
+  },
+  {
+    name: 'Asif Ali',
+    leavetype: 'Sick Leave',
+    startdate: "12/43/2022",
+    enddate: "13/67/7809",
+    status: 'Pending',
+  },
+  {
+    name: 'Shubham Kaushal',
+    leavetype: 'Casual Leave',
+    startdate: "12/43/2022",
+    enddate: "13/67/7809",
+    status: 'Pending',
+  },
+  {
+    name: 'Sagar Rana',
+    leavetype: 'Sick Leave',
+    startdate: "12/43/2022",
+    enddate: "13/67/7809",
+    status: 'Approved',
+  },
+  {
+    name: 'Gourav Kashyap',
+    leavetype: 'Sick Leave',
+    startdate: "12/43/2022",
+    enddate: "13/67/7809",
+    status: 'Approved',
+  },
+  {
+    name: 'Nisha Arora',
+    leavetype: 'Sick Leave',
+    startdate: "12/43/2022",
+    enddate: "13/67/7809",
+    status: 'Approved',
+  },
+]
+export const leaveTypes = [
+  {
+    id: 1,
+    label: "Sick Leave",
+    value: "sick-leave",
+  },
+  { id: 2, label: "Casual Leave", value: "casual-leave" },
+  { id: 3, label: "Emergency Leave", value: "emergency-leave" }
+]

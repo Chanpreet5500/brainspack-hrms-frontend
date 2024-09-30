@@ -1,15 +1,20 @@
-import {Button, ComboboxItem, Modal, Select, Textarea} from "@mantine/core";
-import {useDisclosure} from "@mantine/hooks";
-import React, { ReactElement, useState} from "react";
+import { Button, Modal } from "@mantine/core";
+import React, { ReactElement } from "react";
 
-interface ModalProp {
-  buttonlabel: string;
+interface ModalProps {
+  opened: any,
+  onClose: any,
+  open: any,
+  close: any
+  buttonlabel?: any;
   modalTitle: string;
   content: ReactElement
+  overlayProps?: any
+  styles?: any
+  bgcolor?: any
 }
-export const CustomModal = ({buttonlabel, modalTitle , content}: ModalProp) => {
-  const [opened, {open, close}] = useDisclosure(false);
-  const [value, setValue] = useState<ComboboxItem | null>(null);
+export const CustomModal = ({ buttonlabel, modalTitle, content, opened, close, open, overlayProps, styles, bgcolor }: ModalProps) => {
+
 
 
   return (
@@ -20,11 +25,13 @@ export const CustomModal = ({buttonlabel, modalTitle , content}: ModalProp) => {
         title={modalTitle}
         withCloseButton={true}
         size={'lg'}
+        overlayProps={overlayProps}
+        styles={styles}
         centered>
-            {content}
-         
+        {content}
+
       </Modal>
-      <Button onClick={open}>{buttonlabel}</Button>
+      <Button onClick={open} color={bgcolor} >{buttonlabel}</Button>
     </>
   );
 };

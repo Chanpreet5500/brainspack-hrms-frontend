@@ -117,7 +117,12 @@ export default function Home() {
       {/* <Sign /> */}
       {/* <Sign2 /> */}
       {/* <Sign3 /> */}
-      <SimpleSlider />
+      <div className="w-full h-[100vh] overflow-hidden relative bg-black">
+        <SimpleSlider />
+        <div className="absolute top-0 left-0 w-full h-full ">
+          <Sign2 />
+        </div>
+      </div>
     </>
   );
 }

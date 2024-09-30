@@ -10,7 +10,8 @@ export function LayoutWrapper({ children, session }: { children: React.ReactNode
     const [opened, { toggle }] = useDisclosure();
 
     return (
-        <SessionProvider session={session}>
+        <SessionProvider session={session} refetchInterval={0}
+            refetchOnWindowFocus={false}>
             <AppShell
                 header={{ height: { base: 60, md: 60, lg: 70 } }}
                 navbar={{

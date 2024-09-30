@@ -4,7 +4,7 @@ interface SearchbarProps {
   value: string;
   handleSearch: any;
   placeholder: string;
-  classname: string;
+  classname?: string;
   iconcolor: string;
 }
 

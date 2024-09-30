@@ -31,7 +31,7 @@ const Navbar: React.FC<NavbarProps> = ({ opened, toggle }) => {
                             onClick={() => { signOut() }}
                         >
                             {/* <IconBell stroke={1.5} size={25} /> */}
-                            <IconHttpDelete stroke={1.5} size={25} onClick={() => { alert("you have logged out") }} />
+                            <IconHttpDelete stroke={1.5} size={25} onClick={() => { () => signOut() }} />
                         </div>
                         <div className="border border-gray-800 h-[52px] w-[70%] rounded-full flex items-center justify-between max-sm:w-full max-sm:pr-0 max-sm:border-0 hover:cursor-pointer p-2"
                             onClick={() => { setopen(!open) }}

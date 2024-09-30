@@ -1,4 +1,5 @@
-"use client";
+"use client"
+import Image from "next/image";
 import React from "react";
 import Slider from "react-slick";
 
@@ -9,46 +10,34 @@ const SimpleSlider = () => {
     dots: false,
     fade: true,
     infinite: true,
-    speed: 3000,
+    speed: 4000,
     slidesToShow: 1,
     slidesToScroll: 1,
     waitForAnimate: true,
-    autoplay: true,
-    autoplaySpeed: 3000,
-    height: true,
-    arrows: false,
+    autoplay:true,
+    autoplaySpeed: 4000,
+    height:true,
+    arrows:false,
     pauseOnHover: false,
   };
   const images = ["/images/admin-bg.jpg", "/images/admin2-bg.jpg"];
   return (
     <Slider {...settings}>
-      {images.map((ele, index) => {
-        return (
-          <div className="w-full h-screen" key={index}>
-            <img
+      {images.map((ele,index)=>{
+        return(
+          <div className="w-full h-[100vh]" key={index}>
+        <Image
               src={ele}
-              alt="background-image"
-              className="w-full h-full object-cover"
+              alt="galaxy-background"
+              objectFit="cover" 
+              width={500}
+              height={500}
+              priority
+              className="w-full h-full"
             />
-          </div>
-        );
+      </div>
+        )
       })}
-
-      {/* <div>
-        <h3 className="text-3xl">2</h3>
-      </div>
-      <div>
-        <h3 className="text-3xl">3</h3>
-      </div>
-      <div>
-        <h3>4</h3>
-      </div>
-      <div>
-        <h3>5</h3>
-      </div>
-      <div>
-        <h3>6</h3>
-      </div> */}
     </Slider>
   );
 };

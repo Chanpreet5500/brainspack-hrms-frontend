@@ -37,6 +37,7 @@ const SelectInputField: React.FC<SelectValue> = ({
   return (
     <div className="relative mb-2">
       <Select
+        checkIconPosition="right"
         label={label}
         placeholder={placeholder}
         className={className || "flex flex-col gap-1"}

@@ -84,6 +84,7 @@ export default function Employees() {
 
   console.log(form.getValues(), "JJ");
   const editModal = (row) => {
+    console.log('this is the edit')
     open();
     form.setValues(row);
   };
@@ -92,14 +93,11 @@ export default function Employees() {
       <div className="flex gap-2">
         <button
           onClick={() => editModal(row)}
-          className=" flex items-center justify-center h-[35px] w-[35px] bg-[green] text-white cursor-pointer"
-        >
+          className=" flex items-center justify-center h-[35px] w-[35px] bg-[green] text-white cursor-pointer">
           <IconCheck />
-
         </button>
         <button className=" flex items-center justify-center h-[35px] w-[35px] bg-[red] text-white cursor-pointer">
           <IconBan />
-
         </button>
       </div>
     )

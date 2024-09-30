@@ -24,7 +24,7 @@ const CustomTable = <T,>({
   form,
   action1,
   editModal,
-  ActionContent
+  ActionContent,
 }: CustomTableProps<T>): JSX.Element => {
   // const editModal = (row: any) => {
   //   opened();
@@ -76,7 +76,7 @@ const CustomTable = <T,>({
         </Table.Tr>
       </Table.Tbody>
       <Table.Tbody>
-        {rows.length > 0 ? (
+        {rows?.length > 0 ? (
           rows
         ) : (
           <Table.Tr>
