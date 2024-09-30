@@ -1,15 +1,18 @@
 import { getLabelByValue } from "@/constants/commonFunction";
 import { employeeDepartment, employeProfetion } from "@/constants/constants";
-import { Avatar, Box, Flex, Table, Text } from "@mantine/core";
-import { IconDotsVertical, IconCheck, IconBan } from "@tabler/icons-react";
+import { Avatar, Box, Button, Flex, Table, Text } from "@mantine/core";
+import { IconDotsVertical, IconCheck, IconBan, IconThumbUpFilled, IconThumbUp, IconThumbDown } from '@tabler/icons-react';
 
 interface CustomTableProps<T> {
   data: T[];
   headingdata: string[];
   showConfirmRejectButton: boolean;
   showDotIcon: boolean;
-  opened: any;
+  opened?: any;
   form?: any;
+  action1?: any
+  ActionContent?: any
+  editModal?: any
 }
 
 const CustomTable = <T,>({
@@ -19,28 +22,37 @@ const CustomTable = <T,>({
   showDotIcon,
   opened,
   form,
+  action1,
+  editModal,
+  ActionContent
 }: CustomTableProps<T>): JSX.Element => {
-  const editModal = (row: any) => {
-    opened();
-    form.setValues(row);
-  };
+  // const editModal = (row: any) => {
+  //   opened();
+  //   form.setValues(row);
+  // };
 
-  const rows = data?.map((row: any) => (
+  const rows = data?.map((row: any, index: any) => (
     <Table.Tr key={row.name}>
-      <Table.Td>
-        <Flex gap="md" align="center">
-          <Avatar
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfjhH9JE8PzTw1bAo66ZaAa9JVbj8gCfB2QA&s"
-            alt="it's me"
-          />
-          <Box>{row.fname}</Box>
-        </Flex>
-      </Table.Td>
-      <Table.Td>{row.lname}</Table.Td>
-      <Table.Td>{row.email}</Table.Td>
-      <Table.Td>{row.designation}</Table.Td>
-      <Table.Td>{getLabelByValue(row.role, employeProfetion)}</Table.Td>
-      <Table.Td>{getLabelByValue(row.department, employeeDepartment)}</Table.Td>
+      <Table.Td>{index + 1}</Table.Td>
+      {Object.keys(row).map((key, index) => (
+        <Table.Td key={index}>
+          {key === "fname" ? (
+            <Flex gap="md" align="center">
+              <Avatar
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfjhH9JE8PzTw1bAo66ZaAa9JVbj8gCfB2QA&s"
+                alt="it's me"
+              />
+              <Box>{row[key]}</Box>
+            </Flex>
+          ) : key === "role" ? (
+            getLabelByValue(row[key], employeProfetion)
+          ) : key === "department" ? (
+            getLabelByValue(row[key], employeeDepartment)
+          ) : (
+            row[key]
+          )}
+        </Table.Td>
+      ))}
       {showDotIcon && (
         <Table.Td>
           <IconDotsVertical />
@@ -48,24 +60,14 @@ const CustomTable = <T,>({
       )}
       {showConfirmRejectButton && (
         <Table.Td>
-          <div className="flex gap-2">
-            <button
-              onClick={() => editModal(row)}
-              className=" flex items-center justify-center h-[35px] w-[15%] bg-[green] text-white cursor-pointer"
-            >
-              <IconCheck />
-            </button>
-            <button className=" flex items-center justify-center h-[35px] w-[15%] bg-[red] text-white cursor-pointer">
-              <IconBan />
-            </button>
-          </div>
+          {ActionContent && <ActionContent row={row} editModal={editModal} />}
         </Table.Td>
       )}
     </Table.Tr>
   ));
 
   return (
-    <Table verticalSpacing="md" layout="fixed" highlightOnHover withRowBorders>
+    <Table verticalSpacing="md" highlightOnHover withRowBorders>
       <Table.Tbody>
         <Table.Tr>
           {headingdata?.map((element: any, index: any) => (

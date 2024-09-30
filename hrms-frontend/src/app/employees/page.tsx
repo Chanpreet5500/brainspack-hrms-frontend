@@ -9,6 +9,7 @@ import UserForm from "@/components/modal/page";
 import { useForm } from "@mantine/form";
 import { updateSelectedMode } from "@/services/user/slices/allUser/user";
 import { useDispatch } from "react-redux";
+import { IconBan, IconCheck } from "@tabler/icons-react";
 
 interface RowData {
   id?: number;
@@ -82,6 +83,27 @@ export default function Employees() {
   });
 
   console.log(form.getValues(), "JJ");
+  const editModal = (row) => {
+    open();
+    form.setValues(row);
+  };
+  const ActionContent = ({ row, editModal }: { row: any; editModal: (row: any) => void }) => {
+    return (
+      <div className="flex gap-2">
+        <button
+          onClick={() => editModal(row)}
+          className=" flex items-center justify-center h-[35px] w-[35px] bg-[green] text-white cursor-pointer"
+        >
+          <IconCheck />
+
+        </button>
+        <button className=" flex items-center justify-center h-[35px] w-[35px] bg-[red] text-white cursor-pointer">
+          <IconBan />
+
+        </button>
+      </div>
+    )
+  }
 
   return (
     <>
@@ -123,6 +145,8 @@ export default function Employees() {
         showDotIcon={false}
         opened={open}
         form={form}
+        editModal={editModal}
+        ActionContent={ActionContent}
       />
     </>
   );
