@@ -1,28 +1,34 @@
 import { Button, Group } from "@mantine/core";
-import TextInputField from "../Inputs/textInput/Input";
-import SelectInputField from "../Inputs/selectInput/Select";
+import TextInputField from "../../Inputs/textInput/Input";
+import SelectInputField from "../../Inputs/selectInput/Select";
 import { employeeDepartment, employeProfetion } from "@/constants/constants";
 import { useGetCreateUserMutation } from "@/services/user/allApis/regiterUser";
-
+import { useUpdateDataApiByNameMutation } from "@/services/user/allApis/updateUser";
 interface value {
   onClose: any;
   form: any;
+  onHandelUpdate: any;
 }
-
-
-const UserForm: React.FC<value> = (props) => {
-  const { form, onClose } = props;
+const EmployeeForm: React.FC<value> = (props) => {
+  const { onClose, form, onHandelUpdate } = props;
   const [postData] = useGetCreateUserMutation();
-  console.log(form.getValues(), "values");
+  const [updateUserData, { data: updatedata }] =
+    useUpdateDataApiByNameMutation();
   const handleSubmit = (data: any) => {
-    postData(data);
-    console.log(data, "ll");
+    console.log(data, "data");
+    console.log(data, "vifdffbhvl");
+
+    if (data?._id) {
+      onHandelUpdate(data);
+    } else {
+      postData(data);
+    }
     onClose();
     form.reset();
   };
   return (
     <form
-      onSubmit={form.onSubmit((localUserDetails: string) => {
+      onSubmit={form.onSubmit((localUserDetails: any) => {
         handleSubmit(localUserDetails);
       })}
     >
@@ -70,7 +76,6 @@ const UserForm: React.FC<value> = (props) => {
           data={employeeDepartment}
           validateKey={form.getInputProps("department")}
         />
-
         <Group className=" !flex !justify-between !w-full ">
           <Button type="submit">Submit</Button>
           <Button onClick={onClose}>Cancel</Button>
@@ -80,4 +85,4 @@ const UserForm: React.FC<value> = (props) => {
   );
 };
 
-export default UserForm;
+export default EmployeeForm;

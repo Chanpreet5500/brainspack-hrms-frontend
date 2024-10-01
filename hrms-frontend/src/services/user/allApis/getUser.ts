@@ -2,13 +2,13 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const userGetApi = createApi({
   reducerPath: "userGetApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://jsonplaceholder.typicode.com",
+    baseUrl: "http://localhost:3000/api/users",
   }),
   endpoints: (builder) => ({
     getAllDataApiByName: builder.query({
-      query: () => {
+      query: ({ page, limit }) => {
         return {
-          url: "/posts",
+          url: `${page}/${limit}`,
           method: "GET",
         };
       },

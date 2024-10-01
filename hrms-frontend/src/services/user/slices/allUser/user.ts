@@ -5,7 +5,9 @@ const initialState = {
   status: "idle",
   selectedMode: "",
   editData: {},
+  deleteData: {},
   modalVisibility: false,
+  allUserData: [],
 };
 
 const userSlice = createSlice({
@@ -18,8 +20,11 @@ const userSlice = createSlice({
     updateSelectedMode(state, action) {
       state.selectedMode = action.payload;
     },
-    updateEditData(state, action) {
+    updateUserEditData(state, action) {
       state.editData = action.payload;
+    },
+    deleteUserEditData(state, action) {
+      state.deleteData = action.payload;
     },
     clearUser(state) {
       state.user = null;
@@ -27,14 +32,19 @@ const userSlice = createSlice({
     updateModalVisibility(state, action) {
       state.modalVisibility = action.payload;
     },
+    getAllUserData(state, action) {
+      state.allUserData = action.payload;
+    },
   },
 });
 
 export const {
-  updateEditData,
+  updateUserEditData,
   updateSelectedMode,
+  deleteUserEditData,
   setUser,
   clearUser,
   updateModalVisibility,
+  getAllUserData,
 } = userSlice.actions;
 export default userSlice.reducer;

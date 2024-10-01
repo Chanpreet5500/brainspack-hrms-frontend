@@ -146,7 +146,7 @@ export const TableHeadiingForLeaves = [
   "Start Date",
   "End Date",
   "Status",
-  "Actions"
+  "Actions",
 ];
 
 export const TableHeadiingForEmployee = [
@@ -188,7 +188,7 @@ export const employeedata = [
     lname: "Weissnat",
     email: "Elouise.Prohaska@yahoo.com",
     role: "admin",
-    department: "software engineering",
+    department: "it",
   },
   {
     // id: 2,
@@ -196,7 +196,7 @@ export const employeedata = [
     lname: "Weissnat",
     email: "Elouise.Prohaska@yahoo.com",
     role: "admin",
-    department: "software engineering",
+    department: "it",
   },
   {
     // id: 3,
@@ -204,22 +204,37 @@ export const employeedata = [
     lname: "Weissnat",
     email: "Elouise.Prohaska@yahoo.com",
     role: "admin",
-    department: "software engineering",
+    department: "it",
   },
 ];
 export const employeeDepartment = [
   {
     id: 1,
     label: "Human Resource (HR)",
-    value: "human resource (HR)",
+    value: "hr",
   },
   {
     id: 2,
     label: "Software Engineering",
-    value: "software engineering",
+    value: "it",
   },
   {
     id: 3,
+    label: "finance",
+    value: "finance",
+  },
+  {
+    id: 4,
+    label: "marketing",
+    value: "marketing",
+  },
+  {
+    id: 4,
+    label: "sales",
+    value: "sales",
+  },
+  {
+    id: 5,
     label: "User Experience (UX)",
     value: "user experience (UX)",
   },
@@ -236,48 +251,48 @@ export const employeProfetion = [
 
 export const leavedata = [
   {
-    name: 'Athena Weissnat',
-    leavetype: 'Casual Leave',
+    name: "Athena Weissnat",
+    leavetype: "Casual Leave",
     startdate: "12/43/2022",
     enddate: "13/67/7809",
-    status: 'Pending',
+    status: "Pending",
   },
   {
-    name: 'Asif Ali',
-    leavetype: 'Sick Leave',
+    name: "Asif Ali",
+    leavetype: "Sick Leave",
     startdate: "12/43/2022",
     enddate: "13/67/7809",
-    status: 'Pending',
+    status: "Pending",
   },
   {
-    name: 'Shubham Kaushal',
-    leavetype: 'Casual Leave',
+    name: "Shubham Kaushal",
+    leavetype: "Casual Leave",
     startdate: "12/43/2022",
     enddate: "13/67/7809",
-    status: 'Pending',
+    status: "Pending",
   },
   {
-    name: 'Sagar Rana',
-    leavetype: 'Sick Leave',
+    name: "Sagar Rana",
+    leavetype: "Sick Leave",
     startdate: "12/43/2022",
     enddate: "13/67/7809",
-    status: 'Approved',
+    status: "Approved",
   },
   {
-    name: 'Gourav Kashyap',
-    leavetype: 'Sick Leave',
+    name: "Gourav Kashyap",
+    leavetype: "Sick Leave",
     startdate: "12/43/2022",
     enddate: "13/67/7809",
-    status: 'Approved',
+    status: "Approved",
   },
   {
-    name: 'Nisha Arora',
-    leavetype: 'Sick Leave',
+    name: "Nisha Arora",
+    leavetype: "Sick Leave",
     startdate: "12/43/2022",
     enddate: "13/67/7809",
-    status: 'Approved',
+    status: "Approved",
   },
-]
+];
 export const leaveTypes = [
   {
     id: 1,
@@ -285,5 +300,5 @@ export const leaveTypes = [
     value: "sick-leave",
   },
   { id: 2, label: "Casual Leave", value: "casual-leave" },
-  { id: 3, label: "Emergency Leave", value: "emergency-leave" }
-]
+  { id: 3, label: "Emergency Leave", value: "emergency-leave" },
+];
