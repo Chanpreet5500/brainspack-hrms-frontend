@@ -68,6 +68,7 @@ const EmployeeForm: React.FC<value> = (props) => {
     onClose();
     form.reset();
   };
+  console.log("test commit");
   return (
     <form
       onSubmit={form.onSubmit((localUserDetails: any) => {
