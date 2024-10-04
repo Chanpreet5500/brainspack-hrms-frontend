@@ -112,33 +112,6 @@ export const sidebarlinks = [
   },
 ];
 
-export const TableRenderData = [
-  {
-    id: 1,
-    fname: "Athena",
-    lname: "Weissnat",
-    email: "Elouise.Prohaska@yahoo.com",
-    role: "Admin",
-    department: "Software Engineer",
-  },
-  {
-    id: 2,
-    fname: "Athena",
-    lname: "Weissnat",
-    email: "Elouise.Prohaska@yahoo.com",
-    role: "Admin",
-    department: "Software Engineer",
-  },
-  {
-    id: 3,
-    fname: "Athena",
-    lname: "Weissnat",
-    email: "Elouise.Prohaska@yahoo.com",
-    role: "Admin",
-    department: "Software Engineer",
-  },
-];
-
 export const TableHeadiingForLeaves = [
   "Sr. No",
   "Employee Name",
@@ -156,6 +129,7 @@ export const TableHeadiingForEmployee = [
   "Email",
   "Role",
   "Department",
+  "Status",
   "Action",
 ];
 
@@ -181,32 +155,32 @@ export const attendancedata = [
     color: "#fda4af",
   },
 ];
-export const employeedata = [
-  {
-    // id: 1,
-    fname: "Athena",
-    lname: "Weissnat",
-    email: "Elouise.Prohaska@yahoo.com",
-    role: "admin",
-    department: "it",
-  },
-  {
-    // id: 2,
-    fname: "Athena",
-    lname: "Weissnat",
-    email: "Elouise.Prohaska@yahoo.com",
-    role: "admin",
-    department: "it",
-  },
-  {
-    // id: 3,
-    fname: "Athena",
-    lname: "Weissnat",
-    email: "Elouise.Prohaska@yahoo.com",
-    role: "admin",
-    department: "it",
-  },
-];
+// export const employeedata = [
+//   {
+//     // id: 1,
+//     fname: "Athena",
+//     lname: "Weissnat",
+//     email: "Elouise.Prohaska@yahoo.com",
+//     role: "admin",
+//     department: "it",
+//   },
+//   {
+//     // id: 2,
+//     fname: "Athena",
+//     lname: "Weissnat",
+//     email: "Elouise.Prohaska@yahoo.com",
+//     role: "admin",
+//     department: "it",
+//   },
+//   {
+//     // id: 3,
+//     fname: "Athena",
+//     lname: "Weissnat",
+//     email: "Elouise.Prohaska@yahoo.com",
+//     role: "admin",
+//     department: "it",
+//   },
+// ];
 export const employeeDepartment = [
   {
     id: 1,
@@ -232,11 +206,6 @@ export const employeeDepartment = [
     id: 4,
     label: "sales",
     value: "sales",
-  },
-  {
-    id: 5,
-    label: "User Experience (UX)",
-    value: "user experience (UX)",
   },
 ];
 export const employeProfetion = [

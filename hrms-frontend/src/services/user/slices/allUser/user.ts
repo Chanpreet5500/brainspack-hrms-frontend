@@ -47,4 +47,5 @@ export const {
   updateModalVisibility,
   getAllUserData,
 } = userSlice.actions;
+
 export default userSlice.reducer;

@@ -1,9 +1,21 @@
-import { Button, Group } from "@mantine/core";
+import { useEffect } from "react";
+import {
+  Button,
+  defaultVariantColorsResolver,
+  Group,
+  MantineProvider,
+  parseThemeColor,
+  VariantColorsResolver,
+} from "@mantine/core";
 import TextInputField from "../../Inputs/textInput/Input";
 import SelectInputField from "../../Inputs/selectInput/Select";
 import { employeeDepartment, employeProfetion } from "@/constants/constants";
-import { useGetCreateUserMutation } from "@/services/user/allApis/regiterUser";
-import { useUpdateDataApiByNameMutation } from "@/services/user/allApis/updateUser";
+import { useDispatch } from "react-redux";
+import { getAllUserData } from "@/services/user/slices/allUser/user";
+import {
+  useCreateUserMutation,
+  useLazyGetAllDataApiByNameQuery,
+} from "@/services/user/allApis/usersApi";
 interface value {
   onClose: any;
   form: any;
@@ -11,17 +23,47 @@ interface value {
 }
 const EmployeeForm: React.FC<value> = (props) => {
   const { onClose, form, onHandelUpdate } = props;
-  const [postData] = useGetCreateUserMutation();
-  const [updateUserData, { data: updatedata }] =
-    useUpdateDataApiByNameMutation();
-  const handleSubmit = (data: any) => {
-    console.log(data, "data");
-    console.log(data, "vifdffbhvl");
+  const [postData, { data: addData, isSuccess, isError }] =
+    useCreateUserMutation();
+  const dispatch = useDispatch();
+  const variantColorResolver: VariantColorsResolver = (input) => {
+    const defaultResolvedColors = defaultVariantColorsResolver(input);
+    const parsedColor = parseThemeColor({
+      color: input.color || input.theme.primaryColor,
+      theme: input.theme,
+    });
+    if (input.variant === "default") {
+      return {
+        background: "transparent",
+        hover: "#dcdcdc",
+        color: "black",
+        border: "none",
+      };
+    }
 
+    return defaultResolvedColors;
+  };
+
+  const [allDataApi, { data, error, isLoading }] =
+    useLazyGetAllDataApiByNameQuery();
+
+  useEffect(() => {
+    if (data?.users.length > 0) {
+      dispatch(getAllUserData(data?.users));
+    }
+  }, [data]);
+
+  const handleSubmit = async (data: any) => {
     if (data?._id) {
       onHandelUpdate(data);
     } else {
-      postData(data);
+      const creteUser = await postData(data);
+
+      const params = {
+        page: 1,
+        limit: 11,
+      };
+      await allDataApi(params);
     }
     onClose();
     form.reset();
@@ -76,10 +118,26 @@ const EmployeeForm: React.FC<value> = (props) => {
           data={employeeDepartment}
           validateKey={form.getInputProps("department")}
         />
-        <Group className=" !flex !justify-between !w-full ">
-          <Button type="submit">Submit</Button>
-          <Button onClick={onClose}>Cancel</Button>
-        </Group>
+        <MantineProvider theme={{ variantColorResolver }}>
+          <Group className=" !flex !justify-end !w-full ">
+            <Button
+              variant="default"
+              className="!h-[32px] !w-[90px] !font-[500]"
+              radius="md"
+              onClick={onClose}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              variant="filled"
+              className="!h-[32px] !w-[90px] !font-[500]"
+              radius="md"
+            >
+              Submit
+            </Button>
+          </Group>
+        </MantineProvider>
       </div>
     </form>
   );

@@ -38,7 +38,6 @@ const LeaveForm: React.FC<value> = ({ onClose }) => {
   return (
     <form
       onSubmit={form.onSubmit((localUserDetails: any) => {
-        console.log(localUserDetails);
         handleSubmit(localUserDetails);
       })}
     >

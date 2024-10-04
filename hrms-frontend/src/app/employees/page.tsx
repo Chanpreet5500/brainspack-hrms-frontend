@@ -1,43 +1,63 @@
 "use client";
 import { useEffect, useState } from "react";
 import CustomTable from "@/components/CustomTable/CustomTable";
-import { TableHeadiingForEmployee, employeedata } from "@/constants/constants";
+import { TableHeadiingForEmployee } from "@/constants/constants";
 import Searchbar from "@/components/Searchbar/Searchbar";
 import { useDisclosure } from "@mantine/hooks";
 import { useForm } from "@mantine/form";
 import { getAllUserData } from "@/services/user/slices/allUser/user";
 import { useDispatch, useSelector } from "react-redux";
-import { IconBan, IconCheck } from "@tabler/icons-react";
+import {
+  IconEdit,
+  IconLock,
+  IconLockOpen,
+  IconTrash,
+} from "@tabler/icons-react";
 import EmployeeForm from "@/components/employeeSection/employeeCreateForm/EmployeeForm";
 import { CustomModal } from "@/components/CustomModal/CustomModal";
 import { useLazyGetAllDataApiByNameQuery } from "@/services/user/allApis/getUser";
 import { manageUserSelector } from "@/services/user/slices/allUser/userSelector";
-import { useUpdateDataApiByNameMutation } from "@/services/user/allApis/updateUser";
-import { useDeleteDataApiByNameMutation } from "@/services/user/allApis/deleteUser";
+import {
+  useDeleteDataApiByNameMutation,
+  useUpdateDataApiByNameMutation,
+} from "@/services/user/allApis/usersApi";
 
 export default function Employees() {
   const [search, setSearch] = useState("");
+
   const [allDataApi, { data, error, isLoading }] =
     useLazyGetAllDataApiByNameQuery();
-  const [updateUserData, { data: userUpdatedData }] =
-    useUpdateDataApiByNameMutation();
+
+  const [
+    updateUserData,
+    { data: userUpdatedData, isSuccess: updateUserSuccess },
+  ] = useUpdateDataApiByNameMutation();
   const [deleteUserData, { data: userDeletedData }] =
     useDeleteDataApiByNameMutation();
+  // console.group(userDeletedData, "userDeletedData");
+
   const { allUserData } = useSelector(manageUserSelector);
+
   const [opened, { open, close }] = useDisclosure(false);
   const dispatch = useDispatch();
+  const handleOnClose = () => {
+    close();
+    form.reset();
+  };
   useEffect(() => {
     const params = {
       page: 1,
-      limit: 5,
+      limit: 120,
     };
     allDataApi(params);
-  }, []);
+  }, [updateUserSuccess]);
+
   useEffect(() => {
     if (data?.users.length > 0) {
       dispatch(getAllUserData(data?.users));
     }
   }, [data]);
+
   const onHandelUpdate = async (row: any) => {
     const mydata = {
       department: row.department,
@@ -51,17 +71,35 @@ export default function Employees() {
       data: mydata,
       owner_id: "66fa989f82603080b4a64da9",
     });
+
+    const params = {
+      page: 1,
+      limit: 120,
+    };
+    await allDataApi(params);
   };
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.currentTarget;
     setSearch(value);
   };
-  const deleteModal = (row: any, data: any) => {
-    const delete_id = row._id;
-    console.log(delete_id, "userDeletedData");
-    deleteUserData({
+  const deleteModal = async (row: any) => {
+    const mydata = {
+      isDeleted: true,
+    };
+    const response = await deleteUserData({
       owner_id: "66fa989f82603080b4a64da9",
-      user_id: delete_id,
+      user_id: row._id,
+    });
+  };
+  const updateStatus = async (row: any) => {
+    const mydata = {
+      isActive: !row.isActive,
+    };
+
+    const result = await updateUserData({
+      user_id: row._id,
+      data: mydata,
+      owner_id: "66fa989f82603080b4a64da9",
     });
   };
   const ActionContent = ({
@@ -78,18 +116,21 @@ export default function Employees() {
     };
     return (
       <div className="flex gap-2">
-        <button
-          onClick={() => editModal(row)}
-          className=" flex items-center justify-center h-[35px] w-[35px] bg-[green] text-white cursor-pointer"
-        >
-          <IconCheck />
+        <button onClick={() => editModal(row)}>
+          <IconEdit className=" h-[25px] w-[25px]  text-blue-600 cursor-pointer" />
         </button>
-        <button
-          onClick={() => deleteModal(row, data)}
-          className=" flex items-center justify-center h-[35px] w-[35px] bg-[red] text-white cursor-pointer"
-        >
-          <IconBan />
+        <button onClick={() => deleteModal(row)}>
+          <IconTrash className=" h-[25px] w-[25px]  text-red-500 cursor-pointer" />
         </button>
+        {row.isActive === true ? (
+          <button onClick={() => updateStatus(row)}>
+            <IconLockOpen className=" h-[25px] w-[25px] text-blue-600  cursor-pointer" />
+          </button>
+        ) : (
+          <button onClick={() => updateStatus(row)}>
+            <IconLock className=" h-[25px] w-[25px]  text-red-500 cursor-pointer" />
+          </button>
+        )}
       </div>
     );
   };
@@ -137,33 +178,22 @@ export default function Employees() {
       department: (value) => (value ? null : "Select field is required"),
     },
   });
-  // const filterData = (data: any) => {
-  //   return data.map((user: any) => ({
-  //     fname: `${user.fname}`,
-  //     lname: ` ${user.lname}`,
-  //     email: user.email,
-  //     role: user.role,
-  //     department: user.department,
-
-  //   }));
-  // };
   return (
     <>
       <div className="flex justify-between items-center p-2 max-sm:flex-col-reverse max-sm:items-start">
-        <div>My Team ({employeedata.length})</div>
+        <div>My Team ({allUserData.length})</div>
         <div className="flex items-center gap-3 max-sm:w-full 2xl:w-[40%]">
           <div className="flex  lg:justify-end max-sm:w-[30%] max-sm:justify-between ">
             <CustomModal
               opened={opened}
-              onClose={close}
               open={open}
-              close={close}
+              close={handleOnClose}
               buttonlabel={"Add User"}
               modalTitle={"Apply for add user"}
               content={
                 <>
                   <EmployeeForm
-                    onClose={close}
+                    onClose={handleOnClose}
                     form={form}
                     onHandelUpdate={onHandelUpdate}
                   />

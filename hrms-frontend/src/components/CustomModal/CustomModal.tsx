@@ -1,11 +1,8 @@
-import { Button, ComboboxItem, Modal, Select, Textarea } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
-import React, { ReactElement, useState } from "react";
-import EmployeeForm from "../employeeSection/employeeCreateForm/EmployeeForm";
+import { Button, Modal } from "@mantine/core";
+import React, { ReactElement } from "react";
 
 interface ModalProps {
   opened?: any;
-  onClose?: any;
   open: any;
   close: any;
   buttonlabel?: any;
@@ -34,7 +31,7 @@ export const CustomModal = ({
         onClose={close}
         title={modalTitle}
         withCloseButton={true}
-        size={"lg"}
+        size={"md"}
         overlayProps={overlayProps}
         styles={styles}
         centered

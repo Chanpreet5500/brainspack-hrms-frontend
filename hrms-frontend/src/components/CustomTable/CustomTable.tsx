@@ -55,7 +55,7 @@ const CustomTable = <T,>({
   //     )}
   //   </Table.Tr>
   // ));
-  const rows = data.map((row: any, index: any) => (
+  const rows = data?.map((row: any, index: any) => (
     <Table.Tr key={row.name}>
       <Table.Td>{index + 1}</Table.Td>
       <Table.Td>{row.fname}</Table.Td>
@@ -63,6 +63,7 @@ const CustomTable = <T,>({
       <Table.Td>{row.email}</Table.Td>
       <Table.Td> {getLabelByValue(row.role, employeProfetion)}</Table.Td>
       <Table.Td>{getLabelByValue(row.department, employeeDepartment)}</Table.Td>
+      <Table.Td>{row.isActive === true ? "Active" : "Inactive"}</Table.Td>
       {showDotIcon && (
         <Table.Td>
           <IconDotsVertical />
