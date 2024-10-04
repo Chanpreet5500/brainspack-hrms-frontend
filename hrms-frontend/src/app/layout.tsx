@@ -5,7 +5,7 @@ import "@mantine/dates/styles.css";
 import "@mantine/core/styles.css";
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import { LayoutWrapper } from "@/components/LayoutWrapper/LayoutWrapper";
-import ReduxProvider from "@/services/user/reduxProvider";
+import ReduxProvider from "@/services/reduxProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {

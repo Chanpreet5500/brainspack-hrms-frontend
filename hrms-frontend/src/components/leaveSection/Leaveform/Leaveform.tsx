@@ -3,9 +3,11 @@
 import { useForm } from "@mantine/form";
 import SelectInputField from "../../Inputs/selectInput/Select";
 import { Button, Group, Textarea } from "@mantine/core";
-import { DatePickerComponent } from "../../CustomDatePicker/CustomDatePicker";
+import { DatePickerComponent } from "../../reusableComponents/CustomDatePicker/CustomDatePicker";
 import { employeProfetion, leaveTypes } from "@/constants/constants";
 import { useState } from "react";
+import { useCreateLeaveMutation } from "@/services/leave/getLeaves";
+import { DateFormatConvertor } from "@/constants/commonFunction";
 
 interface value {
     onClose: any;
@@ -14,9 +16,27 @@ interface value {
 const LeaveForm: React.FC<value> = ({ onClose }) => {
     const [startDate, setStartDate] = useState<Date | null>(new Date());
     const [endDate, setEndDate] = useState<Date | null>(startDate);
-    const handleSubmit = (data: any) => {
-        onClose();
-        form.reset();
+    const [createLeave, { isLoading, error }] = useCreateLeaveMutation();
+    const handleSubmit = async (data: any) => {
+        try {
+            const response = await createLeave({
+                createdById: "66f2d6a2a957ff778f4384fb",
+                leavedata: {
+                    ...data,
+                    employee_id: "66f6a1d7d1e7250d2a3d5389",
+                    start_date: DateFormatConvertor(startDate),
+                    end_date: DateFormatConvertor(endDate),
+                }
+            });
+
+
+            console.log("Leave created:", response);
+
+            onClose();
+            form.reset();
+        } catch (err) {
+            console.error("Error creating leave:", err);
+        }
     };
     const form = useForm({
         mode: "controlled",
@@ -30,10 +50,13 @@ const LeaveForm: React.FC<value> = ({ onClose }) => {
         validate: {
             employee: (value) => (value ? null : "Please Select the Employee."),
             leave_type: (value) => (value ? null : "Please Select the type of Leave."),
-            start_date: (value) => (value ? null : "Please Select the start Date."),
-            end_date: (value) => (value ? null : "Please Select the End Date"),
+            start_date: (value) => (DateFormatConvertor(value) ? null : "Please Select the start Date."),
+            end_date: (value) => (DateFormatConvertor(value) ? null : "Please Select the End Date"),
         },
     });
+    let data = form.getValues();
+    let formateddate = DateFormatConvertor(data.start_date);
+    console.log(formateddate, "JJ")
     console.log(form.getValues(), "JJ");
     return (
         <form

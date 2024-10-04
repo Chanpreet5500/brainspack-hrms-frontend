@@ -1,101 +1,62 @@
-// "use client";
-// import Link from "next/link";
-// import React, { useEffect, useState } from "react";
-// import { useRouter } from "next/navigation";
-// import axios from "axios";
-// import { useSession, signIn, signOut } from "next-auth/react";
+"use client"
+import { IconAccessible, IconBrandGoogleFilled } from "@tabler/icons-react"
+import { signIn, useSession } from "next-auth/react"
+import { useEffect } from "react"
+
+const Register = () => {
+    const { data: session, status } = useSession();
+    useEffect(() => {
+        if (status === 'authenticated') {
+            // const userToken = JSON.stringify(session?.user);
+            // document.cookie = `token=${userToken}; path=/; secure; samesite=strict`;
+            // const email = session?.user?.email || "";
+            // const first_name = session?.user?.givenName || ""
+            // const last_name = session?.user?.familyName || ""
+            // const profile_img = session?.user?.image || ""
 
 
-
-
-// export default function SignupPage() {
-//     const [signin, setsigin] = useState(false);
-//     const router = useRouter();
-//     const [user, setUser] = React.useState({
-//         address: "",
-//         email: "",
-//         first_name: "",
-//         last_name: "",
-//         profile_img: ""
-
-
-//     })
-//     const [loading, setLoading] = React.useState(false);
-//     const { data: session, status } = useSession();
-//     useEffect(() => {
-//         if (status === 'authenticated') {
-//             // const userToken = JSON.stringify(session?.user);
-//             // document.cookie = `token=${userToken}; path=/; secure; samesite=strict`;
-//             const email = session?.user?.email || "";
-//             const first_name = session?.user?.givenName || ""
-//             const last_name = session?.user?.familyName || ""
-//             const profile_img = session?.user?.image || ""
-//             setUser(prevUser => ({ ...prevUser, email, first_name, last_name, profile_img }));
-//             // setsigin(true)
-//             onRegister();
-
-//         }
-//     }, [status, router, session]);
-//     const onRegister = async () => {
-//         try {
-//             setLoading(true);
-//             const response = await axios.post("/api/users/register", user);
-//             if (response.data.message == 'success') {
-//                 router.push("/employees");
-//             }
-//         } catch (error: any) {
-//             if (error.response) {
-//                 const errorMessage = error.response.data.message;
-//                 if (errorMessage == 'Missing required field-address') {
-//                     setsigin(true)
-//                 }
-//                 // toast.error(errorMessage);
-//             } else {
-//                 // toast.error("An unexpected error occurred.");
-//             }
-//         } finally {
-//             setLoading(false);
-//         }
-//     }
-//     return (
-//         <div className="flex flex-col items-center justify-center h-[300px] py-2">
-
-//             <div className="flex flex-col items-center justify-center py-2">
-//                 {!signin ?
-//                     <>
-//                         <button
-//                             onClick={() => signIn('google')}
-//                             className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 hover:bg-gray-600">Sign up with google</button>
-//                     </>
-//                     :
-//                     <div className="flex flex-col items-center justify-center min-h-screen py-2">
-//                         <h1>{loading ? "Processing" : "Please Register Yourself to login"}</h1>
-//                         <hr />
-
-//                         <label htmlFor="address">Address</label>
-//                         <input
-//                             className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black"
-//                             id="address"
-//                             type="text"
-//                             value={user.address}
-//                             onChange={(e) => setUser({ ...user, address: e.target.value })}
-//                             placeholder="address"
-//                         />
-//                         <button
-//                             onClick={onRegister}
-//                             className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600">Register</button>
-//                     </div>
-//                 }
-//             </div>
-
-
-//         </div>
-//     )
-
-// }
-export default function SignupPage() {
+        }
+    }, [status, session]);
     return (
-        <p>This is the Register page
-        </p>
+        <div className="w-full h-full flex  bg-center bg-no-repeat bg-cover">
+            <div className="w-[45%]  flex justify-center left-pare  nt items-center ">
+                <div className="w-[70%]  h-[70%] text-white flex flex-col justify-between">
+                    <div className=" w-full h-[60%] flex flex-col justify-between ">
+                        <div className="flex items-center h-auto">
+                            <div className=" h-full w-[10%] rounded-full items-center justify-center">
+                                <IconAccessible className="w-full h-full" />
+                            </div>
+                            <div className="text-2xl">
+                                HR<span style={{ color: '#cab7eb' }}>CONNEX.</span>
+                            </div>
+                        </div>
+
+                        <div className="flex gap-3 flex-col">
+                            <div className="flex flex-col gap-1">
+                                <p className="text-5xl">Were so glad to have You on board!</p>
+                            </div>
+                            <div>
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab veritatis velit rerum ducimus ipsa eius iste, eligendi laboriosam tenetur adipisci sunt inventore quam numquam neque ipsam beatae ad et amet.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="rounded-tl-[550px] rounded-bl-[350px]  w-[55%] h-[100%] bg-[#00000085] flex items-center justify-between h-full">
+                <div className=" h-[60%] w-full items-center justify-center flex text-white">
+                    <div className=" flex gap-2 p-2 border border-white rounded-full text-white hover:bg-[#00000030] hover:cursor hover:text-black hover:bg-[#FFFFFF]">
+
+                        <IconBrandGoogleFilled size={30} />
+
+                        <button onClick={() => signIn('google')}>
+                            Sign up with google
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
     )
 }
+export default Register

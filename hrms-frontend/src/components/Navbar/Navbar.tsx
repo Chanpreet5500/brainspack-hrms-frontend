@@ -1,6 +1,6 @@
 import { IconBell, IconHttpDelete, IconSearch } from "@tabler/icons-react";
 import { Burger } from "@mantine/core";
-import Droper from "../Droper/Droper";
+import Droper from "../reusableComponents/Droper/Droper";
 import { signOut } from "next-auth/react";
 import { useState } from "react";
 import Image from "next/image";

@@ -2,7 +2,7 @@ import { Button, Group } from "@mantine/core";
 import TextInputField from "../Inputs/textInput/Input";
 import SelectInputField from "../Inputs/selectInput/Select";
 import { employeeDepartment, employeProfetion } from "@/constants/constants";
-import { useGetCreateUserMutation } from "@/services/user/allApis/regiterUser";
+import { useGetCreateUserMutation } from "@/services/user/regiterUser";
 
 interface value {
   onClose: any;

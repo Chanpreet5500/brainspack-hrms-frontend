@@ -1,4 +1,4 @@
-import { manageUserSelector } from "@/services/user/slices/allUser/userSelector";
+import { manageUserSelector } from "@/redux/user/userSelector";
 import { TextInput } from "@mantine/core";
 import { useSelector } from "react-redux";
 

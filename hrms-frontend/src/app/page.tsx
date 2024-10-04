@@ -1,8 +1,7 @@
-import Image from "next/image";
-import Sign from "./sign/page";
-import Sign2 from "./sign2/page";
-import Sign3 from "./sign3/page";
-import SimpleSlider from "@/components/owlcarousel/Carousel";
+
+import { superadminimages } from "@/constants/constants";
+import Register from "./register/page";
+import BackgroundImgSlider from "@/components/reusableComponents/BackgroundImgSlider/BackgroundImgSlider"
 
 export default function Home() {
   return (
@@ -114,13 +113,10 @@ export default function Home() {
         </a>
       </div>
     </main> */}
-      {/* <Sign /> */}
-      {/* <Sign2 /> */}
-      {/* <Sign3 /> */}
       <div className="w-full h-[100vh] overflow-hidden relative bg-black">
-        <SimpleSlider />
+        <BackgroundImgSlider images={superadminimages} />
         <div className="absolute top-0 left-0 w-full h-full ">
-          <Sign2 />
+          <Register />
         </div>
       </div>
     </>
