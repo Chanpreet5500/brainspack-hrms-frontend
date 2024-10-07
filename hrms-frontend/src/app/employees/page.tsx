@@ -34,7 +34,7 @@ export default function Employees() {
   ] = useUpdateDataApiByNameMutation();
   const [deleteUserData, { data: userDeletedData }] =
     useDeleteDataApiByNameMutation();
-  // console.group(userDeletedData, "userDeletedData");
+  console.log(userDeletedData, deleteUserData, "userDeletedData");
 
   const { allUserData } = useSelector(manageUserSelector);
 
@@ -45,7 +45,7 @@ export default function Employees() {
     form.reset();
   };
   useEffect(() => {
-    if (!updateUserSuccess) return;
+    // if (!updateUserSuccess) return;
     const params = {
       page: 1,
       limit: 120,

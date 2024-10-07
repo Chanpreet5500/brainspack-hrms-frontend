@@ -24,6 +24,7 @@ const userSlice = createSlice({
       state.editData = action.payload;
     },
     deleteUserEditData(state, action) {
+      console.log(state, action.payload, "pay");
       state.deleteData = action.payload;
     },
     clearUser(state) {

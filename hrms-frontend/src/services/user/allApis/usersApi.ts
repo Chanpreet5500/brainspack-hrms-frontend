@@ -11,7 +11,7 @@ export const usersApi = createApi({
         return {
           url: `/users/delete/${owner_id}/${user_id}`,
           method: "PATCH",
-          params: { owner_id, user_id },
+          body: { owner_id, user_id },
         };
       },
     }),

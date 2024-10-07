@@ -50,8 +50,6 @@ const EmployeeForm: React.FC<value> = (props) => {
   ] = useLazyGetAllDataApiByNameQuery();
 
   useEffect(() => {
-    console.log("DATA GET");
-
     if (data?.users.length > 0) {
       dispatch(getAllUserData(data?.users));
     }
