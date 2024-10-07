@@ -44,14 +44,18 @@ const EmployeeForm: React.FC<value> = (props) => {
     return defaultResolvedColors;
   };
 
-  const [allDataApi, { data, error, isLoading }] =
-    useLazyGetAllDataApiByNameQuery();
+  const [
+    allDataApi,
+    { data, error, isLoading, isSuccess: isSuccessToGetAllData },
+  ] = useLazyGetAllDataApiByNameQuery();
 
   useEffect(() => {
+    console.log("DATA GET");
+
     if (data?.users.length > 0) {
       dispatch(getAllUserData(data?.users));
     }
-  }, [data]);
+  }, [data, isSuccessToGetAllData]);
 
   const handleSubmit = async (data: any) => {
     if (data?._id) {

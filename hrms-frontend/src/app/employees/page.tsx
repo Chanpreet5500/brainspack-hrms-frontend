@@ -25,7 +25,7 @@ import {
 export default function Employees() {
   const [search, setSearch] = useState("");
 
-  const [allDataApi, { data, error, isLoading }] =
+  const [allDataApi, { data, error, isLoading, isSuccess }] =
     useLazyGetAllDataApiByNameQuery();
 
   const [
@@ -45,6 +45,7 @@ export default function Employees() {
     form.reset();
   };
   useEffect(() => {
+    if (!updateUserSuccess) return;
     const params = {
       page: 1,
       limit: 120,
@@ -56,7 +57,7 @@ export default function Employees() {
     if (data?.users.length > 0) {
       dispatch(getAllUserData(data?.users));
     }
-  }, [data]);
+  }, [data, isSuccess]);
 
   const onHandelUpdate = async (row: any) => {
     const mydata = {

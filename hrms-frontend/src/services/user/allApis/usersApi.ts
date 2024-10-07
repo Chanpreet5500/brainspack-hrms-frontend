@@ -19,7 +19,7 @@ export const usersApi = createApi({
     getAllDataApiByName: builder.query({
       query: ({ page, limit }) => {
         return {
-          url: `${page}/${limit}`,
+          url: `users/${page}/${limit}`,
           method: "GET",
         };
       },
