@@ -1,11 +1,14 @@
 "use client";
 import { useEffect, useState } from "react";
-import CustomTable from "@/components/CustomTable/CustomTable";
-import { TableHeadiingForEmployee } from "@/constants/constants";
+// import CustomTable from "@/components/CustomTable/CustomTable";
+import {
+  tableDataLimit,
+  TableHeadiingForEmployee,
+} from "@/constants/constants";
 import Searchbar from "@/components/Searchbar/Searchbar";
 import { useDisclosure } from "@mantine/hooks";
 import { useForm } from "@mantine/form";
-import { getAllUserData } from "@/services/user/slices/allUser/user";
+// import { getAllUserData } from "@/services/user/slices/allUser/user";
 import { useDispatch, useSelector } from "react-redux";
 import {
   IconEdit,
@@ -14,17 +17,23 @@ import {
   IconTrash,
 } from "@tabler/icons-react";
 import EmployeeForm from "@/components/employeeSection/employeeCreateForm/EmployeeForm";
-import { CustomModal } from "@/components/CustomModal/CustomModal";
-import { useLazyGetAllDataApiByNameQuery } from "@/services/user/allApis/getUser";
-import { manageUserSelector } from "@/services/user/slices/allUser/userSelector";
+// import { CustomModal } from "@/components/CustomModal/CustomModal";
+// import { useLazyGetAllDataApiByNameQuery } from "@/services/user/allApis/getUser";
+// import { manageUserSelector } from "@/services/user/slices/allUser/userSelector";
 import {
   useDeleteDataApiByNameMutation,
+  useLazyGetAllDataApiByNameQuery,
   useUpdateDataApiByNameMutation,
-} from "@/services/user/allApis/usersApi";
+} from "@/services/user/usersApi";
+import { manageUserSelector } from "@/redux/user/userSelector";
+import { CustomModal } from "@/components/reusableComponents/CustomModal/CustomModal";
+import CustomTable from "@/components/reusableComponents/CustomTable/CustomTable";
+import { getAllUserData } from "@/redux/user/user";
+import CustomPagination from "@/components/reusableComponents/CustomPagination/CustomPagination";
 
 export default function Employees() {
   const [search, setSearch] = useState("");
-
+  const [currentpage, setCurrentPage] = useState(1);
   const [allDataApi, { data, error, isLoading, isSuccess }] =
     useLazyGetAllDataApiByNameQuery();
 
@@ -58,7 +67,24 @@ export default function Employees() {
       dispatch(getAllUserData(data?.users));
     }
   }, [data, isSuccess]);
-
+  const renderData = async (
+    currpage: number,
+    limit: number,
+    search: string
+  ) => {
+    const response = await allDataApi({
+      page: currpage,
+      limit: limit,
+      search: search,
+    });
+  };
+  useEffect(() => {
+    renderData(currentpage, tableDataLimit, search);
+  }, []);
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    renderData(page, tableDataLimit, search);
+  };
   const onHandelUpdate = async (row: any) => {
     const mydata = {
       department: row.department,
@@ -222,6 +248,14 @@ export default function Employees() {
         ActionContent={ActionContent}
         form={form}
       />
+      <div className="flex justify-end">
+        <CustomPagination
+          handlePageChange={handlePageChange}
+          page={currentpage}
+          total={allUserData}
+          limit={tableDataLimit}
+        />
+      </div>
     </>
   );
 }

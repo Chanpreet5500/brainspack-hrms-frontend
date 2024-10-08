@@ -11,11 +11,12 @@ import TextInputField from "../../Inputs/textInput/Input";
 import SelectInputField from "../../Inputs/selectInput/Select";
 import { employeeDepartment, employeProfetion } from "@/constants/constants";
 import { useDispatch } from "react-redux";
-import { getAllUserData } from "@/services/user/slices/allUser/user";
 import {
   useCreateUserMutation,
   useLazyGetAllDataApiByNameQuery,
-} from "@/services/user/allApis/usersApi";
+} from "@/services/user/usersApi";
+import { getAllUserData } from "@/redux/user/user";
+
 interface value {
   onClose: any;
   form: any;

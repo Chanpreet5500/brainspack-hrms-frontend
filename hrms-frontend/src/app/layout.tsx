@@ -5,7 +5,7 @@ import "@mantine/dates/styles.css";
 import "@mantine/core/styles.css";
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import { LayoutWrapper } from "@/components/LayoutWrapper/LayoutWrapper";
-import ReduxProvider from "@/services/user/reduxProvider";
+import ReduxProvider from "@/services/reduxProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
@@ -31,7 +31,7 @@ export default function RootLayout({
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        <title>My awesome app</title>
+        <title>Brainspack:HRMS</title>
 
         <ColorSchemeScript />
         <link

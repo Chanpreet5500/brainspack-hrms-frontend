@@ -26,7 +26,6 @@ const SelectInputField: React.FC<SelectValue> = ({
   validateKey,
   data,
   form,
-  key,
   value,
   name,
 }) => {

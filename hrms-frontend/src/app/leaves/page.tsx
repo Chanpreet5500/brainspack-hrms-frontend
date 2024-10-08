@@ -1,75 +1,121 @@
 "use client";
 import { useEffect, useState } from "react";
 import Searchbar from "@/components/Searchbar/Searchbar";
-import { TableHeadiingForLeaves } from "@/constants/constants";
-import CustomTable from "@/components/CustomTable/CustomTable";
-import { CustomModal } from "@/components/CustomModal/CustomModal";
-import CustomPagination from "@/components/CustomPagination/CustomPagination";
-import { useGetAllLeaveDataApiByNameQuery } from "@/services/user/allApis/getLeaves";
-import { manageLeaveSelector } from "@/services/user/slices/allLeaves/leaveSelector";
+import { tableDataLimit, TableHeadiingForLeaves } from "@/constants/constants";
+import CustomTable from "@/components/reusableComponents/CustomTable/CustomTable";
+import { CustomModal } from "@/components/reusableComponents/CustomModal/CustomModal";
+import CustomPagination from "@/components/reusableComponents/CustomPagination/CustomPagination";
+import { manageLeaveSelector } from "@/redux/leave/leaveSelector";
 import { useDispatch, useSelector } from "react-redux";
-import { setallLeaves, settotalleaves } from "@/services/user/slices/allLeaves/leaves";
+import {
+  resetLeaves,
+  setallLeaves,
+  settotalleaves,
+} from "@/redux/leave/leaves";
 import LeaveForm from "@/components/leaveSection/Leaveform/Leaveform";
 import { useDisclosure } from "@mantine/hooks";
-import { IconEdit, IconThumbDown, IconThumbUp } from "@tabler/icons-react";
+import { IconEdit } from "@tabler/icons-react";
 import { Button, Group } from "@mantine/core";
-
+import { useLazyGetAllLeaveDataApiByNameQuery } from "@/services/leave/getLeaves";
 
 export default function LeaveComponent() {
-  const [currentpage, setCurrentPage] = useState(1)
-  const { data, error, isLoading } = useGetAllLeaveDataApiByNameQuery({ page: currentpage, limit: 5 });
-  const { allLeaves, totalleaves } = useSelector(manageLeaveSelector)
+  const [currentpage, setCurrentPage] = useState(1);
+  const [trigger] = useLazyGetAllLeaveDataApiByNameQuery();
+  const { allLeaves, totalleaves } = useSelector(manageLeaveSelector);
   const [search, setSearch] = useState("");
   const dispatch = useDispatch();
   const [opened, { open, close }] = useDisclosure(false);
-  const [editopened, { open: editopen, close: editclose }] = useDisclosure(false);
-
+  const [editopened, { open: editopen, close: editclose }] =
+    useDisclosure(false);
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
+    renderData(page, tableDataLimit, search);
+  };
+  console.log(allLeaves, totalleaves, "allLeaves");
+  const renderData = async (
+    currpage: number,
+    limit: number,
+    search: string
+  ) => {
+    dispatch(resetLeaves());
+    const response = await trigger({
+      page: currpage,
+      limit: limit,
+      search: search,
+    });
+    console.log(response.data.leaves, "response");
+    try {
+      if (response.data) {
+        dispatch(setallLeaves(response.data.leaves));
+        dispatch(settotalleaves(response.data.totalleaves));
+      } else {
+        console.error("Failed to fetch leaves.");
+      }
+    } catch (error) {
+      throw error;
+    }
   };
   useEffect(() => {
-    if (data) {
-      dispatch(setallLeaves(data.leaves));
-      dispatch(settotalleaves(data.totalleaves))
-    }
-  }, [data, dispatch])
+    renderData(currentpage, tableDataLimit, search);
+  }, []);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.currentTarget;
-    setSearch(value);
+    setSearch(event.target.value);
+    renderData(currentpage, tableDataLimit, search);
   };
 
   const ActionContent = (row: any) => {
     const onApprove = () => {
-      console.log('Leave is Approved')
-    }
+      console.log("Leave is Approved");
+    };
     const onReject = () => {
-      console.log('Leave is Approved')
-    }
+      console.log("Leave is Rejected");
+    };
     return (
       <div>
         <CustomModal
           opened={editopened}
-          onClose={editclose}
           open={editopen}
           close={editclose}
-          buttonlabel={<><IconEdit /></>}
+          buttonlabel={
+            <>
+              <IconEdit />
+            </>
+          }
           modalTitle={"You Want to Approve the leave"}
           bgcolor={"red"}
           content={
             <div className="flex gap-3 flex-col">
               <h3>Please approve or reject the leave</h3>
               <Group justify="flex-end">
-                <Button variant="filled" color="red" onClick={() => { onApprove(); editclose(); }}>Reject</Button>
-                <Button variant="filled" color="green" onClick={() => { onReject(); editclose(); }}>Approve</Button>
+                <Button
+                  variant="filled"
+                  color="red"
+                  onClick={() => {
+                    onReject();
+                    editclose();
+                  }}
+                >
+                  Reject
+                </Button>
+                <Button
+                  variant="filled"
+                  color="green"
+                  onClick={() => {
+                    onApprove();
+
+                    editclose();
+                  }}
+                >
+                  Approve
+                </Button>
               </Group>
-            </div >
+            </div>
           }
         />
-      </div >
-
-    )
-  }
+      </div>
+    );
+  };
   return (
     <>
       <div className="flex justify-between p-2 max-sm:flex-col-reverse">
@@ -82,16 +128,12 @@ export default function LeaveComponent() {
             close={close}
             buttonlabel={"Add Leave"}
             modalTitle={"Apply for Leave"}
-            content={
-              <LeaveForm
-                onClose={close}
-              />
-            }
+            content={<LeaveForm onClose={close} />}
           />
           <Searchbar
             value={search}
             handleSearch={handleSearchChange}
-            placeholder="Search"
+            placeholder="Search "
             iconcolor="#9ca3af"
           />
         </div>
@@ -104,7 +146,12 @@ export default function LeaveComponent() {
         ActionContent={ActionContent}
       />
       <div className="flex justify-end">
-        <CustomPagination handlePageChange={handlePageChange} page={currentpage} total={totalleaves} limit={5} />
+        <CustomPagination
+          handlePageChange={handlePageChange}
+          page={currentpage}
+          total={totalleaves}
+          limit={tableDataLimit}
+        />
       </div>
     </>
   );

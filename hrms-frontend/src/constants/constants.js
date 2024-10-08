@@ -1,5 +1,6 @@
 import {
   IconAddressBook,
+  IconArrowBarRight,
   IconBeach,
   IconBowl,
   IconBrandRust,
@@ -100,13 +101,7 @@ export const sidebarlinks = [
   },
   {
     id: 2,
-    icon: <IconUsers size={22} stroke={1.5} />,
-    name: "Register",
-    link: "/register",
-  },
-  {
-    id: 2,
-    icon: <IconUsers size={22} stroke={1.5} />,
+    icon: <IconArrowBarRight size={22} stroke={1.5} />,
     name: "Leaves Management",
     link: "/leaves",
   },
@@ -271,3 +266,16 @@ export const leaveTypes = [
   { id: 2, label: "Casual Leave", value: "casual-leave" },
   { id: 3, label: "Emergency Leave", value: "emergency-leave" },
 ];
+export const superadminimages = [
+  "/images/wolfgang.jpg",
+  "/images/milad.jpg",
+  "/images/tim.jpg",
+  "/images/fotis.jpg",
+  "/images/parker.jpg",
+  "/images/liana.jpg",
+  "/images/boat.jpg",
+  "/images/tree.jpg",
+  "/images/stairs.jpg",
+];
+
+export const tableDataLimit = 2;
