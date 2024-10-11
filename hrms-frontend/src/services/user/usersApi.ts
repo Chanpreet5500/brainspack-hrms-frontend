@@ -17,10 +17,11 @@ export const usersApi = createApi({
     }),
 
     getAllDataApiByName: builder.query({
-      query: ({ page, limit }) => {
+      query: ({ page, limit, search }) => {
         return {
-          url: `users/${page}/${limit}`,
+          url: `users/`,
           method: "GET",
+          params: { page, limit, search },
         };
       },
     }),

@@ -12,6 +12,7 @@ interface ModalProps {
   overlayProps?: any;
   styles?: any;
   bgcolor?: any;
+  className?: string;
 }
 export const CustomModal = ({
   buttonlabel,
@@ -20,6 +21,7 @@ export const CustomModal = ({
   opened,
   close,
   open,
+  className,
   overlayProps,
   styles,
   bgcolor,
@@ -36,6 +38,7 @@ export const CustomModal = ({
         overlayProps={overlayProps}
         styles={styles}
         centered
+        className={className}
       >
         {content}
       </Modal>

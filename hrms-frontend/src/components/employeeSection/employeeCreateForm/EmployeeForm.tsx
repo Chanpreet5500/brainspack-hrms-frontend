@@ -45,33 +45,31 @@ const EmployeeForm: React.FC<value> = (props) => {
     return defaultResolvedColors;
   };
 
-  const [
-    allDataApi,
-    { data, error, isLoading, isSuccess: isSuccessToGetAllData },
-  ] = useLazyGetAllDataApiByNameQuery();
+  const [allDataApi, { data, isSuccess: isSuccessToGetAllData }] =
+    useLazyGetAllDataApiByNameQuery();
 
   useEffect(() => {
     if (data?.users.length > 0) {
       dispatch(getAllUserData(data?.users));
     }
   }, [data, isSuccessToGetAllData]);
-
+  useEffect(() => {
+    const params = {
+      page: 1,
+      limit: 5,
+    };
+    allDataApi(params);
+  }, [isSuccess]);
   const handleSubmit = async (data: any) => {
     if (data?._id) {
       onHandelUpdate(data);
     } else {
       const creteUser = await postData(data);
-
-      const params = {
-        page: 1,
-        limit: 11,
-      };
-      await allDataApi(params);
     }
     onClose();
     form.reset();
   };
-  console.log("test commit");
+
   return (
     <form
       onSubmit={form.onSubmit((localUserDetails: any) => {

@@ -1,14 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
-// import CustomTable from "@/components/CustomTable/CustomTable";
-import {
-  tableDataLimit,
-  TableHeadiingForEmployee,
-} from "@/constants/constants";
+import { tableDataLimit } from "@/constants/constants";
 import Searchbar from "@/components/Searchbar/Searchbar";
 import { useDisclosure } from "@mantine/hooks";
 import { useForm } from "@mantine/form";
-// import { getAllUserData } from "@/services/user/slices/allUser/user";
 import { useDispatch, useSelector } from "react-redux";
 import {
   IconEdit,
@@ -17,9 +12,7 @@ import {
   IconTrash,
 } from "@tabler/icons-react";
 import EmployeeForm from "@/components/employeeSection/employeeCreateForm/EmployeeForm";
-// import { CustomModal } from "@/components/CustomModal/CustomModal";
-// import { useLazyGetAllDataApiByNameQuery } from "@/services/user/allApis/getUser";
-// import { manageUserSelector } from "@/services/user/slices/allUser/userSelector";
+import { DataTable } from "mantine-datatable";
 import {
   useDeleteDataApiByNameMutation,
   useLazyGetAllDataApiByNameQuery,
@@ -27,25 +20,21 @@ import {
 } from "@/services/user/usersApi";
 import { manageUserSelector } from "@/redux/user/userSelector";
 import { CustomModal } from "@/components/reusableComponents/CustomModal/CustomModal";
-import CustomTable from "@/components/reusableComponents/CustomTable/CustomTable";
-import { getAllUserData } from "@/redux/user/user";
-import CustomPagination from "@/components/reusableComponents/CustomPagination/CustomPagination";
+import { getAllUserData, setUserDataLength } from "@/redux/user/user";
 
 export default function Employees() {
   const [search, setSearch] = useState("");
+
   const [currentpage, setCurrentPage] = useState(1);
   const [allDataApi, { data, error, isLoading, isSuccess }] =
     useLazyGetAllDataApiByNameQuery();
-
   const [
     updateUserData,
     { data: userUpdatedData, isSuccess: updateUserSuccess },
   ] = useUpdateDataApiByNameMutation();
   const [deleteUserData, { data: userDeletedData }] =
     useDeleteDataApiByNameMutation();
-  console.log(userDeletedData, deleteUserData, "userDeletedData");
-
-  const { allUserData } = useSelector(manageUserSelector);
+  const { allUserDataLength, allUserData } = useSelector(manageUserSelector);
 
   const [opened, { open, close }] = useDisclosure(false);
   const dispatch = useDispatch();
@@ -54,17 +43,10 @@ export default function Employees() {
     form.reset();
   };
   useEffect(() => {
-    // if (!updateUserSuccess) return;
-    const params = {
-      page: 1,
-      limit: 120,
-    };
-    allDataApi(params);
-  }, [updateUserSuccess]);
-
-  useEffect(() => {
-    if (data?.users.length > 0) {
+    console.log("hello");
+    if (data?.users.length > 0 && isSuccess) {
       dispatch(getAllUserData(data?.users));
+      dispatch(setUserDataLength(data.totalusers));
     }
   }, [data, isSuccess]);
   const renderData = async (
@@ -79,12 +61,15 @@ export default function Employees() {
     });
   };
   useEffect(() => {
+    const params = {
+      page: 1,
+      limit: 5,
+    };
+    allDataApi(params);
+  }, [updateUserSuccess]);
+  useEffect(() => {
     renderData(currentpage, tableDataLimit, search);
-  }, []);
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-    renderData(page, tableDataLimit, search);
-  };
+  }, [currentpage]);
   const onHandelUpdate = async (row: any) => {
     const mydata = {
       department: row.department,
@@ -101,10 +86,22 @@ export default function Employees() {
 
     const params = {
       page: 1,
-      limit: 120,
+      limit: 5,
     };
     await allDataApi(params);
   };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    console.log(page, "page");
+    const params = {
+      page: page,
+      limit: 5,
+    };
+    allDataApi(params);
+    renderData(page, tableDataLimit, search);
+  };
+
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.currentTarget;
     setSearch(value);
@@ -128,38 +125,6 @@ export default function Employees() {
       data: mydata,
       owner_id: "66fa989f82603080b4a64da9",
     });
-  };
-  const ActionContent = ({
-    data,
-    row,
-  }: {
-    data?: any;
-    row?: any;
-    editModal: (row: any) => void;
-  }) => {
-    const editModal = (row: any) => {
-      open();
-      form.setValues(row);
-    };
-    return (
-      <div className="flex gap-2">
-        <button onClick={() => editModal(row)}>
-          <IconEdit className=" h-[25px] w-[25px]  text-blue-600 cursor-pointer" />
-        </button>
-        <button onClick={() => deleteModal(row)}>
-          <IconTrash className=" h-[25px] w-[25px]  text-red-500 cursor-pointer" />
-        </button>
-        {row.isActive === true ? (
-          <button onClick={() => updateStatus(row)}>
-            <IconLockOpen className=" h-[25px] w-[25px] text-blue-600  cursor-pointer" />
-          </button>
-        ) : (
-          <button onClick={() => updateStatus(row)}>
-            <IconLock className=" h-[25px] w-[25px]  text-red-500 cursor-pointer" />
-          </button>
-        )}
-      </div>
-    );
   };
 
   const form = useForm({
@@ -205,10 +170,78 @@ export default function Employees() {
       department: (value) => (value ? null : "Select field is required"),
     },
   });
+
+  type TableRow = {
+    id: number;
+    fname: string;
+    lname: string;
+    email: string;
+    role: string;
+    department: string;
+    status: string;
+    isActive: boolean;
+    columns?: [];
+  };
+  const records: any[] = allUserData?.slice(
+    (currentpage - 1) * tableDataLimit,
+    currentpage * tableDataLimit
+  );
+  const columns = [
+    {
+      accessor: "id",
+      title: "S.No.",
+      width: "5%",
+      render: (record: any, index: number) =>
+        (currentpage - 1) * tableDataLimit + index + 1,
+    },
+
+    { accessor: "fname", width: "15%" },
+    { accessor: "lname", width: "15%" },
+    { accessor: "email", width: "22%" },
+    { accessor: "role", width: "12%" },
+    { accessor: "department", width: "12%" },
+    {
+      accessor: "status",
+      width: "15%",
+      render: (data: TableRow) => {
+        return <div>{data.isActive ? "Active" : "Inactive"}</div>;
+      },
+    },
+    {
+      accessor: "Action",
+      width: "20%",
+      render: (data: TableRow) => {
+        const editModal = (row: TableRow) => {
+          open();
+          form.setValues(row);
+        };
+        return (
+          <div className="flex gap-2">
+            <button onClick={() => editModal(data)}>
+              <IconEdit className="h-[25px] w-[25px] text-blue-600 cursor-pointer" />
+            </button>
+            <button onClick={() => deleteModal(data)}>
+              <IconTrash className="h-[25px] w-[25px] text-red-500 cursor-pointer" />
+            </button>
+            {data.isActive ? (
+              <button onClick={() => updateStatus(data)}>
+                <IconLockOpen className="h-[25px] w-[25px] text-blue-600 cursor-pointer" />
+              </button>
+            ) : (
+              <button onClick={() => updateStatus(data)}>
+                <IconLock className="h-[25px] w-[25px] text-red-500 cursor-pointer" />
+              </button>
+            )}
+          </div>
+        );
+      },
+    },
+  ];
+
   return (
     <>
       <div className="flex justify-between items-center p-2 max-sm:flex-col-reverse max-sm:items-start">
-        <div>My Team ({allUserData.length})</div>
+        <div>My Team ({allUserDataLength})</div>
         <div className="flex items-center gap-3 max-sm:w-full 2xl:w-[40%]">
           <div className="flex  lg:justify-end max-sm:w-[30%] max-sm:justify-between ">
             <CustomModal
@@ -239,23 +272,18 @@ export default function Employees() {
           </div>
         </div>
       </div>
-      <CustomTable
-        data={allUserData}
-        headingdata={TableHeadiingForEmployee}
-        showConfirmRejectButton={true}
-        showDotIcon={false}
-        opened={open}
-        ActionContent={ActionContent}
-        form={form}
+
+      <DataTable
+        height={300}
+        records={allUserData}
+        withTableBorder
+        highlightOnHover
+        totalRecords={allUserDataLength}
+        recordsPerPage={tableDataLimit}
+        page={currentpage}
+        onPageChange={(p) => handlePageChange(p)}
+        columns={columns}
       />
-      <div className="flex justify-end">
-        <CustomPagination
-          handlePageChange={handlePageChange}
-          page={currentpage}
-          total={allUserData}
-          limit={tableDataLimit}
-        />
-      </div>
     </>
   );
 }

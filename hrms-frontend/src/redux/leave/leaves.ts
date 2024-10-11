@@ -6,27 +6,24 @@ const initialState = {
   totalleaves: 0,
 };
 
-const filterData = (data: any) => {
-  return data.map((leave: any) => ({
-    name: `${leave.fname} ${leave.lname}`,
-
-    leavetype: leave.leave_type,
-    startdate: DateFormatConvertor(leave.start_date),
-    enddate: DateFormatConvertor(leave.end_date),
-    status: leave.status,
-  }));
-};
-
 const leaveSlice = createSlice({
   name: "leaveSlice",
   initialState,
   reducers: {
     setallLeaves(state, action) {
-      console.log(filterData(action.payload), "asjhdajvasd");
-      state.allLeaves = filterData(action.payload);
+      state.allLeaves = action.payload;
     },
     settotalleaves(state, action) {
       state.totalleaves = action.payload;
+    },
+    updateLeaveStatus: (state, action) => {
+      const { id, status, leaves } = action.payload;
+
+      const leave = leaves?.find((leave: any) => {
+        if (leave._id === id) {
+          return leave;
+        }
+      });
     },
     resetLeaves(state) {
       state.allLeaves = [];
@@ -35,5 +32,6 @@ const leaveSlice = createSlice({
   },
 });
 
-export const { setallLeaves, settotalleaves, resetLeaves } = leaveSlice.actions;
+export const { setallLeaves, settotalleaves, updateLeaveStatus, resetLeaves } =
+  leaveSlice.actions;
 export default leaveSlice.reducer;

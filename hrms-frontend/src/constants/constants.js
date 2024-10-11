@@ -150,32 +150,104 @@ export const attendancedata = [
     color: "#fda4af",
   },
 ];
-// export const employeedata = [
-//   {
-//     // id: 1,
-//     fname: "Athena",
-//     lname: "Weissnat",
-//     email: "Elouise.Prohaska@yahoo.com",
-//     role: "admin",
-//     department: "it",
-//   },
-//   {
-//     // id: 2,
-//     fname: "Athena",
-//     lname: "Weissnat",
-//     email: "Elouise.Prohaska@yahoo.com",
-//     role: "admin",
-//     department: "it",
-//   },
-//   {
-//     // id: 3,
-//     fname: "Athena",
-//     lname: "Weissnat",
-//     email: "Elouise.Prohaska@yahoo.com",
-//     role: "admin",
-//     department: "it",
-//   },
-// ];
+export const fakeData = [
+  {
+    // id: 1,
+    fname: "Athena",
+    lname: "Weissnat",
+    email: "Elouise.Prohaska@yahoo.com",
+    role: "admin",
+    department: "it",
+  },
+  {
+    // id: 2,
+    fname: "Athena",
+    lname: "Weissnat",
+    email: "Elouise.Prohaska@yahoo.com",
+    role: "admin",
+    department: "it",
+  },
+  {
+    // id: 3,
+    fname: "Athena",
+    lname: "Weissnat",
+    email: "Elouise.Prohaska@yahoo.com",
+    role: "admin",
+    department: "it",
+  },
+  {
+    // id: 3,
+    fname: "Athena",
+    lname: "Weissnat",
+    email: "Elouise.Prohaska@yahoo.com",
+    role: "admin",
+    department: "it",
+  },
+  {
+    // id: 3,
+    fname: "Athena",
+    lname: "Weissnat",
+    email: "Elouise.Prohaska@yahoo.com",
+    role: "admin",
+    department: "it",
+  },
+  {
+    // id: 3,
+    fname: "Athena",
+    lname: "Weissnat",
+    email: "Elouise.Prohaska@yahoo.com",
+    role: "admin",
+    department: "it",
+  },
+  {
+    // id: 3,
+    fname: "Athena",
+    lname: "Weissnat",
+    email: "Elouise.Prohaska@yahoo.com",
+    role: "admin",
+    department: "it",
+  },
+  {
+    // id: 3,
+    fname: "Athena",
+    lname: "Weissnat",
+    email: "Elouise.Prohaska@yahoo.com",
+    role: "admin",
+    department: "it",
+  },
+  {
+    // id: 3,
+    fname: "Athena",
+    lname: "Weissnat",
+    email: "Elouise.Prohaska@yahoo.com",
+    role: "admin",
+    department: "it",
+  },
+  {
+    // id: 3,
+    fname: "Athena",
+    lname: "Weissnat",
+    email: "Elouise.Prohaska@yahoo.com",
+    role: "admin",
+    department: "it",
+  },
+  {
+    // id: 3,
+    fname: "Athena",
+    lname: "Weissnat",
+    email: "Elouise.Prohaska@yahoo.com",
+    role: "admin",
+    department: "it",
+  },
+  {
+    // id: 3,
+    fname: "Athena",
+    lname: "Weissnat",
+    email: "Elouise.Prohaska@yahoo.com",
+    role: "admin",
+    department: "it",
+  },
+];
 export const employeeDepartment = [
   {
     id: 1,
@@ -278,4 +350,40 @@ export const superadminimages = [
   "/images/stairs.jpg",
 ];
 
-export const tableDataLimit = 2;
+export const tableDataLimit = 5;
+
+// const columns = [
+//   {
+//     accessor: "id",
+//     title: "s.no.",
+//     textAlign: "right",
+//     width: "40%",
+//     render: (index) => {
+//       return <>{index + 1}</>;
+//     },
+//   },
+//   {
+//     accessor: "Employee Name",
+//     width: "40%",
+//     render: (data) => {
+//       return <>employee</>;
+//     },
+//   },
+//   { accessor: "leave_type", width: "60%" },
+//   { accessor: "start_date", width: "60%" },
+//   { accessor: "end_date", width: "60%" },
+
+//   {
+//     accessor: "Action",
+//     width: "60%",
+//     render: (data) => {
+//       return (
+//         <div className="flex gap-2">
+//           <button>
+//             <IconEdit className="h-[25px] w-[25px] text-red-500 cursor-pointer" />
+//           </button>
+//         </div>
+//       );
+//     },
+//   },
+// ];

@@ -32,3 +32,16 @@ body {
     text-wrap: balance;
   }
 }
+.mantine-datatable-pagination{
+
+  position: fixed !important;
+  right: 0 !important;
+  bottom: 150px !important;
+
+
+}
+.mantine-datatable-pagination>.mantine-focus-auto ,.mantine-datatable-pagination-text {
+width: 100% ;
+display: flex ;
+justify-content: center ;
+}

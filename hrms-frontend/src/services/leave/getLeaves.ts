@@ -8,9 +8,9 @@ export const leavesApi = createApi({
     getAllLeaveDataApiByName: builder.query({
       query: ({ page, limit, search }) => {
         return {
-          url: `leaves/${page}/${limit}`,
+          url: `leaves/`,
           method: "GET",
-          //   params: { page, limit, search },
+          params: { page, limit, search },
         };
       },
     }),
@@ -23,8 +23,19 @@ export const leavesApi = createApi({
         };
       },
     }),
+    updateLeaveDataApiByName: builder.mutation({
+      query: ({ leaveId, status, updatedById, data }) => {
+        return {
+          url: `/leaves/update/${updatedById}/${leaveId}?status=${status}`,
+          method: "PATCH",
+        };
+      },
+    }),
   }),
 });
-export const { useLazyGetAllLeaveDataApiByNameQuery, useCreateLeaveMutation } =
-  leavesApi;
+export const {
+  useLazyGetAllLeaveDataApiByNameQuery,
+  useCreateLeaveMutation,
+  useUpdateLeaveDataApiByNameMutation,
+} = leavesApi;
 export default leavesApi;

@@ -17,6 +17,7 @@ interface SelectValue {
   data: Role[];
   key?: string;
   form: any;
+  rightSection?: any;
 }
 
 const SelectInputField: React.FC<SelectValue> = ({

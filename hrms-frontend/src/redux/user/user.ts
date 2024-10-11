@@ -8,6 +8,7 @@ const initialState = {
   deleteData: {},
   modalVisibility: false,
   allUserData: [],
+  allUserDataLength: 0,
 };
 
 const userSlice = createSlice({
@@ -24,7 +25,6 @@ const userSlice = createSlice({
       state.editData = action.payload;
     },
     deleteUserEditData(state, action) {
-      console.log(state, action.payload, "pay");
       state.deleteData = action.payload;
     },
     clearUser(state) {
@@ -35,6 +35,9 @@ const userSlice = createSlice({
     },
     getAllUserData(state, action) {
       state.allUserData = action.payload;
+    },
+    setUserDataLength(state, action) {
+      state.allUserDataLength = action.payload;
     },
   },
 });
@@ -47,6 +50,7 @@ export const {
   clearUser,
   updateModalVisibility,
   getAllUserData,
+  setUserDataLength,
 } = userSlice.actions;
 
 export default userSlice.reducer;
