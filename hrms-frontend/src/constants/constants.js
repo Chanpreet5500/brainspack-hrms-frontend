@@ -1,107 +1,402 @@
-import { IconAddressBook, IconBeach, IconBowl, IconBrandRust, IconClock, IconGauge, IconHome2, IconMessageFilled, IconNews, IconPhotoStar, IconSearch, IconSettings, IconToolsKitchen, IconTransfer, IconTrash, IconUserPlus, IconUsers } from "@tabler/icons-react";
-
+import {
+  IconAddressBook,
+  IconArrowBarRight,
+  IconBeach,
+  IconBowl,
+  IconBrandRust,
+  IconClock,
+  IconGauge,
+  IconHome2,
+  IconMessageFilled,
+  IconNews,
+  IconPhotoStar,
+  IconSearch,
+  IconSettings,
+  IconToolsKitchen,
+  IconTransfer,
+  IconTrash,
+  IconUserPlus,
+  IconUsers,
+} from "@tabler/icons-react";
 
 export const mockdata = [
-    { label: 'Dashboard', icon: IconGauge, link: '/dashboard' },
-    { label: 'Employees', icon: IconGauge, link: '/employees' },
-    { label: 'New dashboard', icon: IconGauge, link: '/newdashboard' }
+  { label: "Dashboard", icon: IconGauge, link: "/dashboard" },
+  { label: "Employees", icon: IconGauge, link: "/employees" },
+  { label: "New dashboard", icon: IconGauge, link: "/newdashboard" },
 ];
 
 export const appdroperdata = [
-    { id: 0, icon: IconSettings, name: 'Settings' },
-    { id: 1, icon: IconMessageFilled, name: 'Messages' },
-    { id: 2, icon: IconPhotoStar, name: 'Gallery' },
-    { id: 3, icon: IconSearch, name: 'Search' }
-]
+  { id: 0, icon: IconSettings, name: "Settings" },
+  { id: 1, icon: IconMessageFilled, name: "Messages" },
+  { id: 2, icon: IconPhotoStar, name: "Gallery" },
+  { id: 3, icon: IconSearch, name: "Search" },
+];
 
 export const dangerdroperdata = [
-    { id: 0, icon: IconTransfer, name: 'Transfer my data' },
-    { id: 1, icon: IconTrash, name: 'Delete my Account' }
-]
+  { id: 0, icon: IconTransfer, name: "Transfer my data" },
+  { id: 1, icon: IconTrash, name: "Delete my Account" },
+];
 export const dummy = [
-    {
-        title: "Number of Employee",
-        count: 450,
-        icon: <IconAddressBook />
-        ,
-        color: "#c9b7eb",
-        iconBgColor: "#b4a4d6",
-    },
-    {
-        title: "On Leave",
-        count: 20,
-        icon: <IconNews />,
-        color: "#efd9ce",
-        iconBgColor: "#e9ccbd",
-    },
-    {
-        title: "New Joinee",
-        count: 200,
-        icon: <IconUserPlus />,
-        color: "#c9e4ca",
-        iconBgColor: "#a8dbaa",
-    },
-    {
-        title: "Upcoming Holiday",
-        count: 4,
-        icon: <IconBeach />,
-        color: "#cfdee7",
-        iconBgColor: "#afccdd",
-    },
+  {
+    title: "Number of Employee",
+    count: 450,
+    icon: <IconAddressBook />,
+    color: "#c9b7eb",
+    iconBgColor: "#b4a4d6",
+  },
+  {
+    title: "On Leave",
+    count: 20,
+    icon: <IconNews />,
+    color: "#efd9ce",
+    iconBgColor: "#e9ccbd",
+  },
+  {
+    title: "New Joinee",
+    count: 200,
+    icon: <IconUserPlus />,
+    color: "#c9e4ca",
+    iconBgColor: "#a8dbaa",
+  },
+  {
+    title: "Upcoming Holiday",
+    count: 4,
+    icon: <IconBeach />,
+    color: "#cfdee7",
+    iconBgColor: "#afccdd",
+  },
 ];
 
 export const memberData = [
-    {
-        name: "A",
-        designation: "Assosiate Software Developer",
-    },
-    {
-        name: "A",
-        designation: "Sr. Software Developer",
-    },
-    {
-        name: "A",
-        designation: "Flutter Developer",
-    },
-    {
-        name: "A",
-        designation: "UI/UX Developer",
-    },
+  {
+    name: "A",
+    designation: "Assosiate Software Developer",
+  },
+  {
+    name: "A",
+    designation: "Sr. Software Developer",
+  },
+  {
+    name: "A",
+    designation: "Flutter Developer",
+  },
+  {
+    name: "A",
+    designation: "UI/UX Developer",
+  },
 ];
 
 export const sidebarlinks = [
-    { id: 0, icon: <IconHome2 size={22} stroke={1.5} />, name: 'Dashboard', link: '/dashboard' },
-    { id: 1, icon: <IconUsers size={22} stroke={1.5} />, name: 'Employees', link: '/employees' },
-    { id: 2, icon: <IconUsers size={22} stroke={1.5} />, name: 'Register', link: '/register' },
-    { id: 2, icon: <IconUsers size={22} stroke={1.5} />, name: 'Leaves Management', link: '/leaves' }
-]
-
-export const TableRenderData = [
-    { name: 'Athena Weissnat', designation: 'Little - Rippin', email: 'Elouise.Prohaska@yahoo.com' },
-    { name: 'Deangelo Runolfsson', designation: 'Greenfelder - Krajcik', email: 'Kadin_Trantow87@yahoo.com' },
-    { name: 'Danny Carter', designation: 'Kohler and Sons', email: 'Marina3@hotmail.com' },
+  {
+    id: 0,
+    icon: <IconHome2 size={22} stroke={1.5} />,
+    name: "Dashboard",
+    link: "/dashboard",
+  },
+  {
+    id: 1,
+    icon: <IconUsers size={22} stroke={1.5} />,
+    name: "Employees",
+    link: "/employees",
+  },
+  {
+    id: 2,
+    icon: <IconArrowBarRight size={22} stroke={1.5} />,
+    name: "Leaves Management",
+    link: "/leaves",
+  },
+  {
+    id: 3,
+    icon: <IconArrowBarRight size={22} stroke={1.5} />,
+    name: "Company Policies",
+    submenu: [
+      {
+        id: 3.1,
+        icon: <IconArrowBarRight size={22} stroke={1.5} />,
+        name: "Leaves Policies",
+        link: "/leavesPolicies",
+      },
+    ],
+  },
 ];
 
-export const TableHeadiingForLeaves = ["Name", "Email", "Designation", "Action"]
+export const TableHeadiingForLeaves = [
+  "Sr. No",
+  "Employee Name",
+  "Leave Type",
+  "Start Date",
+  "End Date",
+  "Status",
+  "Actions",
+];
 
-export const TableHeadiingForEmployee = ["Name", "Email", "Designation", ""]
+export const TableHeadiingForEmployee = [
+  "Sr. No",
+  "First Name",
+  "Last Name",
+  "Email",
+  "Role",
+  "Department",
+  "Status",
+  "Action",
+];
 
 export const attendancedata = [
-    {
-        id: 0, icon: <IconClock size={40} color="white" />, color: '#86efac'
-    },
-    {
-        id: 1, icon: <IconBowl size={40} color="white" />, color: '#c4b5fd'
-    },
-    {
-        id: 2, icon: <IconBrandRust size={40} color="white" />, color: '#f0abfc'
-    },
-    {
-        id: 3, icon: <IconToolsKitchen size={40} color="white" />, color: '#fda4af'
-    },
-]
-export const employeedata = [
-    { name: 'Athena Weissnat', designation: 'Little - Rippin', email: 'Elouise.Prohaska@yahoo.com' },
-    { name: 'Deangelo Runolfsson', designation: 'Greenfelder - Krajcik', email: 'Kadin_Trantow87@yahoo.com' },
-    { name: 'Danny Carter', designation: 'Kohler and Sons', email: 'Marina3@hotmail.com' },
+  {
+    id: 0,
+    icon: <IconClock size={40} color="white" />,
+    color: "#86efac",
+  },
+  {
+    id: 1,
+    icon: <IconBowl size={40} color="white" />,
+    color: "#c4b5fd",
+  },
+  {
+    id: 2,
+    icon: <IconBrandRust size={40} color="white" />,
+    color: "#f0abfc",
+  },
+  {
+    id: 3,
+    icon: <IconToolsKitchen size={40} color="white" />,
+    color: "#fda4af",
+  },
 ];
+export const fakeData = [
+  {
+    // id: 1,
+    fname: "Athena",
+    lname: "Weissnat",
+    email: "Elouise.Prohaska@yahoo.com",
+    role: "admin",
+    department: "it",
+  },
+  {
+    // id: 2,
+    fname: "Athena",
+    lname: "Weissnat",
+    email: "Elouise.Prohaska@yahoo.com",
+    role: "admin",
+    department: "it",
+  },
+  {
+    // id: 3,
+    fname: "Athena",
+    lname: "Weissnat",
+    email: "Elouise.Prohaska@yahoo.com",
+    role: "admin",
+    department: "it",
+  },
+  {
+    // id: 3,
+    fname: "Athena",
+    lname: "Weissnat",
+    email: "Elouise.Prohaska@yahoo.com",
+    role: "admin",
+    department: "it",
+  },
+  {
+    // id: 3,
+    fname: "Athena",
+    lname: "Weissnat",
+    email: "Elouise.Prohaska@yahoo.com",
+    role: "admin",
+    department: "it",
+  },
+  {
+    // id: 3,
+    fname: "Athena",
+    lname: "Weissnat",
+    email: "Elouise.Prohaska@yahoo.com",
+    role: "admin",
+    department: "it",
+  },
+  {
+    // id: 3,
+    fname: "Athena",
+    lname: "Weissnat",
+    email: "Elouise.Prohaska@yahoo.com",
+    role: "admin",
+    department: "it",
+  },
+  {
+    // id: 3,
+    fname: "Athena",
+    lname: "Weissnat",
+    email: "Elouise.Prohaska@yahoo.com",
+    role: "admin",
+    department: "it",
+  },
+  {
+    // id: 3,
+    fname: "Athena",
+    lname: "Weissnat",
+    email: "Elouise.Prohaska@yahoo.com",
+    role: "admin",
+    department: "it",
+  },
+  {
+    // id: 3,
+    fname: "Athena",
+    lname: "Weissnat",
+    email: "Elouise.Prohaska@yahoo.com",
+    role: "admin",
+    department: "it",
+  },
+  {
+    // id: 3,
+    fname: "Athena",
+    lname: "Weissnat",
+    email: "Elouise.Prohaska@yahoo.com",
+    role: "admin",
+    department: "it",
+  },
+  {
+    // id: 3,
+    fname: "Athena",
+    lname: "Weissnat",
+    email: "Elouise.Prohaska@yahoo.com",
+    role: "admin",
+    department: "it",
+  },
+];
+export const employeeDepartment = [
+  {
+    id: 1,
+    label: "Human Resource (HR)",
+    value: "hr",
+  },
+  {
+    id: 2,
+    label: "Software Engineering",
+    value: "it",
+  },
+  {
+    id: 3,
+    label: "finance",
+    value: "finance",
+  },
+  {
+    id: 4,
+    label: "marketing",
+    value: "marketing",
+  },
+  {
+    id: 4,
+    label: "sales",
+    value: "sales",
+  },
+];
+export const employeProfetion = [
+  {
+    id: 1,
+    label: "Admin",
+    value: "admin",
+  },
+  { id: 2, label: "HR", value: "hr" },
+  { id: 3, label: "Employee", value: "employee" },
+];
+
+export const leavedata = [
+  {
+    name: "Athena Weissnat",
+    leavetype: "Casual Leave",
+    startdate: "12/43/2022",
+    enddate: "13/67/7809",
+    status: "Pending",
+  },
+  {
+    name: "Asif Ali",
+    leavetype: "Sick Leave",
+    startdate: "12/43/2022",
+    enddate: "13/67/7809",
+    status: "Pending",
+  },
+  {
+    name: "Shubham Kaushal",
+    leavetype: "Casual Leave",
+    startdate: "12/43/2022",
+    enddate: "13/67/7809",
+    status: "Pending",
+  },
+  {
+    name: "Sagar Rana",
+    leavetype: "Sick Leave",
+    startdate: "12/43/2022",
+    enddate: "13/67/7809",
+    status: "Approved",
+  },
+  {
+    name: "Gourav Kashyap",
+    leavetype: "Sick Leave",
+    startdate: "12/43/2022",
+    enddate: "13/67/7809",
+    status: "Approved",
+  },
+  {
+    name: "Nisha Arora",
+    leavetype: "Sick Leave",
+    startdate: "12/43/2022",
+    enddate: "13/67/7809",
+    status: "Approved",
+  },
+];
+export const leaveTypes = [
+  {
+    id: 1,
+    label: "Sick Leave",
+    value: "sick-leave",
+  },
+  { id: 2, label: "Casual Leave", value: "casual-leave" },
+  { id: 3, label: "Emergency Leave", value: "emergency-leave" },
+];
+export const superadminimages = [
+  "/images/wolfgang.jpg",
+  "/images/milad.jpg",
+  "/images/tim.jpg",
+  "/images/fotis.jpg",
+  "/images/parker.jpg",
+  "/images/liana.jpg",
+  "/images/boat.jpg",
+  "/images/tree.jpg",
+  "/images/stairs.jpg",
+];
+
+export const tableDataLimit = 5;
+
+// const columns = [
+//   {
+//     accessor: "id",
+//     title: "s.no.",
+//     textAlign: "right",
+//     width: "40%",
+//     render: (index) => {
+//       return <>{index + 1}</>;
+//     },
+//   },
+//   {
+//     accessor: "Employee Name",
+//     width: "40%",
+//     render: (data) => {
+//       return <>employee</>;
+//     },
+//   },
+//   { accessor: "leave_type", width: "60%" },
+//   { accessor: "start_date", width: "60%" },
+//   { accessor: "end_date", width: "60%" },
+
+//   {
+//     accessor: "Action",
+//     width: "60%",
+//     render: (data) => {
+//       return (
+//         <div className="flex gap-2">
+//           <button>
+//             <IconEdit className="h-[25px] w-[25px] text-red-500 cursor-pointer" />
+//           </button>
+//         </div>
+//       );
+//     },
+//   },
+// ];
