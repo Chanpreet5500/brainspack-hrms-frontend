@@ -16,11 +16,12 @@ import { useDispatch } from "react-redux";
 
 interface dataValue {
   onClose: any;
+  triggerCreate: any;
 }
-const LeaveForm: React.FC<dataValue> = ({ onClose }) => {
+const LeaveForm: React.FC<dataValue> = ({ onClose, triggerCreate }) => {
   const [startDate, setStartDate] = useState<Date | null>(new Date());
   const [endDate, setEndDate] = useState<Date | null>(startDate);
-  const [createLeave, { isLoading, error }] = useCreateLeaveMutation();
+  // const [createLeave, { isLoading, error }] = useCreateLeaveMutation();
   const [search, setSearch] = useState("");
   const [allLeaveData, { data: leaveData, isSuccess: isSuccessToGetAllData }] =
     useLazyGetAllLeaveDataApiByNameQuery();
@@ -29,8 +30,9 @@ const LeaveForm: React.FC<dataValue> = ({ onClose }) => {
   const handleSubmit = async (data: any) => {
     try {
       const { employee, ...rest } = data;
+      console.log(data, "mydata");
 
-      const response = await createLeave({
+      const response = await triggerCreate({
         createdById: "66f2d6a2a957ff778f4384fb",
         leavedata: {
           ...rest,

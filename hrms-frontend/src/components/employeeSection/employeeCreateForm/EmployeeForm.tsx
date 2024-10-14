@@ -21,9 +21,10 @@ interface value {
   onClose: any;
   form: any;
   onHandelUpdate: any;
+  createTrigger: any;
 }
 const EmployeeForm: React.FC<value> = (props) => {
-  const { onClose, form, onHandelUpdate } = props;
+  const { onClose, form, onHandelUpdate, createTrigger } = props;
   const [postData, { data: addData, isSuccess, isError }] =
     useCreateUserMutation();
   const dispatch = useDispatch();
@@ -54,6 +55,7 @@ const EmployeeForm: React.FC<value> = (props) => {
     }
   }, [data, isSuccessToGetAllData]);
   useEffect(() => {
+    console.log("SUCCESS");
     const params = {
       page: 1,
       limit: 5,
@@ -64,7 +66,7 @@ const EmployeeForm: React.FC<value> = (props) => {
     if (data?._id) {
       onHandelUpdate(data);
     } else {
-      const creteUser = await postData(data);
+      const creteUser = await createTrigger(data);
     }
     onClose();
     form.reset();

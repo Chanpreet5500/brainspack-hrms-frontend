@@ -14,6 +14,7 @@ import {
 import EmployeeForm from "@/components/employeeSection/employeeCreateForm/EmployeeForm";
 import { DataTable } from "mantine-datatable";
 import {
+  useCreateUserMutation,
   useDeleteDataApiByNameMutation,
   useLazyGetAllDataApiByNameQuery,
   useUpdateDataApiByNameMutation,
@@ -23,6 +24,8 @@ import { CustomModal } from "@/components/reusableComponents/CustomModal/CustomM
 import { getAllUserData, setUserDataLength } from "@/redux/user/user";
 
 export default function Employees() {
+  const [postData, { data: addData, isSuccess: createSuccess, isError }] =
+    useCreateUserMutation();
   const [search, setSearch] = useState("");
 
   const [currentpage, setCurrentPage] = useState(1);
@@ -32,7 +35,7 @@ export default function Employees() {
     updateUserData,
     { data: userUpdatedData, isSuccess: updateUserSuccess },
   ] = useUpdateDataApiByNameMutation();
-  const [deleteUserData, { data: userDeletedData }] =
+  const [deleteUserData, { data: userDeletedData, isSuccess: deleteSuccess }] =
     useDeleteDataApiByNameMutation();
   const { allUserDataLength, allUserData } = useSelector(manageUserSelector);
 
@@ -61,15 +64,8 @@ export default function Employees() {
     });
   };
   useEffect(() => {
-    const params = {
-      page: 1,
-      limit: 5,
-    };
-    allDataApi(params);
-  }, [updateUserSuccess]);
-  useEffect(() => {
     renderData(currentpage, tableDataLimit, search);
-  }, [currentpage]);
+  }, [currentpage, updateUserSuccess, deleteSuccess, createSuccess]);
   const onHandelUpdate = async (row: any) => {
     const mydata = {
       department: row.department,
@@ -256,6 +252,7 @@ export default function Employees() {
                     onClose={handleOnClose}
                     form={form}
                     onHandelUpdate={onHandelUpdate}
+                    createTrigger={postData}
                   />
                 </>
               }
@@ -272,16 +269,16 @@ export default function Employees() {
           </div>
         </div>
       </div>
-
       <DataTable
         height={300}
-        records={allUserData}
+        records={[...allUserData]}
         withTableBorder
         highlightOnHover
         totalRecords={allUserDataLength}
         recordsPerPage={tableDataLimit}
         page={currentpage}
         onPageChange={(p) => handlePageChange(p)}
+        emptyState={allUserData.length ? <></> : <>no data</>}
         columns={columns}
       />
     </>

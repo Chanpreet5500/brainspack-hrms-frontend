@@ -25,7 +25,7 @@ const Register = () => {
                 <IconAccessible className="w-full h-full" />
               </div>
               <div className="text-2xl">
-                HR<span style={{ color: "#cab7eb" }}>CONNEX.</span>
+                BRAINS<span style={{ color: "#55ad88" }}>P</span>ACK
               </div>
             </div>
 

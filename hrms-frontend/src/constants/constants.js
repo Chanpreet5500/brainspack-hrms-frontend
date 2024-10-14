@@ -105,6 +105,19 @@ export const sidebarlinks = [
     name: "Leaves Management",
     link: "/leaves",
   },
+  {
+    id: 3,
+    icon: <IconArrowBarRight size={22} stroke={1.5} />,
+    name: "Company Policies",
+    submenu: [
+      {
+        id: 3.1,
+        icon: <IconArrowBarRight size={22} stroke={1.5} />,
+        name: "Leaves Policies",
+        link: "/leavesPolicies",
+      },
+    ],
+  },
 ];
 
 export const TableHeadiingForLeaves = [

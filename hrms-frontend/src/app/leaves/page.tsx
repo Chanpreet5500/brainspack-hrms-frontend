@@ -15,17 +15,24 @@ import { useDisclosure } from "@mantine/hooks";
 import { IconEdit } from "@tabler/icons-react";
 import { Button, Group } from "@mantine/core";
 import {
+  useCreateLeaveMutation,
   useLazyGetAllLeaveDataApiByNameQuery,
   useUpdateLeaveDataApiByNameMutation,
 } from "@/services/leave/getLeaves";
 import { DataTable } from "mantine-datatable";
 import { updateLeaveStatus } from "@/redux/leave/leaves";
+import {
+  DateFormatConvertor,
+  StringDateFormatConvertor,
+} from "@/constants/commonFunction";
 const initialState = {
   allLeaves: [],
   totalleaves: 0,
 };
 
 export default function LeaveComponent() {
+  const [createLeave, { isLoading, error, isSuccess: createSuccess }] =
+    useCreateLeaveMutation();
   const [currentpage, setCurrentPage] = useState(1);
   const [trigger] = useLazyGetAllLeaveDataApiByNameQuery();
   const [updateLeave] = useUpdateLeaveDataApiByNameMutation();
@@ -52,7 +59,6 @@ export default function LeaveComponent() {
         console.error("Failed to update leave:", response.error);
       } else {
         console.log("Leave updated successfully:", response.data);
-        // dispatch(updateLeaveStatus({ id: data._id, status }));
         renderData(currentpage, tableDataLimit, search);
       }
     } catch (err) {
@@ -84,17 +90,20 @@ export default function LeaveComponent() {
 
   useEffect(() => {
     renderData(currentpage, tableDataLimit, search);
-  }, [currentpage]);
+  }, [currentpage, createSuccess]);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
     renderData(currentpage, tableDataLimit, search);
   };
 
-  type TableRow = {
-    id: number;
+  interface employeeData {
     fname: string;
     lname: string;
+  }
+  type TableRow = {
+    employee_id: employeeData;
+    id: number;
     email: string;
     role: string;
     department: string;
@@ -119,12 +128,40 @@ export default function LeaveComponent() {
       accessor: "Employee Name",
       width: "15%",
       render: (data: TableRow) => {
-        return <>employee</>;
+        return (
+          <>
+            {data?.employee_id.fname} {data?.employee_id.lname}
+          </>
+        );
       },
     },
     { accessor: "leave_type", width: "20%" },
-    { accessor: "start_date", width: "25%" },
-    { accessor: "end_date", width: "25%" },
+    {
+      accessor: "start_date",
+      width: "25%",
+      render: (data: any) => {
+        console.log(data.start_date, "sagar");
+        const formattedDate = StringDateFormatConvertor(
+          data.start_date,
+          "DD/MM/YYYY"
+        );
+
+        console.log(formattedDate, "sgar");
+        return <>{formattedDate}</>;
+      },
+    },
+    {
+      accessor: "end_date",
+      width: "25%",
+      render: (data: any) => {
+        console.log(data.start_date, "sagar");
+        const formattedDate = StringDateFormatConvertor(
+          data.start_date,
+          "DD/MM/YYYY"
+        );
+        return <>{formattedDate}</>;
+      },
+    },
     { accessor: "status", width: "15%" },
 
     {
@@ -185,7 +222,7 @@ export default function LeaveComponent() {
     <>
       <div className="flex justify-between p-2 max-sm:flex-col-reverse">
         <div>My Team ({totalleaves})</div>
-        <div className="flex gap-1 items-center w-[32%] max-sm:w-full">
+        <div className="flex flex-grow gap-2 justify-end items-center w-[32%]  max-sm:w-full">
           <CustomModal
             opened={opened}
             onClose={close}
@@ -193,7 +230,7 @@ export default function LeaveComponent() {
             close={close}
             buttonlabel={"Add Leave"}
             modalTitle={"Apply for Leave"}
-            content={<LeaveForm onClose={close} />}
+            content={<LeaveForm onClose={close} triggerCreate={createLeave} />}
           />
           <Searchbar
             value={search}
@@ -205,6 +242,18 @@ export default function LeaveComponent() {
       </div>
       <DataTable
         height={300}
+        records={[...allLeaves]}
+        withTableBorder
+        highlightOnHover
+        totalRecords={totalleaves}
+        recordsPerPage={tableDataLimit}
+        page={currentpage}
+        onPageChange={(p) => handlePageChange(p)}
+        emptyState={totalleaves ? <></> : <>no data</>}
+        columns={columns}
+      />
+      {/* <DataTable
+        height={300}
         withTableBorder
         striped
         highlightOnHover
@@ -213,8 +262,9 @@ export default function LeaveComponent() {
         recordsPerPage={tableDataLimit}
         page={currentpage}
         onPageChange={(p) => handlePageChange(p)}
+        emptyState={totalleaves ? <></> : <>no data</>}
         columns={columns}
-      />
+      /> */}
     </>
   );
 }

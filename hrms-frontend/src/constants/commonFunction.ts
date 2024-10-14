@@ -4,11 +4,33 @@ export const getLabelByValue = (value: string, data: any) => {
 };
 
 export const DateFormatConvertor = (date: any) => {
-  const newDate = new Date(date)
-
+  const newDate = new Date(date);
   const formateddate = newDate.getDate();
-  const cformateddate = formateddate >= 10 ? formateddate : `0${formateddate}`
+  const cformateddate = formateddate >= 10 ? formateddate : `0${formateddate}`;
   const formatedMonth = newDate.getMonth() + 1;
   const formatedYear = newDate.getFullYear();
-  return `${formatedYear}/${formatedMonth}/${cformateddate}`
-}
+  return `${formatedYear}/${formatedMonth}/${cformateddate}`;
+};
+
+export const StringDateFormatConvertor = (
+  dateString: string,
+  type: string,
+  separator = "/"
+) => {
+  const newDate = new Date(dateString);
+  const day = newDate.getDate();
+  const month = newDate.getMonth() + 1;
+  const year = newDate.getFullYear();
+  const formattedDay = day >= 10 ? day : `0${day}`;
+  const formattedMonth = month >= 10 ? month : `0${month}`;
+  switch (type) {
+    case "DD/MM/YYYY":
+      return `${formattedDay}${separator}${formattedMonth}${separator}${year}`;
+    case "MM/DD/YYYY":
+      return `${formattedMonth}${separator}${formattedDay}${separator}${year}`;
+    case "YYYY/MM/DD":
+      return `${year}${separator}${formattedMonth}${separator}${formattedDay}`;
+    default:
+      return `${year}${separator}${formattedMonth}${separator}${formattedDay}`;
+  }
+};
