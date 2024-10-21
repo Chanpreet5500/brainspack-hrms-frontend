@@ -13,6 +13,7 @@ interface ModalProps {
   styles?: any;
   bgcolor?: any;
   className?: string;
+  size: string;
 }
 export const CustomModal = ({
   buttonlabel,
@@ -25,6 +26,7 @@ export const CustomModal = ({
   overlayProps,
   styles,
   bgcolor,
+  size,
 }: ModalProps) => {
   return (
     <>
@@ -34,7 +36,7 @@ export const CustomModal = ({
         onClose={close}
         title={modalTitle}
         withCloseButton={true}
-        size={"md"}
+        size={size}
         overlayProps={overlayProps}
         styles={styles}
         centered

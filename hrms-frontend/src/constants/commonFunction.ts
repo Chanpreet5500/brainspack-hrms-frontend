@@ -1,8 +1,29 @@
+import {
+  defaultVariantColorsResolver,
+  parseThemeColor,
+  VariantColorsResolver,
+} from "@mantine/core";
 export const getLabelByValue = (value: string, data: any) => {
   const profession = data.find((element: any) => element.value === value);
   return profession ? profession.label : "Value not found";
 };
+export const variantColorResolver: VariantColorsResolver = (input) => {
+  const defaultResolvedColors = defaultVariantColorsResolver(input);
+  const parsedColor = parseThemeColor({
+    color: input.color || input.theme.primaryColor,
+    theme: input.theme,
+  });
+  if (input.variant === "default") {
+    return {
+      background: "transparent",
+      hover: "#dcdcdc",
+      color: "black",
+      border: "none",
+    };
+  }
 
+  return defaultResolvedColors;
+};
 export const DateFormatConvertor = (date: any) => {
   const newDate = new Date(date);
   const formateddate = newDate.getDate();

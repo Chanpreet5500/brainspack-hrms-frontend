@@ -6,7 +6,8 @@ import "@mantine/core/styles.css";
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import { LayoutWrapper } from "@/components/LayoutWrapper/LayoutWrapper";
 import ReduxProvider from "@/services/reduxProvider";
-
+import { Notifications } from "@mantine/notifications";
+import "@mantine/notifications/styles.css";
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -20,11 +21,6 @@ export default function RootLayout({
   children: React.ReactNode;
   pageProps: { session?: any };
 }>) {
-  // const storeRef = useRef();
-  // if (!storeRef.current) {
-  //   storeRef.current = store();
-  // }
-
   return (
     <html lang="en">
       <head>
@@ -49,6 +45,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <ReduxProvider>
           <MantineProvider>
+            <Notifications />
             <LayoutWrapper session={pageProps?.session}>
               {children}
             </LayoutWrapper>

@@ -47,7 +47,6 @@ const Register = () => {
         <div className=" h-[60%] w-full items-center justify-center flex text-white">
           <div className=" flex gap-2 p-2 border border-white rounded-full text-white hover:bg-[#00000030] hover:cursor hover:text-black hover:bg-[#FFFFFF]">
             <IconBrandGoogleFilled size={30} />
-
             <button onClick={() => signIn("google")}>
               Sign up with google
             </button>

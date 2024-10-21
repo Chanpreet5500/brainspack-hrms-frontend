@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const leavesApi = createApi({
   reducerPath: "leavesApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:3000/api",
+    baseUrl: "http://localhost:3001/api",
   }),
   endpoints: (builder) => ({
     getAllLeaveDataApiByName: builder.query({
