@@ -298,6 +298,12 @@ export const employeProfetion = [
   { id: 3, label: "Employee", value: "employee" },
 ];
 
+export const holidayType = [
+  { id: 1, label: "National", value: 'national' },
+  { id: 1, label: "Regional", value: 'regional' },
+  { id: 1, label: "Event", value: 'event' }
+]
+
 export const leavedata = [
   {
     name: "Athena Weissnat",
@@ -363,7 +369,7 @@ export const superadminimages = [
   "/images/stairs.jpg",
 ];
 
-export const tableDataLimit = 5;
+export const tableDataLimit = 10;
 
 // const columns = [
 //   {

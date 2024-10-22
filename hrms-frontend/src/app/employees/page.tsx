@@ -22,6 +22,7 @@ import {
 import { manageUserSelector } from "@/redux/user/userSelector";
 import { CustomModal } from "@/components/reusableComponents/CustomModal/CustomModal";
 import { getAllUserData, setUserDataLength } from "@/redux/user/user";
+import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
 
 export default function Employees() {
   const [postData, { data: addData, isSuccess: createSuccess, isError }] =
@@ -38,13 +39,14 @@ export default function Employees() {
   const [deleteUserData, { data: userDeletedData, isSuccess: deleteSuccess }] =
     useDeleteDataApiByNameMutation();
   const { allUserDataLength, allUserData } = useSelector(manageUserSelector);
-
+  const { authUser } = useSelector(manageAuthUserSelector);
   const [opened, { open, close }] = useDisclosure(false);
   const dispatch = useDispatch();
   const handleOnClose = () => {
     close();
     form.reset();
   };
+  console.log(authUser, "jhgfghfjdshfkdshfkdshfkdshfs")
   useEffect(() => {
     console.log("hello");
     if (data?.users.length > 0 && isSuccess) {
@@ -52,6 +54,7 @@ export default function Employees() {
       dispatch(setUserDataLength(data.totalusers));
     }
   }, [data, isSuccess]);
+  console.log('im in the employee')
   const renderData = async (
     currpage: number,
     limit: number,
@@ -209,6 +212,7 @@ export default function Employees() {
       render: (data: TableRow) => {
         const editModal = (row: TableRow) => {
           open();
+          console.log(row, "vbkjfkbvfbvkfvkjfvbk")
           form.setValues(row);
         };
         return (

@@ -8,20 +8,32 @@ export default NextAuth({
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      authorization: {
-        params: {
-          scope: 'openid email profile',
-          prompt: "consent",
-          access_type: "offline",
-          response_type: "code"
-        },
-      },
+      // authorization: {
+      //   params: {
+      //     scope: 'openid email profile',
+      //     prompt: "consent",
+      //     access_type: "offline",
+      //     response_type: "code"
+      //   },
+      // },
     }),
   ],
-  session: {
-    strategy: 'jwt'
-  },
   secret: process.env.NEXTAUTH_SECRET,
+  session: {
+    strategy: 'jwt',
+    maxAge: 30 * 24 * 60 * 60,
+  },
+  cookies: {
+    sessionToken: {
+      name: `next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        path: '/',
+      },
+    },
+  },
   callbacks: {
     async jwt({ token, user, profile, account }) {
       if (account) {
@@ -31,18 +43,15 @@ export default NextAuth({
         token.id = user.id;
         token.email = user.email;
         token.name = user.name;
-        token.givenName = profile?.given_name || '';
-        token.familyName = profile?.family_name || '';
         token.image = profile?.picture || '';
       }
       return token;
     },
     async session({ session, token }) {
+      session.accessToken = token.accessToken;
       session.user.id = token.id;
       session.user.email = token.email;
       session.user.name = token.name;
-      session.user.givenName = token.givenName;
-      session.user.familyName = token.familyName;
       session.user.image = token.image;
       return session;
     },

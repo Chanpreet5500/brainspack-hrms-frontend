@@ -36,9 +36,12 @@ const LeaveForm: React.FC<dataValue> = ({ onClose, triggerCreate }) => {
         createdById: "66f2d6a2a957ff778f4384fb",
         leavedata: {
           ...rest,
-          employee_id: "67052a8a274569e7d8ca8abb",
+          employee_id: "66f2d6a2a957ff778f4384fb",
+          leave_type_id: "67054b53377f1b9f0e64bd25",
           start_date: DateFormatConvertor(startDate),
           end_date: DateFormatConvertor(endDate),
+          start_day: 'full',
+          end_day: 'full'
         },
       });
       allLeaveData("params");
@@ -65,14 +68,14 @@ const LeaveForm: React.FC<dataValue> = ({ onClose, triggerCreate }) => {
     validateInputOnChange: true,
     initialValues: {
       employee: "",
-      leave_type: "",
+      // leave_type: "",
       start_date: startDate,
       end_date: endDate,
     },
     validate: {
       employee: (value) => (value ? null : "Please select an employee."),
-      leave_type: (value) =>
-        value ? null : "Please select the type of leave.",
+      // leave_type: (value) =>
+      //   value ? null : "Please select the type of leave.",
       start_date: (value) =>
         DateFormatConvertor(value) ? null : "Please select the start date.",
       end_date: (value) =>
@@ -101,14 +104,14 @@ const LeaveForm: React.FC<dataValue> = ({ onClose, triggerCreate }) => {
           data={employeeData}
           validateKey={form.getInputProps("employee")}
         />
-        <SelectInputField
+        {/* <SelectInputField
           label={"Leave Type"}
           form={form}
           name={"leave_type"}
           placeholder={"Select the leave type"}
           data={leaveTypes}
           validateKey={form.getInputProps("leave_type")}
-        />
+        /> */}
         <div className="flex gap-4">
           <DatePickerComponent
             datePickerLabel={"Start Date"}

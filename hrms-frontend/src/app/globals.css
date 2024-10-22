@@ -66,3 +66,11 @@ width: 100% ;
 display: flex ;
 justify-content: center ;
 }
+.fc-h-event{
+  border:none;
+  background-color: #c9e4ca;
+  /* background-color: rgba(55, 184, 87, 0.981); */
+  border-bottom:1px solid grey;
+  border-radius: 10px;
+  padding-left: 10px;
+}

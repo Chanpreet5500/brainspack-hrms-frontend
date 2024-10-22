@@ -1,113 +1,117 @@
 "use client";
-import { sidebarlinks } from "@/constants/constants";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import Searchbar from "../Searchbar/Searchbar";
-import { useState } from "react";
 
-interface SidebarProps {
-  toggle: () => void;
+import { useState } from "react";
+import { Group, Box, Collapse, ThemeIcon, ScrollArea, Text, UnstyledButton, rem } from "@mantine/core";
+import { IconCalendarStats, IconChevronRight } from "@tabler/icons-react";
+import classes from "./Navbar.module.css";
+import { usePathname, useRouter } from "next/navigation";
+
+interface LinkItem {
+  label: string;
+  link?: string;
+  icon: React.FC<any>;
+  links?: { label: string; link: string }[];
+  initiallyOpened?: boolean;
 }
 
-const Sidebar = ({ toggle }: SidebarProps) => {
-  const [openIndex, setOpenIndex] = useState(-1);
-  const handleSubmenu = (index: any) => {
-    console.log(index, "index");
-    if (openIndex === index) {
-      setOpenIndex(-1);
+interface NavbarProps {
+  linksData: LinkItem[];
+}
+
+export function LinksGroup({ icon: Icon, label, initiallyOpened, links, data }: LinkItem) {
+  console.log(data, 'dfdsfdsfdsfdsfdsfsd')
+  const pathname = usePathname();
+  const hasLinks = Array.isArray(links);
+  const [opened, setOpened] = useState(initiallyOpened || false);
+  const router = useRouter();
+  const handleNavigation = (link: string) => {
+    if (link) {
+      router.push(link);
     } else {
-      setOpenIndex(index);
+      console.log(link)
     }
   };
-  const pathname = usePathname();
+  console.log()
+  const items = (hasLinks ? links : []).map((link) => (
+    <Text<'a'>
+      component="a"
+      className={classes.link}
+      href={link.link}
+      key={link.label}
+      onClick={(event) => {
+        event.preventDefault();
+      }}
+    >
+      {link.label}
+    </Text>
+  ));
+
   return (
-    <div className="flex flex-col gap-1">
-      <div className="hidden max-sm:block max-md:block">
-        <Searchbar
-          value={""}
-          handleSearch={""}
-          placeholder="Search"
-          iconcolor="#9ca3af"
-          classname=""
-        />
-      </div>
-      {sidebarlinks.map((ele, index) => {
-        const isActive = pathname === ele.link;
+    <>
+      <UnstyledButton onClick={() => setOpened((o) => !o)} className={pathname == data?.link ? classes.pathcontrol : classes.control}>
+        <Group justify="space-between" gap={0}>
+          <Box style={{ display: "flex", alignItems: "center" }} onClick={() => { handleNavigation(data?.link) }}>
+            <ThemeIcon variant="light" size={30}>
+              <Icon style={{ width: rem(18), height: rem(18) }} />
+            </ThemeIcon>
+            <Box ml="md">{label}</Box>
+          </Box>
+          {hasLinks && (
+            <IconChevronRight
+              className={classes.chevron}
+              stroke={1.5}
+              style={{
+                width: rem(16),
+                height: rem(16),
+                transform: opened ? "rotate(-90deg)" : "none",
+              }}
+            />
+          )}
+        </Group>
+      </UnstyledButton>
+      {hasLinks && <Collapse in={opened}>{items}</Collapse>}
+    </>
+  );
+}
+export function Navbar({ linksData }: NavbarProps) {
+  const links = linksData.map((item) => <LinksGroup {...item} key={item.label} data={item} />);
+  console.log(linksData, 'hgghgfhgfhgfh')
 
-        return (
-          <>
-            <div key={ele.id}>
-              {ele.link ? (
-                <Link href={ele.link}>
-                  <div
-                    className={`px-3 py-1 flex gap-1 items-center hover:bg-white rounded-full cursor-pointer ${
-                      isActive ? "bg-white" : ""
-                    }`}
-                  >
-                    <div className="p-2 bg-slate-200 rounded-full">
-                      {ele.icon}
-                    </div>
-
-                    <div onClick={toggle} className="text-base font-medium">
-                      {ele.name}
-                    </div>
-                  </div>
-                </Link>
-              ) : (
-                ""
-                // <>
-                //   <div
-                //     onClick={() => handleSubmenu(index)}
-                //     className={`px-3 py-1 flex gap-1 items-center hover:bg-white rounded-full cursor-pointer ${
-                //       isActive ? "bg-white" : ""
-                //     }`}
-                //   >
-                //     <div className="p-2 bg-slate-200 rounded-full">
-                //       {ele.icon}
-                //     </div>
-
-                //     <div className="text-base font-medium">{ele.name}</div>
-                //   </div>
-                //   <div
-                //     className={`submenu relative left-0 top-full rounded-sm bg-white transition-[top] duration-300 group-hover:opacity-100 dark:bg-dark lg:invisible lg:absolute lg:top-[110%] lg:block lg:w-[250px] lg:p-4 lg:opacity-0 lg:shadow-lg lg:group-hover:visible lg:group-hover:top-full ${
-                //       isActive ? "bg-white" : ""
-                //     }`}
-                //   >
-                //     {ele?.submenu?.map((submenuItem, index) => (
-                //       <>
-                //         {submenuItem.link ? (
-                //           <Link href={submenuItem.link || ""}>
-                //             {submenuItem.name}
-                //           </Link>
-                //         ) : (
-                //           <>'jdfhghdsjbvjkhs'</>
-                //           // <div className=" group relative">
-                //           //   <Link
-                //           //     href={submenuItem?.link || ""}
-                //           //     key={index}
-                //           //     className="block relative rounded py-2.5 text-sm text-dark hover:text-primary dark:text-white/70 dark:hover:text-white lg:px-3"
-                //           //   >
-                //           //     {submenuItem.name}
-                //           //     <div
-                //           //       className={`group block   left-[100%] top-0 rounded-sm bg-white transition-[top] duration-300 group-hover:opacity-100 dark:bg-dark lg:invisible lg:absolute lg:top-[110%] lg:block lg:w-[250px] lg:p-4 lg:opacity-0 lg:shadow-lg lg:group-hover:visible lg:group-hover:top-full
-
-                //           //   `}
-                //           //     >
-                //           //       xcvgfcxdbdf
-                //           //     </div>
-                //           //   </Link>
-                //           // </div>
-                //         )}
-                //       </>
-                //     ))}
-                //   </div>
-                // </>
-              )}
-            </div>
-          </>
-        );
-      })}
+  return (
+    <div className={classes.navbar}>
+      <ScrollArea className={classes.links}>
+        <div className={classes.linksInner}>{links}</div>
+      </ScrollArea>
     </div>
   );
-};
-export default Sidebar;
+}
+
+const mockdata = [
+  { label: "Dashboard", icon: IconCalendarStats, link: "/dashboard" },
+  {
+    label: "Employees",
+    icon: IconCalendarStats,
+    link: "/employees",
+  },
+  {
+    label: "Leaves Management",
+    icon: IconCalendarStats,
+    link: "/leaves",
+  },
+  {
+    label: "Leave Policy",
+    icon: IconCalendarStats,
+    links: [
+      { label: "Type", link: "/leavetypes" },
+      { label: "Policies", link: "/leavepolicies" },
+    ],
+  },
+  {
+    label: "Holiday Calendar",
+    icon: IconCalendarStats,
+    link: "/calendar",
+  },
+];
+export default function Sidebar() {
+  return <Navbar linksData={mockdata} />;
+}

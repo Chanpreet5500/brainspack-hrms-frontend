@@ -1,4 +1,3 @@
-"use client";
 import { attendancedata, dummy, memberData } from "@/constants/constants";
 import {
   IconArrowUpRight,
@@ -7,9 +6,9 @@ import {
   IconPlus,
 } from "@tabler/icons-react";
 
-const Dashboard = () => {
+const Dashboard = async () => {
   return (
-    <div className="flex flex-col gap-8 max-sm:gap-6">
+    <div className="flex flex-col gap-8 max-sm:gap-6 p-4">
       <div className="flex w-full justify-between flex-wrap sm:gap-5 md:gap-5 lg:gap-0 max-sm:gap-6">
         <div className="flex flex-col lg:w-[40%] md:w-full">
           <div className="flex flex-col gap-2 lg:h-[90px] max-sm:h-[90px] md:h-[100px]">

@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const usersApi = createApi({
   reducerPath: "usersApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:3000/api",
+    baseUrl: "http://localhost:3001/api",
   }),
   endpoints: (builder) => ({
     deleteDataApiByName: builder.mutation({
@@ -45,6 +45,17 @@ export const usersApi = createApi({
         };
       },
     }),
+
+    registerDataApiByName: builder.mutation({
+      query: ({ email, img }) => {
+        return {
+          url: `/users/login`,
+          method: "PATCH",
+          body: { img },
+          params: { email }
+        };
+      },
+    }),
   }),
 });
 
@@ -53,5 +64,6 @@ export const {
   useLazyGetAllDataApiByNameQuery,
   useCreateUserMutation,
   useUpdateDataApiByNameMutation,
+  useRegisterDataApiByNameMutation
 } = usersApi;
 export default usersApi;

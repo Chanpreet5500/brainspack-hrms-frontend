@@ -13,6 +13,7 @@ interface ModalProps {
   styles?: any;
   bgcolor?: any;
   className?: string;
+  showButton?: boolean
 }
 export const CustomModal = ({
   buttonlabel,
@@ -25,6 +26,7 @@ export const CustomModal = ({
   overlayProps,
   styles,
   bgcolor,
+  showButton = true,
 }: ModalProps) => {
   return (
     <>
@@ -42,9 +44,12 @@ export const CustomModal = ({
       >
         {content}
       </Modal>
-      <Button onClick={open} color={bgcolor}>
+      {showButton ? <Button onClick={open} color={bgcolor}>
         {buttonlabel}
-      </Button>
+      </Button> :
+        <p onClick={open} color={bgcolor}> {buttonlabel}</p>
+      }
+
     </>
   );
 };
