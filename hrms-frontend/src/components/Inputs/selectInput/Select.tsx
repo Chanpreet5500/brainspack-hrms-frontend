@@ -2,7 +2,7 @@ import { Select } from "@mantine/core";
 import { useEffect } from "react";
 
 interface Role {
-  id: number;
+  id: string | Number;
   label: string;
 }
 
@@ -14,19 +14,25 @@ interface SelectValue {
   value?: string | null;
   name: string;
   defaultValue?: string;
-  data: Role[];
+  data?: Role[];
   key?: string;
   form: any;
   rightSection?: any;
+  disabled?: boolean;
+  start_day?: string;
+  end_day?: string;
 }
 
 const SelectInputField: React.FC<SelectValue> = ({
   label,
+  disabled,
+  start_day,
   placeholder,
   className,
   validateKey,
   data,
   form,
+  end_day,
   value,
   name,
 }) => {
@@ -48,6 +54,9 @@ const SelectInputField: React.FC<SelectValue> = ({
         key={form.key(name)}
         {...validateKey}
         clearable={true}
+        start_day={start_day}
+        end_day={end_day}
+        disabled={disabled}
       />
     </div>
   );

@@ -25,7 +25,7 @@ const SelectSearch: React.FC<SelectSearchProps> = ({
   }, []);
   const [searchValue, setSearchValue] = useState<string | null>(null);
   return (
-    <div className="w-full max-w-sm mx-auto">
+    <div className="w-full  mx-auto">
       {label && (
         <label className="block text-sm font-medium mb-2">{label}</label>
       )}

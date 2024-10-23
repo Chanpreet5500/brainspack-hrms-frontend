@@ -9,6 +9,8 @@ import ReduxProvider from "@/services/reduxProvider";
 import { SessionProviderWrapper } from "@/components/session/SessionProviderWrapper";
 import { cookies } from "next/headers";
 
+import { Notifications } from "@mantine/notifications";
+import "@mantine/notifications/styles.css";
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -53,6 +55,7 @@ export default async function RootLayout({
             <SessionProviderWrapper
               session={pageProps?.session}
             >
+              <Notifications />
               <LayoutWrapper authUser={authUser}>
                 {children}
               </LayoutWrapper>

@@ -19,17 +19,23 @@ import {
   IconUsers,
 } from "@tabler/icons-react";
 
-export const mockdata = [
-  { label: "Dashboard", icon: IconGauge, link: "/dashboard" },
-  { label: "Employees", icon: IconGauge, link: "/employees" },
-  { label: "New dashboard", icon: IconGauge, link: "/newdashboard" },
-];
+// export const mockdata = [
+//   { label: "Dashboard", icon: IconGauge, link: "/dashboard" },
+//   { label: "Employees", icon: IconGauge, link: "/employees" },
+//   { label: "New dashboard", icon: IconGauge, link: "/newdashboard" },
+// ];
 
 export const appdroperdata = [
   { id: 0, icon: IconSettings, name: "Settings" },
   { id: 1, icon: IconMessageFilled, name: "Messages" },
   { id: 2, icon: IconPhotoStar, name: "Gallery" },
   { id: 3, icon: IconSearch, name: "Search" },
+];
+
+export const employeeData = [
+  { id: "1", label: "Admin", value: "admin" },
+  { id: "2", label: "HR", value: "hr" },
+  { id: "3", label: "Employee", value: "employee" },
 ];
 
 export const dangerdroperdata = [
@@ -108,12 +114,19 @@ export const sidebarlinks = [
   {
     id: 3,
     icon: <IconArrowBarRight size={22} stroke={1.5} />,
-    name: "Company Policies",
+    name: "Leave Policies",
+
     submenu: [
       {
         id: 3.1,
         icon: <IconArrowBarRight size={22} stroke={1.5} />,
-        name: "Leaves Policies",
+        name: "Type Policies",
+        link: "/typePolicies",
+      },
+      {
+        id: 3.1,
+        icon: <IconArrowBarRight size={22} stroke={1.5} />,
+        name: "Leave Policies",
         link: "/leavesPolicies",
       },
     ],
@@ -161,104 +174,6 @@ export const attendancedata = [
     id: 3,
     icon: <IconToolsKitchen size={40} color="white" />,
     color: "#fda4af",
-  },
-];
-export const fakeData = [
-  {
-    // id: 1,
-    fname: "Athena",
-    lname: "Weissnat",
-    email: "Elouise.Prohaska@yahoo.com",
-    role: "admin",
-    department: "it",
-  },
-  {
-    // id: 2,
-    fname: "Athena",
-    lname: "Weissnat",
-    email: "Elouise.Prohaska@yahoo.com",
-    role: "admin",
-    department: "it",
-  },
-  {
-    // id: 3,
-    fname: "Athena",
-    lname: "Weissnat",
-    email: "Elouise.Prohaska@yahoo.com",
-    role: "admin",
-    department: "it",
-  },
-  {
-    // id: 3,
-    fname: "Athena",
-    lname: "Weissnat",
-    email: "Elouise.Prohaska@yahoo.com",
-    role: "admin",
-    department: "it",
-  },
-  {
-    // id: 3,
-    fname: "Athena",
-    lname: "Weissnat",
-    email: "Elouise.Prohaska@yahoo.com",
-    role: "admin",
-    department: "it",
-  },
-  {
-    // id: 3,
-    fname: "Athena",
-    lname: "Weissnat",
-    email: "Elouise.Prohaska@yahoo.com",
-    role: "admin",
-    department: "it",
-  },
-  {
-    // id: 3,
-    fname: "Athena",
-    lname: "Weissnat",
-    email: "Elouise.Prohaska@yahoo.com",
-    role: "admin",
-    department: "it",
-  },
-  {
-    // id: 3,
-    fname: "Athena",
-    lname: "Weissnat",
-    email: "Elouise.Prohaska@yahoo.com",
-    role: "admin",
-    department: "it",
-  },
-  {
-    // id: 3,
-    fname: "Athena",
-    lname: "Weissnat",
-    email: "Elouise.Prohaska@yahoo.com",
-    role: "admin",
-    department: "it",
-  },
-  {
-    // id: 3,
-    fname: "Athena",
-    lname: "Weissnat",
-    email: "Elouise.Prohaska@yahoo.com",
-    role: "admin",
-    department: "it",
-  },
-  {
-    // id: 3,
-    fname: "Athena",
-    lname: "Weissnat",
-    email: "Elouise.Prohaska@yahoo.com",
-    role: "admin",
-    department: "it",
-  },
-  {
-    // id: 3,
-    fname: "Athena",
-    lname: "Weissnat",
-    email: "Elouise.Prohaska@yahoo.com",
-    role: "admin",
-    department: "it",
   },
 ];
 export const employeeDepartment = [
@@ -357,6 +272,15 @@ export const leaveTypes = [
   { id: 2, label: "Casual Leave", value: "casual-leave" },
   { id: 3, label: "Emergency Leave", value: "emergency-leave" },
 ];
+export const holidayData = [
+  { id: "1", label: "Half", value: "half" },
+  { id: "2", label: "Full", value: "full" },
+];
+export const whichHalfData = [
+  { id: "1", label: "First Half", value: "first" },
+  { id: "2", label: "Secound Half", value: "second" },
+];
+
 export const superadminimages = [
   "/images/wolfgang.jpg",
   "/images/milad.jpg",

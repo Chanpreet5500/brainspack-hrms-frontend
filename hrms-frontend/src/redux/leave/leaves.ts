@@ -17,7 +17,6 @@ const leaveSlice = createSlice({
     },
     updateLeaveStatus: (state, action) => {
       const { id, status, leaves } = action.payload;
-
       const leave = leaves?.find((leave: any) => {
         if (leave._id === id) {
           return leave;

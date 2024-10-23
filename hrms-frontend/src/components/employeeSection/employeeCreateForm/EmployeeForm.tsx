@@ -1,21 +1,17 @@
 import { useEffect } from "react";
-import {
-  Button,
-  defaultVariantColorsResolver,
-  Group,
-  MantineProvider,
-  parseThemeColor,
-  VariantColorsResolver,
-} from "@mantine/core";
+import { Button, Group, MantineProvider } from "@mantine/core";
 import TextInputField from "../../Inputs/textInput/Input";
 import SelectInputField from "../../Inputs/selectInput/Select";
 import { employeeDepartment, employeProfetion } from "@/constants/constants";
+import { variantColorResolver } from "@/constants/commonFunction";
 import { useDispatch } from "react-redux";
 import {
   useCreateUserMutation,
   useLazyGetAllDataApiByNameQuery,
 } from "@/services/user/usersApi";
 import { getAllUserData } from "@/redux/user/user";
+import { notifications } from "@mantine/notifications";
+import { IconCheck, IconX } from "@tabler/icons-react"; // Icons for success and error
 
 interface value {
   onClose: any;
@@ -23,28 +19,12 @@ interface value {
   onHandelUpdate: any;
   createTrigger: any;
 }
+
 const EmployeeForm: React.FC<value> = (props) => {
   const { onClose, form, onHandelUpdate, createTrigger } = props;
   const [postData, { data: addData, isSuccess, isError }] =
     useCreateUserMutation();
   const dispatch = useDispatch();
-  const variantColorResolver: VariantColorsResolver = (input) => {
-    const defaultResolvedColors = defaultVariantColorsResolver(input);
-    const parsedColor = parseThemeColor({
-      color: input.color || input.theme.primaryColor,
-      theme: input.theme,
-    });
-    if (input.variant === "default") {
-      return {
-        background: "transparent",
-        hover: "#dcdcdc",
-        color: "black",
-        border: "none",
-      };
-    }
-
-    return defaultResolvedColors;
-  };
 
   const [allDataApi, { data, isSuccess: isSuccessToGetAllData }] =
     useLazyGetAllDataApiByNameQuery();
@@ -54,20 +34,40 @@ const EmployeeForm: React.FC<value> = (props) => {
       dispatch(getAllUserData(data?.users));
     }
   }, [data, isSuccessToGetAllData]);
+
   useEffect(() => {
-    console.log("SUCCESS");
     const params = {
       page: 1,
       limit: 5,
     };
     allDataApi(params);
   }, [isSuccess]);
+
   const handleSubmit = async (data: any) => {
-    if (data?._id) {
-      onHandelUpdate(data);
-    } else {
-      const creteUser = await createTrigger(data);
+    try {
+      if (data?._id) {
+        onHandelUpdate(data);
+        notifications.show({
+          title: "Update Successful",
+          message: "Employee data updated successfully",
+          color: "green",
+          icon: <IconCheck size={18} />,
+          autoClose: 1000,
+        });
+      } else {
+        await createTrigger(data);
+        notifications.show({
+          title: "Creation Successful",
+          message: "Employee created successfully",
+          color: "green",
+          icon: <IconCheck size={18} />,
+          autoClose: 3000,
+        });
+      }
+    } catch (error) {
+      throw error;
     }
+
     onClose();
     form.reset();
   };
@@ -122,6 +122,7 @@ const EmployeeForm: React.FC<value> = (props) => {
           data={employeeDepartment}
           validateKey={form.getInputProps("department")}
         />
+
         <MantineProvider theme={{ variantColorResolver }}>
           <Group className=" !flex !justify-end !w-full ">
             <Button

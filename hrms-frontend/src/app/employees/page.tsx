@@ -6,6 +6,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { useForm } from "@mantine/form";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  IconCheck,
   IconEdit,
   IconLock,
   IconLockOpen,
@@ -23,6 +24,8 @@ import { manageUserSelector } from "@/redux/user/userSelector";
 import { CustomModal } from "@/components/reusableComponents/CustomModal/CustomModal";
 import { getAllUserData, setUserDataLength } from "@/redux/user/user";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
+import { notifications, showNotification } from "@mantine/notifications";
+import { CheckIcon } from "@mantine/core";
 
 export default function Employees() {
   const [postData, { data: addData, isSuccess: createSuccess, isError }] =
@@ -48,7 +51,6 @@ export default function Employees() {
   };
   console.log(authUser, "jhgfghfjdshfkdshfkdshfkdshfs")
   useEffect(() => {
-    console.log("hello");
     if (data?.users.length > 0 && isSuccess) {
       dispatch(getAllUserData(data?.users));
       dispatch(setUserDataLength(data.totalusers));
@@ -66,9 +68,6 @@ export default function Employees() {
       search: search,
     });
   };
-  useEffect(() => {
-    renderData(currentpage, tableDataLimit, search);
-  }, [currentpage, updateUserSuccess, deleteSuccess, createSuccess]);
   const onHandelUpdate = async (row: any) => {
     const mydata = {
       department: row.department,
@@ -77,22 +76,26 @@ export default function Employees() {
       lname: row.lname,
       email: row.email,
     };
-    const result = await updateUserData({
-      user_id: row._id,
-      data: mydata,
-      owner_id: "66fa989f82603080b4a64da9",
-    });
-
-    const params = {
-      page: 1,
-      limit: 5,
-    };
-    await allDataApi(params);
+    try {
+      const result = await updateUserData({
+        user_id: row._id,
+        data: mydata,
+        owner_id: "66fa989f82603080b4a64da9",
+      });
+      if (updateUserSuccess) {
+        notifications.show({
+          color: "green",
+          title: "Update Successful",
+          message: "Employee data updated successfully",
+        });
+      }
+    } catch (error) {
+      throw error;
+    }
   };
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    console.log(page, "page");
     const params = {
       page: page,
       limit: 5,
@@ -100,10 +103,15 @@ export default function Employees() {
     allDataApi(params);
     renderData(page, tableDataLimit, search);
   };
+  useEffect(() => {
+    renderData(currentpage, tableDataLimit, search);
+  }, [currentpage, updateUserSuccess, deleteSuccess, createSuccess]);
 
+  // Handle search value and API call
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.currentTarget;
-    setSearch(value);
+    const updatedSearch = event.target.value;
+    setSearch(updatedSearch);
+    renderData(currentpage, tableDataLimit, updatedSearch); // Pass updated search term
   };
   const deleteModal = async (row: any) => {
     const mydata = {
@@ -112,6 +120,11 @@ export default function Employees() {
     const response = await deleteUserData({
       owner_id: "66fa989f82603080b4a64da9",
       user_id: row._id,
+    });
+    notifications.show({
+      color: "red",
+      title: "Delete Successful",
+      message: "Employee data deleted successfully",
     });
   };
   const updateStatus = async (row: any) => {
@@ -122,7 +135,7 @@ export default function Employees() {
     const result = await updateUserData({
       user_id: row._id,
       data: mydata,
-      owner_id: "66fa989f82603080b4a64da9",
+      owner_id: "670f65977a0a5180c8198e45",
     });
   };
 
@@ -181,6 +194,7 @@ export default function Employees() {
     isActive: boolean;
     columns?: [];
   };
+
   const records: any[] = allUserData?.slice(
     (currentpage - 1) * tableDataLimit,
     currentpage * tableDataLimit
@@ -243,8 +257,17 @@ export default function Employees() {
       <div className="flex justify-between items-center p-2 max-sm:flex-col-reverse max-sm:items-start">
         <div>My Team ({allUserDataLength})</div>
         <div className="flex items-center gap-3 max-sm:w-full 2xl:w-[40%]">
+          <div className=" max-sm:w-full">
+            <Searchbar
+              value={search}
+              handleSearch={handleSearchChange}
+              placeholder="Search"
+              iconcolor="#9ca3af"
+            />
+          </div>
           <div className="flex  lg:justify-end max-sm:w-[30%] max-sm:justify-between ">
             <CustomModal
+              size={"md"}
               opened={opened}
               open={open}
               close={handleOnClose}
@@ -260,15 +283,6 @@ export default function Employees() {
                   />
                 </>
               }
-            />
-          </div>
-          <div className=" max-sm:w-full">
-            <Searchbar
-              value={search}
-              handleSearch={handleSearchChange}
-              placeholder="Search"
-              iconcolor="#9ca3af"
-              classname=""
             />
           </div>
         </div>
