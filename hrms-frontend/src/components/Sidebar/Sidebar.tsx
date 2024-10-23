@@ -109,7 +109,7 @@ const mockdata = [
   {
     label: "Holiday Calendar",
     icon: IconCalendarStats,
-    link: "/calendar",
+    link: "/holidays",
   },
 ];
 export default function Sidebar() {

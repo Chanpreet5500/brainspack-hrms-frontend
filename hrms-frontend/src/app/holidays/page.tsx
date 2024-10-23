@@ -11,7 +11,8 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from '@mantine/form';
 import { CustomModal } from '@/components/reusableComponents/CustomModal/CustomModal';
-import HolidayForm from '@/components/Holiday/HolidayForm';;
+import HolidayForm from '@/components/Holiday/HolidayForm'; import { DateFormatConvertor } from '@/constants/commonFunction';
+;
 const Calendar = () => {
     const [postData, { data: addData, isSuccess: createSuccess, isError }] = useCreateHolidayMutation();
     const [allDataApi, { data, error, isLoading, isSuccess }] = useLazyGetAllHolidayDataApiByNameQuery();
@@ -74,14 +75,14 @@ const Calendar = () => {
             title: eventInfo.event.title,
             description: eventInfo.event.extendedProps.description,
             type: eventInfo.event.extendedProps.type,
-            date: eventInfo.event.startStr
+            date: eventInfo.event.start
         }
         form.setValues(data);
         open()
 
     }
     const handleDateSelect = async (selectInfo: any) => {
-        form.setValues({ date: selectInfo.startStr });
+        form.setValues({ date: selectInfo.start });
         open()
     };
 
@@ -137,6 +138,7 @@ const Calendar = () => {
 
                 }))}
                 // eventBackgroundColor="transparent"
+                // eventColor='#378006'
                 eventTextColor="#000"
                 selectable
                 select={handleDateSelect}

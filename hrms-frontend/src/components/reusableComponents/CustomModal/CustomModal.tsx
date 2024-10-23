@@ -14,7 +14,7 @@ interface ModalProps {
   bgcolor?: any;
   className?: string;
   showButton?: boolean
-  size: string;
+  size?: string;
 }
 export const CustomModal = ({
   buttonlabel,
@@ -28,6 +28,7 @@ export const CustomModal = ({
   styles,
   bgcolor,
   size,
+  showButton = true
 }: ModalProps) => {
   return (
     <>
