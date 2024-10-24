@@ -1,6 +1,5 @@
 
 import NextAuth from "next-auth";
-import { connect } from "@/dbConfig/dbConfig";
 import GoogleProvider from "next-auth/providers/google";
 
 
@@ -11,14 +10,23 @@ export default NextAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       authorization: {
         params: {
-          scope: 'openid profile email'
-        }
+          scope: 'openid email profile',
+          prompt: "consent",
+          access_type: "offline",
+          response_type: "code"
+        },
       },
-
     }),
   ],
+  session: {
+    strategy: 'jwt'
+  },
+  secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
-    async jwt({ token, user, profile }) {
+    async jwt({ token, user, profile, account }) {
+      if (account) {
+        token.accessToken = account.access_token
+      }
       if (user) {
         token.id = user.id;
         token.email = user.email;
