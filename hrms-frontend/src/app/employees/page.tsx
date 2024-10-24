@@ -55,7 +55,7 @@ export default function Employees() {
       dispatch(setUserDataLength(data.totalusers));
     }
   }, [data, isSuccess]);
-  console.log('im in the employee')
+  console.log("im in the employee");
   const renderData = async (
     currpage: number,
     limit: number,
@@ -81,13 +81,6 @@ export default function Employees() {
         data: mydata,
         owner_id: "66fa989f82603080b4a64da9",
       });
-      if (updateUserSuccess) {
-        notifications.show({
-          color: "green",
-          title: "Update Successful",
-          message: "Employee data updated successfully",
-        });
-      }
     } catch (error) {
       throw error;
     }
@@ -106,11 +99,10 @@ export default function Employees() {
     renderData(currentpage, tableDataLimit, search);
   }, [currentpage, updateUserSuccess, deleteSuccess, createSuccess]);
 
-  // Handle search value and API call
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const updatedSearch = event.target.value;
     setSearch(updatedSearch);
-    renderData(currentpage, tableDataLimit, updatedSearch); // Pass updated search term
+    renderData(currentpage, tableDataLimit, updatedSearch);
   };
   const deleteModal = async (row: any) => {
     const mydata = {
@@ -225,7 +217,7 @@ export default function Employees() {
       render: (data: TableRow) => {
         const editModal = (row: TableRow) => {
           open();
-          console.log(row, "vbkjfkbvfbvkfvkjfvbk")
+          console.log(row, "vbkjfkbvfbvkfvkjfvbk");
           form.setValues(row);
         };
         return (
