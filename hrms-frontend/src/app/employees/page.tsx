@@ -23,8 +23,7 @@ import {
 import { manageUserSelector } from "@/redux/user/userSelector";
 import { CustomModal } from "@/components/reusableComponents/CustomModal/CustomModal";
 import { getAllUserData, setUserDataLength } from "@/redux/user/user";
-import { notifications, showNotification } from "@mantine/notifications";
-import { CheckIcon } from "@mantine/core";
+import { notifications } from "@mantine/notifications";
 
 export default function Employees() {
   const [postData, { data: addData, isSuccess: createSuccess, isError }] =
@@ -41,7 +40,6 @@ export default function Employees() {
   const [deleteUserData, { data: userDeletedData, isSuccess: deleteSuccess }] =
     useDeleteDataApiByNameMutation();
   const { allUserDataLength, allUserData } = useSelector(manageUserSelector);
-
   const [opened, { open, close }] = useDisclosure(false);
   const dispatch = useDispatch();
   const handleOnClose = () => {
@@ -79,13 +77,6 @@ export default function Employees() {
         data: mydata,
         owner_id: "66fa989f82603080b4a64da9",
       });
-      if (updateUserSuccess) {
-        notifications.show({
-          color: "green",
-          title: "Update Successful",
-          message: "Employee data updated successfully",
-        });
-      }
     } catch (error) {
       throw error;
     }
@@ -104,11 +95,10 @@ export default function Employees() {
     renderData(currentpage, tableDataLimit, search);
   }, [currentpage, updateUserSuccess, deleteSuccess, createSuccess]);
 
-  // Handle search value and API call
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const updatedSearch = event.target.value;
     setSearch(updatedSearch);
-    renderData(currentpage, tableDataLimit, updatedSearch); // Pass updated search term
+    renderData(currentpage, tableDataLimit, updatedSearch);
   };
   const deleteModal = async (row: any) => {
     const mydata = {

@@ -33,6 +33,28 @@ export const DateFormatConvertor = (date: any) => {
   return `${formatedYear}/${formatedMonth}/${cformateddate}`;
 };
 
+// export const StringDateFormatConvertor = (
+//   dateString: string,
+//   type: string,
+//   separator = "/"
+// ) => {
+//   const newDate = new Date(dateString);
+//   const day = newDate.getDate();
+//   const month = newDate.getMonth() + 1;
+//   const year = newDate.getFullYear();
+//   const formattedDay = day >= 10 ? day : `0${day}`;
+//   const formattedMonth = month >= 10 ? month : `0${month}`;
+//   switch (type) {
+//     case "DD/MM/YYYY":
+//       return `${formattedDay}${separator}${formattedMonth}${separator}${year}`;
+//     case "MM/DD/YYYY":
+//       return `${formattedMonth}${separator}${formattedDay}${separator}${year}`;
+//     case "YYYY/MM/DD":
+//       return `${year}${separator}${formattedMonth}${separator}${formattedDay}`;
+//     default:
+//       return `${year}${separator}${formattedMonth}${separator}${formattedDay}`;
+//   }
+// };
 export const StringDateFormatConvertor = (
   dateString: string,
   type: string,
@@ -40,18 +62,36 @@ export const StringDateFormatConvertor = (
 ) => {
   const newDate = new Date(dateString);
   const day = newDate.getDate();
-  const month = newDate.getMonth() + 1;
+  const month = newDate.getMonth();
   const year = newDate.getFullYear();
+
   const formattedDay = day >= 10 ? day : `0${day}`;
-  const formattedMonth = month >= 10 ? month : `0${month}`;
+
+  const monthNames = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
+  const formattedMonth = monthNames[month];
+
   switch (type) {
-    case "DD/MM/YYYY":
-      return `${formattedDay}${separator}${formattedMonth}${separator}${year}`;
+    case "DD/MMM/YYYY":
+      return `${formattedDay}-${formattedMonth}-${year}`;
     case "MM/DD/YYYY":
       return `${formattedMonth}${separator}${formattedDay}${separator}${year}`;
     case "YYYY/MM/DD":
       return `${year}${separator}${formattedMonth}${separator}${formattedDay}`;
     default:
-      return `${year}${separator}${formattedMonth}${separator}${formattedDay}`;
+      return `${formattedDay}-${formattedMonth}-${year}`;
   }
 };

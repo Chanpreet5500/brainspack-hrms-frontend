@@ -22,6 +22,7 @@ import {
 import { DataTable } from "mantine-datatable";
 import { StringDateFormatConvertor } from "@/constants/commonFunction";
 import { notifications } from "@mantine/notifications";
+import { manageLeavePoliciesSelector } from "@/redux/leavePolicies/leaveSelector";
 
 const initialState = {
   allLeaves: [],
@@ -45,7 +46,6 @@ export default function LeaveComponent() {
   };
 
   const handleUpdate = async (data: any, status: string) => {
-    console.log(status, "status");
     try {
       const response = await updateLeave({
         leaveId: data._id,
@@ -183,7 +183,6 @@ export default function LeaveComponent() {
       accessor: "end_date for half ",
       width: "25%",
       render: (data: any) => {
-        console.log(data, "o");
         const formattedDate = StringDateFormatConvertor(
           data.end_date,
           "DD/MM/YYYY"

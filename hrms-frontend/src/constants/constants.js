@@ -42,31 +42,31 @@ export const dangerdroperdata = [
   { id: 0, icon: IconTransfer, name: "Transfer my data" },
   { id: 1, icon: IconTrash, name: "Delete my Account" },
 ];
-export const dummy = [
+export const countAllData = [
   {
     title: "Number of Employee",
-    count: 450,
+    count: 0, // Initially 0, updated dynamically
     icon: <IconAddressBook />,
     color: "#c9b7eb",
     iconBgColor: "#b4a4d6",
   },
   {
     title: "On Leave",
-    count: 20,
+    count: 0, // Initially 0, updated dynamically
     icon: <IconNews />,
     color: "#efd9ce",
     iconBgColor: "#e9ccbd",
   },
   {
     title: "New Joinee",
-    count: 200,
+    count: 200, // Static data
     icon: <IconUserPlus />,
     color: "#c9e4ca",
     iconBgColor: "#a8dbaa",
   },
   {
     title: "Upcoming Holiday",
-    count: 4,
+    count: 0, // Initially 0, updated dynamically
     icon: <IconBeach />,
     color: "#cfdee7",
     iconBgColor: "#afccdd",

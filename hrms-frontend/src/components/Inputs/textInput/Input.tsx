@@ -23,7 +23,6 @@ const TextInputField: React.FC<Value> = (props) => {
     validateKey,
     value,
   } = props;
-  // const { selectedMode, editData } = useSelector(manageUserSelector);
 
   return (
     <div className="relative mb-2">
