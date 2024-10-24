@@ -19,7 +19,6 @@ interface NavbarProps {
 }
 
 export function LinksGroup({ icon: Icon, label, initiallyOpened, links, data }: LinkItem) {
-  console.log(data, 'dfdsfdsfdsfdsfdsfsd')
   const pathname = usePathname();
   const hasLinks = Array.isArray(links);
   const [opened, setOpened] = useState(initiallyOpened || false);

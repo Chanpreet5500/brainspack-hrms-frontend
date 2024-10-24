@@ -3,10 +3,13 @@ import SelectInputField from "../Inputs/selectInput/Select";
 import TextInputField from "../Inputs/textInput/Input";
 import { Button, Group, MantineProvider } from "@mantine/core";
 import { useDeleteHolidayDataApiByNameMutation } from "@/services/holiday/holidayApi";
+import { DateFormatConvertor } from "@/constants/commonFunction";
 
 const HolidayForm = ({ form, triggerCreate, triggerUpdate, triggerDelete, modalClose }) => {
 
     const handleSubmit = async (data: any) => {
+        const formattedDate = DateFormatConvertor(data.date)
+        data.date = formattedDate;
         if (data?.holiday_id) {
             await triggerUpdate(data);
         } else {
@@ -52,7 +55,7 @@ const HolidayForm = ({ form, triggerCreate, triggerUpdate, triggerDelete, modalC
                     validateKey={form.getInputProps("type")}
                 />
 
-                {!form.getInputProps('title').value ? <MantineProvider>
+                {!form.getInputProps('holiday_id').value ? <MantineProvider>
                     <Group className=" !flex !justify-end !w-full ">
                         <Button
                             variant="default"

@@ -25,6 +25,6 @@ export const config = {
         '/dashboard',
         '/employees',
         '/leaves',
-        '/calendar'
+        '/holidays'
     ]
 }

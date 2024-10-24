@@ -9,39 +9,49 @@ import { useRouter } from "next/navigation";
 // import Cookies from "js-cookie";
 import { useSelector } from "react-redux"
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector"
+import { notifications } from "@mantine/notifications"
 
 export default function Login() {
     const { data: session, status } = useSession();
     const router = useRouter();
     const [registerUserData] = useRegisterDataApiByNameMutation();
     const { authUser } = useSelector(manageAuthUserSelector);
-    // const userData = Cookies.get("userData");
+    console.log(session, "1234567890")
     useEffect(() => {
-        if (status === 'authenticated' && session?.user) {
-            if (!authUser) {
-                register(session.user)
-            } else {
-                router.push("/dashboard");
-            }
+        if (status == "authenticated") {
+            router.push("/dashboard");
+        } else {
+            console.log('you are not authorized')
         }
     }, [status])
-    const register = async (user) => {
-        const data = {
-            img: user.image,
-            email: user.email
-        };
+    // const register = async (user) => {
+    //     const data = {
+    //         img: user.image,
+    //         email: user.email
+    //     };
 
-        try {
-            const response = await registerUserData(data).unwrap();
-            document.cookie = `userData=${JSON.stringify(response)}; path=/`;
-            router.push("/dashboard");
-        } catch (error) {
-            document.cookie = "userData=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
-            signOut();
-        }
-    }
+    //     try {
+    //         const response = await registerUserData(data).unwrap();
+    //         document.cookie = `userData=${JSON.stringify(response)}; path=/`;
+    //         router.push("/dashboard");
+    //     } catch (error) {
+    //         document.cookie = "userData=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
+    //         signOut();
+    //     }
+    // }
     const handleSignIn = async () => {
-        await signIn("google");
+        const loginResponse = await signIn("google", { redirect: false });
+        // console.log(loginResponse, 'loginResponse ')
+        // if (loginResponse?.error) {
+        //     notifications.show({
+        //         color: "red",
+        //         title: "Login Uncessfull",
+        //         message: "Please register yourself to Login",
+        //     });
+        //     router.back();
+        // } else {
+        //     router.push("/dashboard");
+        // }
     };
     return (
         <main>

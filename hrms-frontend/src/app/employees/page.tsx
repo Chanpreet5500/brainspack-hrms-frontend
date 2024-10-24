@@ -49,7 +49,6 @@ export default function Employees() {
     close();
     form.reset();
   };
-  console.log(authUser, "jhgfghfjdshfkdshfkdshfkdshfs")
   useEffect(() => {
     if (data?.users.length > 0 && isSuccess) {
       dispatch(getAllUserData(data?.users));
@@ -273,6 +272,7 @@ export default function Employees() {
               close={handleOnClose}
               buttonlabel={"Add User"}
               modalTitle={"Apply for add user"}
+              showButton={true}
               content={
                 <>
                   <EmployeeForm

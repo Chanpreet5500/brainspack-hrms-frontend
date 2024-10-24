@@ -8,8 +8,9 @@ import { usePathname } from "next/navigation";
 import { NavbarNested } from "../Sidebar/NavbarNested";
 import MySidebar from "../Sidebar/mySidebar";
 import { useDispatch } from "react-redux";
-import { setAuthUser } from "@/redux/authorizedUser/authorizedUser";
+import { setAuthToken, setAuthUser } from "@/redux/authorizedUser/authorizedUser";
 import { useEffect } from "react";
+import { useSession } from "next-auth/react";
 
 export function LayoutWrapper({
   authUser,
@@ -17,12 +18,15 @@ export function LayoutWrapper({
 }: {
   children: React.ReactNode;
 }) {
+  const { data: session, status } = useSession();
+  console.log(session?.accessToken, 'ghghghghghhgggh')
   const [opened, { toggle }] = useDisclosure();
   const dispatch = useDispatch();
   const pathname = usePathname();
   const isRegisterPage = pathname !== "/";
   useEffect(() => {
     dispatch(setAuthUser(authUser));
+    dispatch(setAuthToken(session?.accessToken))
   }, [authUser])
   return (
     <>

@@ -11,7 +11,7 @@ import {
 } from "@/services/user/usersApi";
 import { getAllUserData } from "@/redux/user/user";
 import { notifications } from "@mantine/notifications";
-import { IconCheck, IconX } from "@tabler/icons-react"; // Icons for success and error
+import { IconCheck, IconX } from "@tabler/icons-react";
 
 interface value {
   onClose: any;
