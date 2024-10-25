@@ -18,13 +18,6 @@ import {
   IconUserPlus,
   IconUsers,
 } from "@tabler/icons-react";
-
-// export const mockdata = [
-//   { label: "Dashboard", icon: IconGauge, link: "/dashboard" },
-//   { label: "Employees", icon: IconGauge, link: "/employees" },
-//   { label: "New dashboard", icon: IconGauge, link: "/newdashboard" },
-// ];
-
 export const appdroperdata = [
   { id: 0, icon: IconSettings, name: "Settings" },
   { id: 1, icon: IconMessageFilled, name: "Messages" },
@@ -45,14 +38,14 @@ export const dangerdroperdata = [
 export const countAllData = [
   {
     title: "Number of Employee",
-    count: 0, // Initially 0, updated dynamically
+    count: 0,
     icon: <IconAddressBook />,
     color: "#c9b7eb",
     iconBgColor: "#b4a4d6",
   },
   {
     title: "On Leave",
-    count: 0, // Initially 0, updated dynamically
+    count: 0,
     icon: <IconNews />,
     color: "#efd9ce",
     iconBgColor: "#e9ccbd",
@@ -66,7 +59,7 @@ export const countAllData = [
   },
   {
     title: "Upcoming Holiday",
-    count: 0, // Initially 0, updated dynamically
+    count: 0,
     icon: <IconBeach />,
     color: "#cfdee7",
     iconBgColor: "#afccdd",
@@ -242,4 +235,4 @@ export const superadminimages = [
   "/images/stairs.jpg",
 ];
 
-export const tableDataLimit = 5;
+export const tableDataLimit = 10;

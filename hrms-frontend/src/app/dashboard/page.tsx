@@ -41,13 +41,6 @@ const Dashboard = () => {
       search: search,
     });
   };
-
-  // useEffect(() => {
-  //   if (employeeData?.users.length > 0 && isSuccess) {
-  //     dispatch(getAllUserData(employeeData?.users));
-  //     dispatch(setUserDataLength(employeeData.totalusers));
-  //   }
-  // }, [employeeData, isSuccess]);
   useEffect(() => {
     getEmployees("");
     getLeaves("");
@@ -57,7 +50,6 @@ const Dashboard = () => {
     if (employeeData || leavesData) {
       setDummyData((prevDummy: any) =>
         prevDummy.map((item: any) => {
-          console.log(item, "item");
           switch (item.title) {
             case "Number of Employee":
               return { ...item, count: employeeData?.users?.length || 0 };
@@ -72,6 +64,12 @@ const Dashboard = () => {
       );
     }
   }, [employeeData, leavesData]);
+  useEffect(() => {
+    if (employeeData?.users.length > 0 && isSuccess) {
+      dispatch(getAllUserData(employeeData?.users));
+      dispatch(setUserDataLength(employeeData.totalusers));
+    }
+  }, [employeeData, isSuccess]);
   useEffect(() => {
     fetchUserData(currentPage, limit, search);
   }, [currentPage, limit, search]);

@@ -24,6 +24,7 @@ const SelectSearch: React.FC<SelectSearchProps> = ({
     form.getValues();
   }, []);
   const [searchValue, setSearchValue] = useState<string | null>(null);
+  console.log(data, label, "searchValue");
   return (
     <div className="w-full  mx-auto">
       {label && (

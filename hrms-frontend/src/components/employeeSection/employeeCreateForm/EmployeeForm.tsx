@@ -38,7 +38,7 @@ const EmployeeForm: React.FC<value> = (props) => {
   useEffect(() => {
     const params = {
       page: 1,
-      limit: 5,
+      limit: 10,
     };
     allDataApi(params);
   }, [isSuccess]);

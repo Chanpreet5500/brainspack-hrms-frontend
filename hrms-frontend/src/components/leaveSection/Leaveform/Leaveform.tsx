@@ -1,51 +1,73 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "@mantine/form";
 import SelectInputField from "../../Inputs/selectInput/Select";
-import {
-  Button,
-  Group,
-  MantineProvider,
-  Textarea,
-  useCombobox,
-} from "@mantine/core";
+import { Button, Group, MantineProvider, Textarea } from "@mantine/core";
 import { DatePickerComponent } from "../../reusableComponents/CustomDatePicker/CustomDatePicker";
-import {
-  employeeData,
-  holidayData,
-  leaveTypes,
-  whichHalfData,
-} from "@/constants/constants";
+import { holidayData, leaveTypes, whichHalfData } from "@/constants/constants";
 import { useLazyGetAllLeaveDataApiByNameQuery } from "@/services/leave/getLeaves";
 import {
   DateFormatConvertor,
   variantColorResolver,
 } from "@/constants/commonFunction";
 import SelectSearch from "@/components/reusableComponents/SearchSelect";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { notifications } from "@mantine/notifications";
 import { IconCheck } from "@tabler/icons-react";
+import { useLazyGetAllDataApiByNameQuery } from "@/services/user/usersApi";
+import { manageLeavePoliciesSelector } from "@/redux/leavePolicies/leaveSelector";
+import { useLazyGetAllLeavePoliciesApiApiByNameQuery } from "@/services/leavePolicies/leavesApi";
+import {
+  setallLeavesPolicies,
+  settotalleavesPolicies,
+} from "@/redux/leavePolicies/leave";
 interface dataValue {
   onClose: any;
   triggerCreate: any;
 }
+const initialState = {
+  allLeavesPolicies: [],
+  totalleavesPolicies: 0,
+};
 const LeaveForm: React.FC<dataValue> = ({ onClose, triggerCreate }) => {
   const [startDate, setStartDate] = useState<Date | null>(new Date());
   const [endDate, setEndDate] = useState<Date | null>(startDate);
-  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1); // New state for page
+  const [limit, setLimit] = useState(10);
+  const [search, setSearch] = useState<string>("");
   const [allLeaveData, { data: leaveData, isSuccess: isSuccessToGetAllData }] =
     useLazyGetAllLeaveDataApiByNameQuery();
+  const [allDataApi, { data: employeData, error, isLoading, isSuccess }] =
+    useLazyGetAllDataApiByNameQuery();
+  const { allLeavesPolicies, totalleavesPolicies } = useSelector(
+    manageLeavePoliciesSelector
+  );
+  const [
+    triggerLeavePolicies,
+    { data: leavePoliciesData, isSuccess: leavePoliciesSuccess, isError },
+  ] = useLazyGetAllLeavePoliciesApiApiByNameQuery();
   const dispatch = useDispatch();
+  useEffect(() => {
+    triggerLeavePolicies("ss");
+    if (leaveData) {
+      dispatch(setallLeavesPolicies(leaveData));
+      dispatch(settotalleavesPolicies(leaveData?.length));
+    }
+  }, [leavePoliciesData, leavePoliciesSuccess]);
+  useEffect(() => {
+    allDataApi({ page, limit, search });
+  }, [allDataApi, page, limit, search]);
   const handleSubmit = async (data: any) => {
+    console.log(data, "datavv");
     try {
       const { employee, ...rest } = data;
 
       const response = await triggerCreate({
-        createdById: "670f65977a0a5180c8198e45",
+        createdById: data?.employee,
         leavedata: {
           ...rest,
-          employee_id: "670f65977a0a5180c8198e45",
-          leave_type_id: "6710fd61d70c97eeec2be0f6",
+          employee_id: data?.employee,
+          leave_type_id: data?.leave_type_id,
           start_date: DateFormatConvertor(startDate),
           end_date: DateFormatConvertor(endDate),
         },
@@ -64,18 +86,6 @@ const LeaveForm: React.FC<dataValue> = ({ onClose, triggerCreate }) => {
       console.error("Error creating leave:", err);
     }
   };
-  const combobox = useCombobox({
-    onDropdownClose: () => {
-      combobox.resetSelectedOption();
-      combobox.focusTarget();
-      setSearch("");
-    },
-
-    onDropdownOpen: () => {
-      combobox.focusSearchInput();
-    },
-  });
-
   const form = useForm({
     mode: "controlled",
     validateInputOnChange: true,
@@ -100,12 +110,21 @@ const LeaveForm: React.FC<dataValue> = ({ onClose, triggerCreate }) => {
     },
   });
   let data = form.getValues();
-  console.log(data, "DATA");
+  const employeeOptions =
+    employeData?.users?.map((user: any) => ({
+      value: user._id,
+      label: user.fname,
+    })) || [];
+  const leaveOptions =
+    leavePoliciesData?.map((leave: any) => ({
+      value: leave?.leave_type_id?._id,
+      label: leave?.leave_type_id?.description,
+    })) || [];
+
   let formateddate = DateFormatConvertor(data.start_date);
   return (
     <form
       onSubmit={form.onSubmit((localUserDetails: any) => {
-        console.log(localUserDetails, "localUserDetails");
         handleSubmit(localUserDetails);
       })}
     >
@@ -115,7 +134,7 @@ const LeaveForm: React.FC<dataValue> = ({ onClose, triggerCreate }) => {
           form={form}
           name={"employee"}
           placeholder={"Select the employee name"}
-          data={employeeData}
+          data={employeeOptions}
           validateKey={form.getInputProps("employee")}
         />
         <SelectInputField
@@ -123,7 +142,7 @@ const LeaveForm: React.FC<dataValue> = ({ onClose, triggerCreate }) => {
           form={form}
           name={"leave_type_id"}
           placeholder={"Select the leave type"}
-          data={leaveTypes}
+          data={leaveOptions}
           validateKey={form.getInputProps("leave_type_id")}
         />
         <div className="flex gap-4">

@@ -86,7 +86,7 @@ export default function Employees() {
     setCurrentPage(page);
     const params = {
       page: page,
-      limit: 5,
+      limit: 10,
     };
     allDataApi(params);
     renderData(page, tableDataLimit, search);

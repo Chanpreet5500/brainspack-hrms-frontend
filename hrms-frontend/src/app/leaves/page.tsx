@@ -33,7 +33,8 @@ export default function LeaveComponent() {
   const [createLeave, { isLoading, error, isSuccess: createSuccess }] =
     useCreateLeaveMutation();
   const [currentpage, setCurrentPage] = useState(1);
-  const [trigger] = useLazyGetAllLeaveDataApiByNameQuery();
+  const [trigger, { data: leavesData }] =
+    useLazyGetAllLeaveDataApiByNameQuery();
   const [updateLeave] = useUpdateLeaveDataApiByNameMutation();
   const { allLeaves, totalleaves } = useSelector(manageLeaveSelector);
   const [search, setSearch] = useState("");
@@ -50,7 +51,7 @@ export default function LeaveComponent() {
       const response = await updateLeave({
         leaveId: data._id,
         status,
-        updatedById: "66f6a1d7d1e7250d2a3d5389",
+        updatedById: "6719dae7c25ad6bc1a85158e",
       });
 
       if (response.error) {
@@ -84,11 +85,11 @@ export default function LeaveComponent() {
     limit: number,
     searchValue: string
   ) => {
-    dispatch(resetLeaves());
+    // dispatch(resetLeaves());
     const response = await trigger({
       page: currpage,
       limit: limit,
-      search: searchValue,
+      search: " ",
     });
 
     try {
@@ -105,7 +106,7 @@ export default function LeaveComponent() {
 
   useEffect(() => {
     renderData(currentpage, tableDataLimit, search);
-  }, [currentpage, createSuccess]);
+  }, [currentpage, createSuccess, leavesData]);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const searchValue = event.target.value;
@@ -148,7 +149,7 @@ export default function LeaveComponent() {
       render: (data: TableRow) => {
         return (
           <>
-            {data?.employee_id.fname} {data?.employee_id.lname}
+            {data?.employee_id?.fname} {data?.employee_id?.lname}
           </>
         );
       },

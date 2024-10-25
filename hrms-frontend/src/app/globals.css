@@ -54,7 +54,7 @@ body {
   padding-top: 0 !important;
 }
 .mantine-datatable-scroll-area{
-  height: 250px !important;
+  /* height: 250px !important; */
 } 
 .mantine-datatable-loader{
   padding-bottom: 0 !important;
