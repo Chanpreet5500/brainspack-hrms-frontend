@@ -32,44 +32,62 @@ body {
     text-wrap: balance;
   }
 }
-@media  screen and (max-width: 600px) {
 
-  .mantine-Button-label{
+@media screen and (max-width: 600px) {
+
+  .mantine-Button-label {
     overflow: visible !important;
   }
 
 }
-.mantine-datatable-pagination{
+
+.mantine-datatable-pagination {
   display: flex !important;
-  align-items: end  !important;
+  align-items: end !important;
   flex-direction: column !important;
+
 }
-.mantine-datatable-pagination>.mantine-focus-auto, .mantine-datatable-pagination-text {
+
+.mantine-datatable-pagination>.mantine-focus-auto,
+.mantine-datatable-pagination-text {
   width: 100%;
   display: flex;
   justify-content: end !important;
 }
-.mantine-datatable-empty-state{
+
+.mantine-datatable-empty-state {
   padding-bottom: 0 !important;
   padding-top: 0 !important;
 }
-.mantine-datatable-scroll-area{
-  height: 250px !important;
-} 
-.mantine-datatable-loader{
+
+.mantine-datatable-scroll-area {
+  height: 450px !important;
+  overflow: hidden;
+}
+
+.mantine-datatable-loader {
   padding-bottom: 0 !important;
   padding-top: 0 !important;
 }
-.mantine-datatable-pagination>.mantine-focus-auto ,.mantine-datatable-pagination-text {
-width: 100% ;
-display: flex ;
-justify-content: center ;
+
+.mantine-datatable-pagination>.mantine-focus-auto,
+.mantine-datatable-pagination-text {
+  width: 100%;
+  display: flex;
+  /* gap: 10px; */
+  height: 35px;
+  justify-content: center;
 }
-.fc-h-event{
-  border:none;
+
+.fc-h-event {
+  border: none;
   background-color: #c9e4ca;
-  /* background-color: rgba(55, 184, 87, 0.981); */
-  border-bottom:1px solid grey;
+  border-bottom: 1px solid grey;
   border-radius: 10px;
   padding-left: 10px;
+}
+
+.mantine-Group-root {
+  display: flex !important;
+  gap: 15px !important;
 }

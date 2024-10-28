@@ -1,8 +1,25 @@
 "use client";
-
+import "./sidebar.css";
 import { useState } from "react";
-import { Group, Box, Collapse, ThemeIcon, ScrollArea, Text, UnstyledButton, rem } from "@mantine/core";
-import { IconCalendarStats, IconChevronRight } from "@tabler/icons-react";
+import {
+  Group,
+  Box,
+  Collapse,
+  ThemeIcon,
+  ScrollArea,
+  Text,
+  UnstyledButton,
+  rem,
+} from "@mantine/core";
+import {
+  IconCalendarStats,
+  IconChevronRight,
+  IconAlignBoxLeftStretch,
+  IconUsersGroup,
+  IconCalendarMonth,
+  IconCalendarPlus,
+  IconCalendarCheck,
+} from "@tabler/icons-react";
 import classes from "./Navbar.module.css";
 import { usePathname, useRouter } from "next/navigation";
 
@@ -18,7 +35,13 @@ interface NavbarProps {
   linksData: LinkItem[];
 }
 
-export function LinksGroup({ icon: Icon, label, initiallyOpened, links, data }: LinkItem) {
+export function LinksGroup({
+  icon: Icon,
+  label,
+  initiallyOpened,
+  links,
+  data,
+}: LinkItem) {
   const pathname = usePathname();
   const hasLinks = Array.isArray(links);
   const [opened, setOpened] = useState(initiallyOpened || false);
@@ -27,12 +50,12 @@ export function LinksGroup({ icon: Icon, label, initiallyOpened, links, data }: 
     if (link) {
       router.push(link);
     } else {
-      console.log(link)
+      console.log(link);
     }
   };
-  console.log()
+  console.log();
   const items = (hasLinks ? links : []).map((link) => (
-    <Text<'a'>
+    <Text<"a">
       component="a"
       className={classes.link}
       href={link.link}
@@ -47,9 +70,19 @@ export function LinksGroup({ icon: Icon, label, initiallyOpened, links, data }: 
 
   return (
     <>
-      <UnstyledButton onClick={() => setOpened((o) => !o)} className={pathname == data?.link ? classes.pathcontrol : classes.control}>
+      <UnstyledButton
+        onClick={() => setOpened((o) => !o)}
+        className={
+          pathname == data?.link ? classes.pathcontrol : classes.control
+        }
+      >
         <Group justify="space-between" gap={0}>
-          <Box style={{ display: "flex", alignItems: "center" }} onClick={() => { handleNavigation(data?.link) }}>
+          <Box
+            style={{ display: "flex", alignItems: "center" }}
+            onClick={() => {
+              handleNavigation(data?.link);
+            }}
+          >
             <ThemeIcon variant="light" size={30}>
               <Icon style={{ width: rem(18), height: rem(18) }} />
             </ThemeIcon>
@@ -73,8 +106,10 @@ export function LinksGroup({ icon: Icon, label, initiallyOpened, links, data }: 
   );
 }
 export function Navbar({ linksData }: NavbarProps) {
-  const links = linksData.map((item) => <LinksGroup {...item} key={item.label} data={item} />);
-  console.log(linksData, 'hgghgfhgfhgfh')
+  const links = linksData.map((item) => (
+    <LinksGroup {...item} key={item.label} data={item} />
+  ));
+  console.log(linksData, "hgghgfhgfhgfh");
 
   return (
     <div className={classes.navbar}>
@@ -86,15 +121,15 @@ export function Navbar({ linksData }: NavbarProps) {
 }
 
 const mockdata = [
-  { label: "Dashboard", icon: IconCalendarStats, link: "/dashboard" },
+  { label: "Dashboard", icon: IconAlignBoxLeftStretch, link: "/dashboard" },
   {
     label: "Employees",
-    icon: IconCalendarStats,
+    icon: IconUsersGroup,
     link: "/employees",
   },
   {
     label: "Leaves Management",
-    icon: IconCalendarStats,
+    icon: IconCalendarCheck,
     link: "/leaves",
   },
   {
@@ -107,10 +142,11 @@ const mockdata = [
   },
   {
     label: "Holiday Calendar",
-    icon: IconCalendarStats,
+    icon: IconCalendarMonth,
     link: "/holidays",
   },
 ];
+
 export default function Sidebar() {
   return <Navbar linksData={mockdata} />;
 }

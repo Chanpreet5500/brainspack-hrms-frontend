@@ -22,9 +22,9 @@ export function middleware(request: NextRequest) {
 
 export const config = {
     matcher: [
-        '/dashboard',
-        '/employees',
-        '/leaves',
-        '/holidays'
+        // '/dashboard',
+        // '/employees',
+        // '/leaves',
+        // '/calendar'
     ]
 }

@@ -8,7 +8,10 @@ import { usePathname } from "next/navigation";
 import { NavbarNested } from "../Sidebar/NavbarNested";
 import MySidebar from "../Sidebar/mySidebar";
 import { useDispatch } from "react-redux";
-import { setAuthToken, setAuthUser } from "@/redux/authorizedUser/authorizedUser";
+import {
+  setAuthToken,
+  setAuthUser,
+} from "@/redux/authorizedUser/authorizedUser";
 import { useEffect } from "react";
 import { useSession } from "next-auth/react";
 
@@ -19,15 +22,15 @@ export function LayoutWrapper({
   children: React.ReactNode;
 }) {
   const { data: session, status } = useSession();
-  console.log(session?.accessToken, 'ghghghghghhgggh')
+  console.log(session?.accessToken, "ghghghghghhgggh");
   const [opened, { toggle }] = useDisclosure();
   const dispatch = useDispatch();
   const pathname = usePathname();
   const isRegisterPage = pathname !== "/";
   useEffect(() => {
     dispatch(setAuthUser(authUser));
-    dispatch(setAuthToken(session?.accessToken))
-  }, [authUser])
+    dispatch(setAuthToken(session?.accessToken));
+  }, [authUser]);
   return (
     <>
       {isRegisterPage ? (
@@ -39,20 +42,22 @@ export function LayoutWrapper({
             collapsed: { mobile: !opened },
           }}
         >
-          <AppShell.Header style={{ backgroundColor: "#e8ecef" }}>
+          <AppShell.Header style={{ backgroundColor: "white" }}>
             <Flex px="md" style={{ width: "100%" }} align="center">
               <Navbar opened={opened} toggle={toggle} />
             </Flex>
           </AppShell.Header>
 
-          <AppShell.Navbar style={{ backgroundColor: "#e8ecef" }}>
+          <AppShell.Navbar style={{ backgroundColor: "white" }}>
             <Sidebar />
           </AppShell.Navbar>
-          <AppShell.Main style={{ backgroundColor: "#e8ecef" }}>
+          <AppShell.Main style={{ backgroundColor: "white" }}>
             {children}
           </AppShell.Main>
         </AppShell>
-      ) : <>{children}</>}
+      ) : (
+        <>{children}</>
+      )}
     </>
   );
 }

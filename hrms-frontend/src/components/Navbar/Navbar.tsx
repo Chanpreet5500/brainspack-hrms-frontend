@@ -1,4 +1,9 @@
-import { IconBell, IconHttpDelete, IconSearch, IconTransfer } from "@tabler/icons-react";
+import {
+  IconBell,
+  IconHttpDelete,
+  IconSearch,
+  IconTransfer,
+} from "@tabler/icons-react";
 import { Burger } from "@mantine/core";
 import Droper from "../reusableComponents/Droper/Droper";
 import { signOut } from "next-auth/react";
@@ -16,11 +21,12 @@ const Navbar: React.FC<NavbarProps> = ({ opened, toggle }) => {
   const [open, setopen] = useState(false);
   const { authUser } = useSelector(manageAuthUserSelector);
   const handleSignOut = () => {
-    document.cookie = "userData=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
+    document.cookie =
+      "userData=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     signOut();
-  }
+  };
   return (
-    <div className="w-full" style={{ backgroundColor: "" }}>
+    <div className="w-full">
       <div className="flex py-3 justify-between items-center">
         <div className="flex gap-2 items-center">
           <Burger opened={opened} onClick={toggle} hiddenFrom="md" size="sm" />
@@ -107,7 +113,10 @@ const Navbar: React.FC<NavbarProps> = ({ opened, toggle }) => {
                             </>
                           );
                         })}
-                        <div className="flex gap-2 text-sm items-center p-2 text-red-500 hover:bg-red-100  rounded-full cursor-pointer" onClick={handleSignOut}>
+                        <div
+                          className="flex gap-2 text-sm items-center p-2 text-red-500 hover:bg-red-100  rounded-full cursor-pointer"
+                          onClick={handleSignOut}
+                        >
                           <IconTransfer size={15} />
                           <p>Sign out</p>
                         </div>

@@ -26,7 +26,7 @@ import { getAllUserData, setUserDataLength } from "@/redux/user/user";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
 import { notifications, showNotification } from "@mantine/notifications";
 import { CheckIcon } from "@mantine/core";
-
+import "./employe.css";
 export default function Employees() {
   const [postData, { data: addData, isSuccess: createSuccess, isError }] =
     useCreateUserMutation();
@@ -90,7 +90,7 @@ export default function Employees() {
     setCurrentPage(page);
     const params = {
       page: page,
-      limit: 5,
+      limit: 10,
     };
     allDataApi(params);
     renderData(page, tableDataLimit, search);
@@ -247,7 +247,7 @@ export default function Employees() {
     <>
       <div className="flex justify-between items-center p-2 max-sm:flex-col-reverse max-sm:items-start">
         <div>My Team ({allUserDataLength})</div>
-        <div className="flex items-center gap-3 max-sm:w-full 2xl:w-[40%]">
+        <div className="flex items-center gap-3 max-sm:w-full 2xl:w-[40%] parentDiv">
           <div className=" max-sm:w-full">
             <Searchbar
               value={search}
@@ -279,6 +279,7 @@ export default function Employees() {
           </div>
         </div>
       </div>
+
       <DataTable
         height={300}
         records={[...allUserData]}
