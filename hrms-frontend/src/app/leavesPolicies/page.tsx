@@ -150,12 +150,14 @@ export default function TypeComponent() {
           />
         </div>
       </div>
-      <div className="flex flex-wrap  align-middle gap-8">
-        <CustumCard
-          form={form}
-          open={open}
-          allLeavesPolicies={allLeavesPolicies}
-        />
+      <div className="w-full">
+        <div className="flex flex-wrap  align-middle gap-8 p-[20px]">
+          <CustumCard
+            form={form}
+            open={open}
+            allLeavesPolicies={allLeavesPolicies}
+          />
+        </div>
       </div>
     </>
   );

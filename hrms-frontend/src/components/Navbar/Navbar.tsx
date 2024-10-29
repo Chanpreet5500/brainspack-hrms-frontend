@@ -12,6 +12,7 @@ import Image from "next/image";
 import { appdroperdata, dangerdroperdata } from "@/constants/constants";
 import { useSelector } from "react-redux";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
+import Link from "next/link";
 interface NavbarProps {
   opened: boolean;
   toggle: () => void;
@@ -85,13 +86,16 @@ const Navbar: React.FC<NavbarProps> = ({ opened, toggle }) => {
                       </div>
                       <div className="">
                         {appdroperdata.map((ele) => {
+                          console.log(ele, "ell");
                           return (
-                            <>
-                              <div className="flex gap-2 text-sm items-center p-2 hover:bg-slate-200  rounded-full cursor-pointer">
-                                <ele.icon size={15} />
-                                <p>{ele.name}</p>
-                              </div>
-                            </>
+                            <Link
+                              href={ele.link || "#"}
+                              key={ele.id}
+                              className="flex gap-2 text-sm items-center p-2 hover:bg-slate-200 rounded-full cursor-pointer"
+                            >
+                              <ele.icon size={15} />
+                              <p>{ele.name}</p>
+                            </Link>
                           );
                         })}
                       </div>

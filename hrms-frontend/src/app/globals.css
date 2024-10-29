@@ -91,3 +91,29 @@ body {
   display: flex !important;
   gap: 15px !important;
 }
+
+.m_b242d975 {
+  background-color: rgb(231, 231, 231);
+
+}
+
+.m_4e7aa4fd:hover {
+  background-color: rgb(231, 231, 231);
+  cursor: pointer;
+}
+
+.m_e615b15f {
+  display: flex;
+  justify-content: flex-start;
+  gap: 22px;
+}
+
+.m_99ac2aa1 {
+  text-align: center !important;
+  /* background-color: rgb(119, 252, 119) !important;s */
+  /* top: 290px !important; */
+}
+
+.m_dc9b7c9f {
+  top: 260px !important;
+}

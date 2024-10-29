@@ -206,7 +206,7 @@ export default function LeaveComponent() {
         const [editopened, { open: editopen, close: editclose }] =
           useDisclosure(false);
         return (
-          <div>
+          <div className="editIcon">
             <CustomModal
               opened={editopened}
               open={editopen}
@@ -235,6 +235,7 @@ export default function LeaveComponent() {
                       Reject
                     </Button>
                     <Button
+                      style={{ backgroundColor: "#228be6" }}
                       variant="filled"
                       color="green"
                       onClick={() => {
@@ -256,7 +257,7 @@ export default function LeaveComponent() {
 
   return (
     <>
-      <div className="flex justify-between p-2 max-sm:flex-col-reverse">
+      <div className="  flex justify-between p-2 max-sm:flex-col-reverse">
         <div>My Team ({totalleaves})</div>
         <div className="flex flex-grow gap-2 justify-end items-center w-[32%]  max-sm:w-full">
           <Searchbar

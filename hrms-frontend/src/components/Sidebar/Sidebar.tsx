@@ -19,6 +19,7 @@ import {
   IconCalendarMonth,
   IconCalendarPlus,
   IconCalendarCheck,
+  IconUser,
 } from "@tabler/icons-react";
 import classes from "./Navbar.module.css";
 import { usePathname, useRouter } from "next/navigation";
@@ -136,8 +137,8 @@ const mockdata = [
     label: "Leave Policy",
     icon: IconCalendarStats,
     links: [
-      { label: "Type", link: "/leavetypes" },
-      { label: "Policies", link: "/leavepolicies" },
+      { label: "Type", link: "/typePolicies" },
+      { label: "Policies", link: "/leavesPolicies" },
     ],
   },
   {

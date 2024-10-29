@@ -245,7 +245,7 @@ export default function Employees() {
 
   return (
     <>
-      <div className="flex justify-between items-center p-2 max-sm:flex-col-reverse max-sm:items-start">
+      <div className=" customDiv flex justify-between items-center p-2 max-sm:flex-col-reverse max-sm:items-start">
         <div>My Team ({allUserDataLength})</div>
         <div className="flex items-center gap-3 max-sm:w-full 2xl:w-[40%] parentDiv">
           <div className=" max-sm:w-full">

@@ -17,6 +17,7 @@ import {
   IconTrash,
   IconUserPlus,
   IconUsers,
+  IconUser,
 } from "@tabler/icons-react";
 
 // export const mockdata = [
@@ -26,10 +27,12 @@ import {
 // ];
 
 export const appdroperdata = [
-  { id: 0, icon: IconSettings, name: "Settings" },
-  { id: 1, icon: IconMessageFilled, name: "Messages" },
-  { id: 2, icon: IconPhotoStar, name: "Gallery" },
-  { id: 3, icon: IconSearch, name: "Search" },
+  // {id:0,icon:},
+  { id: 0, icon: IconUser, name: "Profile", link: "/profile" },
+  { id: 1, icon: IconSettings, name: "Settings" },
+  { id: 2, icon: IconMessageFilled, name: "Messages" },
+  { id: 3, icon: IconPhotoStar, name: "Gallery" },
+  { id: 4, icon: IconSearch, name: "Search" },
 ];
 
 export const employeeData = [
@@ -214,10 +217,10 @@ export const employeProfetion = [
 ];
 
 export const holidayType = [
-  { id: 1, label: "National", value: 'national' },
-  { id: 1, label: "Regional", value: 'regional' },
-  { id: 1, label: "Event", value: 'event' }
-]
+  { id: 1, label: "National", value: "national" },
+  { id: 1, label: "Regional", value: "regional" },
+  { id: 1, label: "Event", value: "event" },
+];
 
 export const leavedata = [
   {
