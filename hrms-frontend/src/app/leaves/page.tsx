@@ -85,7 +85,7 @@ export default function LeaveComponent() {
     limit: number,
     searchValue: string
   ) => {
-    // dispatch(resetLeaves());
+    dispatch(resetLeaves());
     const response = await trigger({
       page: currpage,
       limit: limit,
