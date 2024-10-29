@@ -205,6 +205,57 @@ export const employeProfetion = [
   { id: 2, label: "HR", value: "hr" },
   { id: 3, label: "Employee", value: "employee" },
 ];
+
+export const holidayType = [
+  { id: 1, label: "National", value: "national" },
+  { id: 1, label: "Regional", value: "regional" },
+  { id: 1, label: "Event", value: "event" },
+];
+
+export const leavedata = [
+  {
+    name: "Athena Weissnat",
+    leavetype: "Casual Leave",
+    startdate: "12/43/2022",
+    enddate: "13/67/7809",
+    status: "Pending",
+  },
+  {
+    name: "Asif Ali",
+    leavetype: "Sick Leave",
+    startdate: "12/43/2022",
+    enddate: "13/67/7809",
+    status: "Pending",
+  },
+  {
+    name: "Shubham Kaushal",
+    leavetype: "Casual Leave",
+    startdate: "12/43/2022",
+    enddate: "13/67/7809",
+    status: "Pending",
+  },
+  {
+    name: "Sagar Rana",
+    leavetype: "Sick Leave",
+    startdate: "12/43/2022",
+    enddate: "13/67/7809",
+    status: "Approved",
+  },
+  {
+    name: "Gourav Kashyap",
+    leavetype: "Sick Leave",
+    startdate: "12/43/2022",
+    enddate: "13/67/7809",
+    status: "Approved",
+  },
+  {
+    name: "Nisha Arora",
+    leavetype: "Sick Leave",
+    startdate: "12/43/2022",
+    enddate: "13/67/7809",
+    status: "Approved",
+  },
+];
 export const leaveTypes = [
   {
     id: 1,

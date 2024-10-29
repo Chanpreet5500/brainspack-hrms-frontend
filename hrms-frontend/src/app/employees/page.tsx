@@ -24,6 +24,7 @@ import { manageUserSelector } from "@/redux/user/userSelector";
 import { CustomModal } from "@/components/reusableComponents/CustomModal/CustomModal";
 import { getAllUserData, setUserDataLength } from "@/redux/user/user";
 import { notifications } from "@mantine/notifications";
+import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
 
 export default function Employees() {
   const [postData, { data: addData, isSuccess: createSuccess, isError }] =
@@ -40,6 +41,7 @@ export default function Employees() {
   const [deleteUserData, { data: userDeletedData, isSuccess: deleteSuccess }] =
     useDeleteDataApiByNameMutation();
   const { allUserDataLength, allUserData } = useSelector(manageUserSelector);
+  const { authUser } = useSelector(manageAuthUserSelector);
   const [opened, { open, close }] = useDisclosure(false);
   const dispatch = useDispatch();
   const handleOnClose = () => {
@@ -52,6 +54,7 @@ export default function Employees() {
       dispatch(setUserDataLength(data.totalusers));
     }
   }, [data, isSuccess]);
+  console.log("im in the employee");
   const renderData = async (
     currpage: number,
     limit: number,
@@ -213,6 +216,7 @@ export default function Employees() {
       render: (data: TableRow) => {
         const editModal = (row: TableRow) => {
           open();
+          console.log(row, "vbkjfkbvfbvkfvkjfvbk");
           form.setValues(row);
         };
         return (
@@ -259,6 +263,7 @@ export default function Employees() {
               close={handleOnClose}
               buttonlabel={"Add User"}
               modalTitle={"Apply for add user"}
+              showButton={true}
               content={
                 <>
                   <EmployeeForm

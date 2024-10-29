@@ -70,6 +70,8 @@ const LeaveForm: React.FC<dataValue> = ({ onClose, triggerCreate }) => {
           leave_type_id: data?.leave_type_id,
           start_date: DateFormatConvertor(startDate),
           end_date: DateFormatConvertor(endDate),
+          start_day: "full",
+          end_day: "full",
         },
       });
       notifications.show({
@@ -91,7 +93,7 @@ const LeaveForm: React.FC<dataValue> = ({ onClose, triggerCreate }) => {
     validateInputOnChange: true,
     initialValues: {
       employee: "",
-      leave_type_id: "6710fd4bd70c97eeec2be0f2",
+      // leave_type: "",
       start_date: startDate,
       end_date: endDate,
       start_day: "",
@@ -101,8 +103,8 @@ const LeaveForm: React.FC<dataValue> = ({ onClose, triggerCreate }) => {
     },
     validate: {
       employee: (value) => (value ? null : "Please select an employee."),
-      leave_type_id: (value) =>
-        value ? null : "Please select the type of leave.",
+      // leave_type_id: (value) =>
+      //   value ? null : "Please select the type of leave.",
       start_date: (value) =>
         DateFormatConvertor(value) ? null : "Please select the start date.",
       end_date: (value) =>

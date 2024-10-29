@@ -1,11 +1,12 @@
-import { IconBell, IconHttpDelete, IconSearch } from "@tabler/icons-react";
+import { IconBell, IconHttpDelete, IconSearch, IconTransfer } from "@tabler/icons-react";
 import { Burger } from "@mantine/core";
 import Droper from "../reusableComponents/Droper/Droper";
 import { signOut } from "next-auth/react";
 import { useState } from "react";
 import Image from "next/image";
 import { appdroperdata, dangerdroperdata } from "@/constants/constants";
-
+import { useSelector } from "react-redux";
+import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
 interface NavbarProps {
   opened: boolean;
   toggle: () => void;
@@ -13,6 +14,11 @@ interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = ({ opened, toggle }) => {
   const [open, setopen] = useState(false);
+  const { authUser } = useSelector(manageAuthUserSelector);
+  const handleSignOut = () => {
+    document.cookie = "userData=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
+    signOut();
+  }
   return (
     <div className="w-full" style={{ backgroundColor: "" }}>
       <div className="flex py-3 justify-between items-center">
@@ -33,14 +39,12 @@ const Navbar: React.FC<NavbarProps> = ({ opened, toggle }) => {
                 signOut();
               }}
             >
-              {/* <IconBell stroke={1.5} size={25} /> */}
-              <IconHttpDelete
+              <IconBell stroke={1.5} size={25} />
+              {/* <IconHttpDelete
                 stroke={1.5}
                 size={25}
-                onClick={() => {
-                  () => signOut();
-                }}
-              />
+                onClick={handleSignOut}
+              /> */}
             </div>
             <div
               className="border border-gray-800 h-[52px] w-[70%] rounded-full flex items-center justify-between max-sm:w-full max-sm:pr-0 max-sm:border-0 hover:cursor-pointer p-2"
@@ -51,7 +55,9 @@ const Navbar: React.FC<NavbarProps> = ({ opened, toggle }) => {
               <div className="flex items-center gap-1">
                 <div className=" h-[45px] w-[45px] rounded-full flex items-center justify-center overflow-hidden">
                   <img
-                    src="https://static.vecteezy.com/system/resources/previews/004/819/327/original/male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg"
+                    // src="https://static.vecteezy.com/system/resources/previews/004/819/327/original/male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg"
+                    // src={'https://lh3.googleusercontent.com/a/ACg8ocJUB9_FiuS4BTxmYA3e-32sYipdnSCPCWXUeQfzmHd46SErbSre=s96-c'}
+                    src={authUser?.img}
                     className="object-cover w-full h-full"
                     alt="Avatar"
                   />
@@ -101,6 +107,10 @@ const Navbar: React.FC<NavbarProps> = ({ opened, toggle }) => {
                             </>
                           );
                         })}
+                        <div className="flex gap-2 text-sm items-center p-2 text-red-500 hover:bg-red-100  rounded-full cursor-pointer" onClick={handleSignOut}>
+                          <IconTransfer size={15} />
+                          <p>Sign out</p>
+                        </div>
                       </div>
                     </div>
                   </div>

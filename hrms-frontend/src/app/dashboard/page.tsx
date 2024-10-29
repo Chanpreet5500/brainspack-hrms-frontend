@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLazyGetAllLeaveDataApiByNameQuery } from "@/services/leave/getLeaves";
 import { getAllUserData, setUserDataLength } from "@/redux/user/user";
+import { useLazyGetAllHolidayDataApiByNameQuery } from "@/services/holiday/holidayApi";
 
 const todayDate = StringDateFormatConvertor(
   new Date().toISOString(),
@@ -21,7 +22,8 @@ const Dashboard = () => {
 
   const [getLeaves, { data: leavesData }] =
     useLazyGetAllLeaveDataApiByNameQuery();
-  // const [getHolidays, { data: holidaysData }] = useLazyGetHolidaysQuery();
+  const [getHolidays, { data: holidaysData }] =
+    useLazyGetAllHolidayDataApiByNameQuery();
   const [currentPage, setCurrentPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [search, setSearch] = useState("");
@@ -44,7 +46,7 @@ const Dashboard = () => {
   useEffect(() => {
     getEmployees("");
     getLeaves("");
-    // getHolidays();
+    getHolidays("");
   }, []);
   useEffect(() => {
     if (employeeData || leavesData) {
@@ -55,8 +57,8 @@ const Dashboard = () => {
               return { ...item, count: employeeData?.users?.length || 0 };
             case "On Leave":
               return { ...item, count: leavesData?.leaves?.length || 0 };
-            // case "Upcoming Holiday":
-            //   return { ...item, count: holidaysData?.count || 0 };
+            case "Upcoming Holiday":
+              return { ...item, count: holidaysData?.count || 0 };
             default:
               return item;
           }

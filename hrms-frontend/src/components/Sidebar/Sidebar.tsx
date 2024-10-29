@@ -1,188 +1,148 @@
 "use client";
-import { sidebarlinks } from "@/constants/constants";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import Searchbar from "../Searchbar/Searchbar";
-import { useState } from "react";
 
-interface SidebarProps {
-  toggle: () => void;
+import { useState } from "react";
+import {
+  Group,
+  Box,
+  Collapse,
+  ThemeIcon,
+  ScrollArea,
+  Text,
+  UnstyledButton,
+  rem,
+} from "@mantine/core";
+import { IconCalendarStats, IconChevronRight } from "@tabler/icons-react";
+import classes from "./Navbar.module.css";
+import { usePathname, useRouter } from "next/navigation";
+
+interface LinkItem {
+  label: string;
+  link?: string;
+  icon: React.FC<any>;
+  links?: { label: string; link: string }[];
+  initiallyOpened?: boolean;
+  data?: any; // Optional
 }
 
-const Sidebar = ({ toggle }: SidebarProps) => {
-  const [openIndex, setOpenIndex] = useState(false);
+interface NavbarProps {
+  linksData: LinkItem[];
+}
 
-  const subMenuOpenFn = () => {
-    setOpenIndex((prev) => !prev);
-  };
+export function LinksGroup({
+  icon: Icon,
+  label,
+  initiallyOpened,
+  links,
+  link,
+}: LinkItem) {
   const pathname = usePathname();
+  const hasLinks = Array.isArray(links);
+  const [opened, setOpened] = useState(initiallyOpened || false);
+  const router = useRouter();
+
+  // Navigation handler
+  const handleNavigation = (itemLink: string | undefined) => {
+    if (itemLink) {
+      router.push(itemLink);
+    }
+  };
+
+  // Render nested items if present
+  const items = (hasLinks ? links : []).map((subLink) => (
+    <Text<"a">
+      component="a"
+      className={classes.link}
+      href={subLink.link}
+      key={subLink.label}
+      onClick={(event) => {
+        event.preventDefault(); // Prevent default anchor behavior
+        handleNavigation(subLink.link); // Navigate to nested link
+      }}
+    >
+      {subLink.label}
+    </Text>
+  ));
+
   return (
-    <div className="flex flex-col gap-1">
-      <div className="hidden max-sm:block max-md:block">
-        <Searchbar
-          value={""}
-          handleSearch={""}
-          placeholder="Search"
-          iconcolor="#9ca3af"
-          classname=""
-        />
-      </div>
-      {sidebarlinks.map((ele, index) => {
-        const isActive = pathname === ele.link;
+    <>
+      <UnstyledButton
+        onClick={() => {
+          if (!hasLinks) {
+            handleNavigation(link); // Direct navigation for non-nested items
+          } else {
+            setOpened((o) => !o); // Toggle dropdown for items with nested links
+          }
+        }}
+        className={pathname === link ? classes.pathcontrol : classes.control}
+      >
+        <Group justify="space-between" gap={0}>
+          <Box style={{ display: "flex", alignItems: "center" }}>
+            <ThemeIcon variant="light" size={30}>
+              <Icon style={{ width: rem(18), height: rem(18) }} />
+            </ThemeIcon>
+            <Box ml="md">{label}</Box>
+          </Box>
+          {hasLinks && (
+            <IconChevronRight
+              className={classes.chevron}
+              stroke={1.5}
+              style={{
+                width: rem(16),
+                height: rem(16),
+                transform: opened ? "rotate(-90deg)" : "none",
+              }}
+            />
+          )}
+        </Group>
+      </UnstyledButton>
 
-        return (
-          <>
-            <div key={ele.id}>
-              {ele.link ? (
-                <Link href={ele.link}>
-                  <div
-                    className={`px-3 py-1 flex gap-1 items-center hover:bg-white rounded-full cursor-pointer ${
-                      isActive ? "bg-white" : ""
-                    }`}
-                  >
-                    <div className="p-2 bg-slate-200 rounded-full">
-                      {ele.icon}
-                    </div>
+      {/* Collapse nested items */}
+      {hasLinks && <Collapse in={opened}>{items}</Collapse>}
+    </>
+  );
+}
 
-                    <div onClick={toggle} className="text-base font-medium">
-                      {ele.name}
-                    </div>
-                  </div>
-                </Link>
-              ) : (
-                <>
-                  <div>
-                    <div
-                      onClick={() => subMenuOpenFn()}
-                      className={`px-3 py-1 flex gap-1 items-center hover:bg-white rounded-full cursor-pointer ${
-                        isActive ? "bg-white" : ""
-                      }`}
-                    >
-                      <div className="p-2 bg-slate-200 rounded-full">
-                        {ele.icon}
-                      </div>
+export function Navbar({ linksData }: NavbarProps) {
+  const links = linksData.map((item) => (
+    <LinksGroup {...item} key={item.label} />
+  ));
 
-                      <div onClick={toggle} className="text-base font-medium">
-                        {ele.name}
-                      </div>
-                    </div>
-                  </div>
-                  <div className={`${isActive ? "bg-white" : ""}`}>
-                    {ele?.submenu?.map((curr, indx) => {
-                      return (
-                        <>
-                          {openIndex ? (
-                            <Link href={curr.link}>
-                              <div
-                                className={`px-3 py-1 flex gap-1 items-center hover:bg-white rounded-full cursor-pointer ${
-                                  isActive ? "bg-white" : ""
-                                }`}
-                              >
-                                <div className="p-2 bg-slate-200 rounded-full">
-                                  {curr?.icon}
-                                </div>
-
-                                <div
-                                  onClick={toggle}
-                                  className="text-base font-medium"
-                                >
-                                  {curr?.name}
-                                </div>
-                              </div>
-                            </Link>
-                          ) : (
-                            ""
-                          )}
-                        </>
-                      );
-                    })}
-                  </div>
-                </>
-              )}
-            </div>
-          </>
-        );
-      })}
+  return (
+    <div className={classes.navbar}>
+      <ScrollArea className={classes.links}>
+        <div className={classes.linksInner}>{links}</div>
+      </ScrollArea>
     </div>
   );
-};
-export default Sidebar;
+}
 
-// import { Group, Code, ScrollArea, rem } from "@mantine/core";
-// import {
-//   IconNotes,
-//   IconCalendarStats,
-//   IconGauge,
-//   IconPresentationAnalytics,
-//   IconFileAnalytics,
-//   IconAdjustments,
-//   IconLock,
-// } from "@tabler/icons-react";
+const mockdata = [
+  { label: "Dashboard", icon: IconCalendarStats, link: "/dashboard" },
+  {
+    label: "Employees",
+    icon: IconCalendarStats,
+    link: "/employees",
+  },
+  {
+    label: "Leaves Management",
+    icon: IconCalendarStats,
+    link: "/leaves",
+  },
+  {
+    label: "Leave Policy",
+    icon: IconCalendarStats,
+    links: [
+      { label: "Type", link: "/typePolicies" },
+      { label: "Policies", link: "/leavesPolicies" },
+    ],
+  },
+  {
+    label: "Holiday Calendar",
+    icon: IconCalendarStats,
+    link: "/holidays",
+  },
+];
 
-// import classes from "./NavbarNested.module.css";
-// import { NavbarLinksGroup } from "./NavbarLinkGroup";
-// import { UserButton } from "./UserButton";
-
-// const mockdata = [
-//   { label: "Dashboard", icon: IconGauge },
-//   {
-//     label: "Market news",
-//     icon: IconNotes,
-//     initiallyOpened: true,
-//     links: [
-//       { label: "Overview", link: "/" },
-//       { label: "Forecasts", link: "/" },
-//       { label: "Outlook", link: "/" },
-//       { label: "Real time", link: "/" },
-//     ],
-//   },
-//   {
-//     label: "Releases",
-//     icon: IconCalendarStats,
-//     links: [
-//       { label: "Upcoming releases", link: "/" },
-//       { label: "Previous releases", link: "/" },
-//       { label: "Releases schedule", link: "/" },
-//     ],
-//   },
-//   { label: "Analytics", icon: IconPresentationAnalytics },
-//   { label: "Contracts", icon: IconFileAnalytics },
-//   { label: "Settings", icon: IconAdjustments },
-//   {
-//     label: "Security",
-//     icon: IconLock,
-//     links: [
-//       { label: "Enable 2FA", link: "/" },
-//       { label: "Change password", link: "/" },
-//       { label: "Recovery codes", link: "/" },
-//     ],
-//   },
-// ];
-
-// interface SidebarProps {
-//   toggle: () => void;
-// }
-
-// export const Sidebar = ({ toggle }: SidebarProps) => {
-//   const links = mockdata.map((item) => (
-//     <NavbarLinksGroup {...item} key={item.label} />
-//   ));
-
-//   return (
-//     <nav className={classes.navbar}>
-//       <div className={classes.header}>
-//         <Group justify="space-between">
-//           <Code fw={700}>v3.1.2</Code>
-//         </Group>
-//       </div>
-
-//       <ScrollArea className={classes.links}>
-//         <div className={classes.linksInner}>{links}</div>
-//       </ScrollArea>
-
-//       <div className={classes.footer}>
-//         <UserButton />
-//       </div>
-//     </nav>
-//   );
-// };
+export default function Sidebar() {
+  return <Navbar linksData={mockdata} />;
+}

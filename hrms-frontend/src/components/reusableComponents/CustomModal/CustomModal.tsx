@@ -13,7 +13,8 @@ interface ModalProps {
   styles?: any;
   bgcolor?: any;
   className?: string;
-  size: string;
+  showButton?: boolean
+  size?: string;
 }
 export const CustomModal = ({
   buttonlabel,
@@ -27,6 +28,7 @@ export const CustomModal = ({
   styles,
   bgcolor,
   size,
+  showButton = true
 }: ModalProps) => {
   return (
     <>
@@ -44,9 +46,12 @@ export const CustomModal = ({
       >
         {content}
       </Modal>
-      <Button onClick={open} color={bgcolor}>
+      {showButton ? <Button onClick={open} color={bgcolor}>
         {buttonlabel}
-      </Button>
+      </Button> :
+        <p onClick={open} color={bgcolor}> {buttonlabel}</p>
+      }
+
     </>
   );
 };

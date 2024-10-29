@@ -45,6 +45,17 @@ export const usersApi = createApi({
         };
       },
     }),
+
+    registerDataApiByName: builder.mutation({
+      query: ({ email, img }) => {
+        return {
+          url: `/users/login`,
+          method: "PATCH",
+          body: { img },
+          params: { email }
+        };
+      },
+    }),
   }),
 });
 
@@ -53,5 +64,6 @@ export const {
   useLazyGetAllDataApiByNameQuery,
   useCreateUserMutation,
   useUpdateDataApiByNameMutation,
+  useRegisterDataApiByNameMutation
 } = usersApi;
 export default usersApi;
