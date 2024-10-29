@@ -28,8 +28,10 @@ import { IconCheck } from "@tabler/icons-react";
 interface dataValue {
   onClose: any;
   triggerCreate: any;
+  token: any
+  editBy: string
 }
-const LeaveForm: React.FC<dataValue> = ({ onClose, triggerCreate }) => {
+const LeaveForm: React.FC<dataValue> = ({ onClose, triggerCreate, token, editBy }) => {
   const [startDate, setStartDate] = useState<Date | null>(new Date());
   const [endDate, setEndDate] = useState<Date | null>(startDate);
   const [search, setSearch] = useState("");
@@ -41,7 +43,7 @@ const LeaveForm: React.FC<dataValue> = ({ onClose, triggerCreate }) => {
       const { employee, ...rest } = data;
 
       const response = await triggerCreate({
-        createdById: "670f65977a0a5180c8198e45",
+        createdById: editBy,
         leavedata: {
           ...rest,
           employee_id: "66f2d6a2a957ff778f4384fb",
@@ -50,7 +52,8 @@ const LeaveForm: React.FC<dataValue> = ({ onClose, triggerCreate }) => {
           end_date: DateFormatConvertor(endDate),
           start_day: 'full',
           end_day: 'full'
-        },
+        }
+        , token: token
       });
       notifications.show({
         title: "Leave Successful",

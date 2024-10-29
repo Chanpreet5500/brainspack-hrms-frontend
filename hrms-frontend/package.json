@@ -27,6 +27,7 @@
     "dayjs": "^1.11.13",
     "embla-carousel-autoplay": "^7.1.0",
     "embla-carousel-react": "^7.1.0",
+    "jsonwebtoken": "^9.0.2",
     "mantine-datatable": "^7.12.4",
     "mantine-react-table": "^2.0.0-beta.6",
     "mongoose": "^8.7.0",

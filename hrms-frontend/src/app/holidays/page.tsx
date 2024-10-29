@@ -11,7 +11,8 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from '@mantine/form';
 import { CustomModal } from '@/components/reusableComponents/CustomModal/CustomModal';
-import HolidayForm from '@/components/Holiday/HolidayForm'; import { DateFormatConvertor } from '@/constants/commonFunction';
+import HolidayForm from '@/components/Holiday/HolidayForm';
+import { manageAuthUserSelector } from '@/redux/authorizedUser/authorizedUserSelector';
 ;
 const Calendar = () => {
     const [postData, { data: addData, isSuccess: createSuccess, isError }] = useCreateHolidayMutation();
@@ -21,13 +22,15 @@ const Calendar = () => {
     const dispatch = useDispatch();
     const { allData } = useSelector(manageHolidaySelector);
     const [opened, { open, close }] = useDisclosure(false);
+    const { authToken } = useSelector(manageAuthUserSelector);
 
     useEffect(() => {
         onGetData()
-    }, [createSuccess, updateSuccess, deleteSuccess])
+    }, [createSuccess, updateSuccess, deleteSuccess, authToken])
 
     const onGetData = async () => {
-        const response = await allDataApi("d")
+        console.log(authToken, 'authTokenauthToken')
+        const response = await allDataApi({ token: authToken })
         dispatch(getAllholidayData(response.data))
     }
 
