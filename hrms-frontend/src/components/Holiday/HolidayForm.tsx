@@ -7,32 +7,41 @@ import { DateFormatConvertor } from "@/constants/commonFunction";
 import { useSelector } from "react-redux";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
 
+const HolidayForm = ({
+  form,
+  triggerCreate,
+  triggerUpdate,
+  triggerDelete,
+  modalClose,
+}) => {
+  const { authToken, authUser } = useSelector(manageAuthUserSelector);
 
-const HolidayForm = ({ form, triggerCreate, triggerUpdate, triggerDelete, modalClose }) => {
-    const { authToken, authUser } = useSelector(manageAuthUserSelector);
-
-    const handleSubmit = async (data: any) => {
-        const formattedDate = DateFormatConvertor(data.date)
-        data.date = formattedDate;
-        if (data?.holiday_id) {
-            await triggerUpdate({ data: data, owner_id: authUser?.userId, token: authToken });
-        } else {
-            await triggerCreate(data);
-        }
-        modalClose();
-        form?.reset();
-    };
-    const onRemove = async (data) => {
-        await triggerDelete({ data: data, token: authToken })
-        modalClose();
+  const handleSubmit = async (data: any) => {
+    const formattedDate = DateFormatConvertor(data.date);
+    data.date = formattedDate;
+    if (data?.holiday_id) {
+      await triggerUpdate({
+        data: data,
+        owner_id: authUser?.userId,
+        token: authToken,
+      });
+    } else {
+      await triggerCreate(data);
     }
     modalClose();
     form?.reset();
   };
   const onRemove = async (data) => {
-    await triggerDelete(data);
+    await triggerDelete({ data: data, token: authToken });
     modalClose();
+
+    modalClose();
+    form?.reset();
   };
+  // const onRemove = async (data) => {
+  //   await triggerDelete(data);
+  //   modalClose();
+  // };
   return (
     <form
       onSubmit={form.onSubmit((localUserDetails: any) => {
