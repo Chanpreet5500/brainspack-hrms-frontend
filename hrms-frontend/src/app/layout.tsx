@@ -24,10 +24,6 @@ export default async function RootLayout({
   children: React.ReactNode;
   pageProps: { session?: any };
 }>) {
-  const cookieStore = await cookies()
-
-  const themeCookie = await cookieStore.get('userData');
-  let authUser = themeCookie ? JSON.parse(themeCookie.value) : null;
   return (
     <html lang="en">
       <head>
@@ -56,7 +52,7 @@ export default async function RootLayout({
               session={pageProps?.session}
             >
               <Notifications />
-              <LayoutWrapper authUser={authUser}>
+              <LayoutWrapper>
                 {children}
               </LayoutWrapper>
 

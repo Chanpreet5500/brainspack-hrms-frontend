@@ -19,10 +19,11 @@ import {
   IconUsers,
 } from "@tabler/icons-react";
 export const appdroperdata = [
-  { id: 0, icon: IconSettings, name: "Settings" },
-  { id: 1, icon: IconMessageFilled, name: "Messages" },
-  { id: 2, icon: IconPhotoStar, name: "Gallery" },
-  { id: 3, icon: IconSearch, name: "Search" },
+  // { id: 0, icon: IconSettings, name: "Settings" },
+  // { id: 1, icon: IconMessageFilled, name: "Messages" },
+  // { id: 2, icon: IconPhotoStar, name: "Gallery" },
+  // { id: 3, icon: IconSearch, name: "Search" },
+  { id: 4, icon: IconSettings, name: "Profile" }
 ];
 
 export const employeeData = [

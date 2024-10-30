@@ -5,15 +5,15 @@ import { AppShell, Flex } from "@mantine/core";
 import Sidebar from "../Sidebar/Sidebar";
 import Navbar from "../Navbar/Navbar";
 import { usePathname } from "next/navigation";
-import { NavbarNested } from "../Sidebar/NavbarNested";
-import MySidebar from "../Sidebar/mySidebar";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   setAuthToken,
   setAuthUser,
 } from "@/redux/authorizedUser/authorizedUser";
 import { useEffect } from "react";
 import { useSession } from "next-auth/react";
+import jwt from "jsonwebtoken";
+import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
 
 export function LayoutWrapper({
   authUser,
@@ -22,14 +22,29 @@ export function LayoutWrapper({
   children: React.ReactNode;
 }) {
   const { data: session, status } = useSession();
+
   const [opened, { toggle }] = useDisclosure();
   const dispatch = useDispatch();
   const pathname = usePathname();
   const isRegisterPage = pathname !== "/";
+  const { authToken } = useSelector(manageAuthUserSelector);
   useEffect(() => {
-    dispatch(setAuthUser(authUser));
-    dispatch(setAuthToken(session?.accessToken));
-  }, [authUser]);
+    if (status === "authenticated" && session) {
+      if (session && session?.apiAccessToken && authToken === null) {
+        dispatch(setAuthToken(session?.apiAccessToken));
+        try {
+          const decodedToken = jwt.decode(session.apiAccessToken);
+          if (decodedToken) {
+            dispatch(setAuthUser(decodedToken));
+          } else {
+            console.error("Failed to decode token");
+          }
+        } catch (err) {
+          console.log("error in decoding the code", err);
+        }
+      }
+    }
+  }, [status]);
   return (
     <>
       {isRegisterPage ? (

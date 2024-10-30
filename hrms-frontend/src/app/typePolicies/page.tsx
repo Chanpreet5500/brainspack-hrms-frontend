@@ -45,7 +45,6 @@ export default function typePolicies() {
       dispatch(settotalTypePolicies(leaveTypeData?.length));
     }
   }, [leaveTypeData, createSuccess]);
-  console.log(allTypesPolicies, "leaveTypeData");
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const searchValue = event.target.value;
     setSearch(searchValue);

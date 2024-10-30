@@ -15,7 +15,6 @@ const TypeForm: React.FC<dataValue> = ({ onClose, triggerCreate, form }) => {
   const dispatch = useDispatch();
 
   const handleSubmit = async (data: any) => {
-    console.log(data, "data");
     try {
       await triggerCreate(data);
       {
@@ -36,11 +35,9 @@ const TypeForm: React.FC<dataValue> = ({ onClose, triggerCreate, form }) => {
   };
 
   let data = form.getValues();
-  console.log(data, "formdata");
   return (
     <form
       onSubmit={form.onSubmit((values: any) => {
-        console.log(values, "val");
         handleSubmit(values);
       })}
     >

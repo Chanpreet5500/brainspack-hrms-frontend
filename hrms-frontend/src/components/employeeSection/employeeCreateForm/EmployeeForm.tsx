@@ -18,10 +18,11 @@ interface value {
   form: any;
   onHandelUpdate: any;
   createTrigger: any;
+  token: any;
 }
 
 const EmployeeForm: React.FC<value> = (props) => {
-  const { onClose, form, onHandelUpdate, createTrigger } = props;
+  const { onClose, form, onHandelUpdate, createTrigger, token } = props;
   const [postData, { data: addData, isSuccess, isError }] =
     useCreateUserMutation();
   const dispatch = useDispatch();
@@ -38,7 +39,8 @@ const EmployeeForm: React.FC<value> = (props) => {
   useEffect(() => {
     const params = {
       page: 1,
-      limit: 10,
+      limit: 5,
+      token: token,
     };
     allDataApi(params);
   }, [isSuccess]);
@@ -55,7 +57,7 @@ const EmployeeForm: React.FC<value> = (props) => {
           autoClose: 1000,
         });
       } else {
-        await createTrigger(data);
+        await createTrigger({ data: data, token: token });
         notifications.show({
           title: "Creation Successful",
           message: "Employee created successfully",

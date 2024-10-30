@@ -44,12 +44,14 @@ export default NextAuth({
           },
           body: JSON.stringify({ email: profile.email }),
         });
-        const data = await response.json();
-        if (data && data?.fname) {
-          profile.userInfo = data;
-          return true;
+        if (response.ok) {
+          const data = await response.json();
+          if (data.accessToken) {
+            profile.apiAccessToken = data.accessToken
+            return true;
+          }
         }
-        return true
+        return false
       } catch (error) {
         console.error("Error checking email during sign-in:", error);
         return false;
@@ -65,19 +67,19 @@ export default NextAuth({
         token.name = user.name;
         token.image = profile?.picture || '';
       }
-      if (profile?.userInfo) {
-        token.userInfo = profile.userInfo;
+      if (profile?.apiAccessToken) {
+        token.apiAccessToken = profile.apiAccessToken;
       }
       return token;
     },
     async session({ session, token }) {
-      if (token.userInfo.fname) {
+      if (token.apiAccessToken) {
         session.accessToken = token.accessToken;
         session.user.id = token.id;
         session.user.email = token.email;
         session.user.name = token.name;
         session.user.image = token.image;
-        session.user.userInfo = token.userInfo;
+        session.apiAccessToken = token.apiAccessToken;
         return session;
       }
       return false

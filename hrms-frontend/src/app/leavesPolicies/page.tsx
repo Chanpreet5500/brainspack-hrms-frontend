@@ -29,7 +29,6 @@ export default function TypeComponent() {
     useCreateLeavePoliciesApiMutation();
   const [updateData, { data: updateLeaveData, isSuccess: updateSuccess }] =
     useUpdateLeavePoliciesApiByNameMutation();
-  console.log(updateLeaveData, "updateLeaveData");
   const { allLeavesPolicies, totalleavesPolicies } = useSelector(
     manageLeavePoliciesSelector
   );

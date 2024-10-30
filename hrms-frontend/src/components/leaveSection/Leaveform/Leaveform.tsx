@@ -24,12 +24,20 @@ import {
 interface dataValue {
   onClose: any;
   triggerCreate: any;
+  token: any;
+  editBy: string;
 }
 const initialState = {
   allLeavesPolicies: [],
   totalleavesPolicies: 0,
 };
-const LeaveForm: React.FC<dataValue> = ({ onClose, triggerCreate }) => {
+// const LeaveForm: React.FC<dataValue> = ({ onClose, triggerCreate }) => {
+const LeaveForm: React.FC<dataValue> = ({
+  onClose,
+  triggerCreate,
+  token,
+  editBy,
+}) => {
   const [startDate, setStartDate] = useState<Date | null>(new Date());
   const [endDate, setEndDate] = useState<Date | null>(startDate);
   const [page, setPage] = useState(1); // New state for page
@@ -58,12 +66,11 @@ const LeaveForm: React.FC<dataValue> = ({ onClose, triggerCreate }) => {
     allDataApi({ page, limit, search });
   }, [allDataApi, page, limit, search]);
   const handleSubmit = async (data: any) => {
-    console.log(data, "datavv");
     try {
       const { employee, ...rest } = data;
 
       const response = await triggerCreate({
-        createdById: data?.employee,
+        createdById: editBy,
         leavedata: {
           ...rest,
           employee_id: data?.employee,
@@ -73,6 +80,7 @@ const LeaveForm: React.FC<dataValue> = ({ onClose, triggerCreate }) => {
           start_day: "full",
           end_day: "full",
         },
+        token: token,
       });
       notifications.show({
         title: "Leave Successful",
