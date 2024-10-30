@@ -7,40 +7,52 @@ export const holidayApi = createApi({
     }),
     endpoints: (builder) => ({
         deleteHolidayDataApiByName: builder.mutation({
-            query: (holiday_id) => {
+            query: ({ data, token }) => {
                 return {
-                    url: `/delete/${holiday_id}`,
+                    url: `/delete/${data}`,
                     method: "Delete",
                     body: {},
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
                 };
             },
         }),
 
         getAllHolidayDataApiByName: builder.query({
-            query: () => {
+            query: ({ token }) => {
                 return {
                     url: `/`,
                     method: "GET",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
                 };
             },
         }),
 
         createHoliday: builder.mutation({
-            query: (body) => {
+            query: ({ data, owner_id, token }) => {
                 return {
-                    url: `/create/66f532c42bb990137501740f`,
+                    url: `/create/${owner_id}`,
                     method: "POST",
-                    body: body,
+                    body: data,
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
                 };
             },
         }),
 
         updateHolidayDataApiByName: builder.mutation({
-            query: (data) => {
+            query: ({ data, owner_id, token }) => {
                 return {
-                    url: `/update/670cc1cf4360edebf2074093`,
+                    url: `/update/${owner_id}`,
                     method: "PATCH",
                     body: data,
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
                 };
             },
         }),

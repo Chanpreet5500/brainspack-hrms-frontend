@@ -23,6 +23,7 @@ import { DataTable } from "mantine-datatable";
 import { StringDateFormatConvertor } from "@/constants/commonFunction";
 import { notifications } from "@mantine/notifications";
 import { manageLeavePoliciesSelector } from "@/redux/leavePolicies/leaveSelector";
+import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
 
 const initialState = {
   allLeaves: [],
@@ -39,6 +40,7 @@ export default function LeaveComponent() {
   const [search, setSearch] = useState("");
   const dispatch = useDispatch();
   const [opened, { open, close }] = useDisclosure(false);
+  const { authUser, authToken } = useSelector(manageAuthUserSelector);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -50,7 +52,7 @@ export default function LeaveComponent() {
       const response = await updateLeave({
         leaveId: data._id,
         status,
-        updatedById: "66f6a1d7d1e7250d2a3d5389",
+        updatedById: authUser?.userId,
       });
 
       if (response.error) {
@@ -89,6 +91,7 @@ export default function LeaveComponent() {
       page: currpage,
       limit: limit,
       search: searchValue,
+      token: authToken,
     });
 
     try {
@@ -105,7 +108,7 @@ export default function LeaveComponent() {
 
   useEffect(() => {
     renderData(currentpage, tableDataLimit, search);
-  }, [currentpage, createSuccess]);
+  }, [currentpage, createSuccess, authToken]);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const searchValue = event.target.value;
@@ -212,7 +215,7 @@ export default function LeaveComponent() {
               open={editopen}
               size={"lg"}
               close={editclose}
-              className="!bg-transparent !hover:bg-red-600 "
+              className="!bg-transparent !hover:bg-red-600"
               buttonlabel={
                 <>
                   <IconEdit className="h-[25px] w-[25px] text-blue-600 cursor-pointer" />
@@ -274,7 +277,14 @@ export default function LeaveComponent() {
             close={close}
             buttonlabel={"Add Leave"}
             modalTitle={"Apply for Leave"}
-            content={<LeaveForm onClose={close} triggerCreate={createLeave} />}
+            content={
+              <LeaveForm
+                onClose={close}
+                triggerCreate={createLeave}
+                token={authToken}
+                editBy={authUser?.userId}
+              />
+            }
           />
         </div>
       </div>

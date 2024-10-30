@@ -4,18 +4,18 @@ import TextInputField from "../Inputs/textInput/Input";
 import { Button, Group, MantineProvider } from "@mantine/core";
 import { useDeleteHolidayDataApiByNameMutation } from "@/services/holiday/holidayApi";
 import { DateFormatConvertor } from "@/constants/commonFunction";
-const HolidayForm = ({
-  form,
-  triggerCreate,
-  triggerUpdate,
-  triggerDelete,
-  modalClose,
-}) => {
+import { useSelector } from "react-redux";
+import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
+
+
+const HolidayForm = ({ form, triggerCreate, triggerUpdate, triggerDelete, modalClose }) => {
+  const { authToken, authUser } = useSelector(manageAuthUserSelector);
+
   const handleSubmit = async (data: any) => {
-    const formattedDate = DateFormatConvertor(data.date);
+    const formattedDate = DateFormatConvertor(data.date)
     data.date = formattedDate;
     if (data?.holiday_id) {
-      await triggerUpdate(data);
+      await triggerUpdate({ data: data, owner_id: authUser?.userId, token: authToken });
     } else {
       await triggerCreate(data);
     }
@@ -23,9 +23,16 @@ const HolidayForm = ({
     form?.reset();
   };
   const onRemove = async (data) => {
-    await triggerDelete(data);
+    await triggerDelete({ data: data, token: authToken })
     modalClose();
-  };
+  }
+  //   modalClose();
+  //   form?.reset();
+  // };
+  // const onRemove = async (data) => {
+  //   await triggerDelete(data);
+  //   modalClose();
+  // };
   return (
     <form
       onSubmit={form.onSubmit((localUserDetails: any) => {
