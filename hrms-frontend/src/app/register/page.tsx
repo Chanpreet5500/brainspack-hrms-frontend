@@ -1,7 +1,20 @@
+"use client";
 import { IconAccessible, IconBrandGoogleFilled } from "@tabler/icons-react";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
+import { useEffect } from "react";
 
 const Register = () => {
+  const { data: session, status } = useSession();
+  useEffect(() => {
+    if (status === "authenticated") {
+      // const userToken = JSON.stringify(session?.user);
+      // document.cookie = `token=${userToken}; path=/; secure; samesite=strict`;
+      // const email = session?.user?.email || "";
+      // const first_name = session?.user?.givenName || ""
+      // const last_name = session?.user?.familyName || ""
+      // const profile_img = session?.user?.image || ""
+    }
+  }, [status, session]);
   return (
     <div className="w-full h-full flex  bg-center bg-no-repeat bg-cover">
       <div className="w-[45%]  flex justify-center left-pare  nt items-center ">

@@ -25,6 +25,8 @@ import { CustomModal } from "@/components/reusableComponents/CustomModal/CustomM
 import { getAllUserData, setUserDataLength } from "@/redux/user/user";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
 import { notifications, showNotification } from "@mantine/notifications";
+import { CheckIcon } from "@mantine/core";
+import "./employe.css";
 export default function Employees() {
   const [postData, { data: addData, isSuccess: createSuccess, isError }] =
     useCreateUserMutation();
@@ -40,9 +42,9 @@ export default function Employees() {
   const [deleteUserData, { data: userDeletedData, isSuccess: deleteSuccess }] =
     useDeleteDataApiByNameMutation();
   const { allUserDataLength, allUserData } = useSelector(manageUserSelector);
+  const { authUser } = useSelector(manageAuthUserSelector);
   const [opened, { open, close }] = useDisclosure(false);
   const dispatch = useDispatch();
-  const { authUser, authToken } = useSelector(manageAuthUserSelector);
   const handleOnClose = () => {
     close();
     form.reset();
@@ -53,7 +55,7 @@ export default function Employees() {
       dispatch(setUserDataLength(data.totalusers));
     }
   }, [data, isSuccess]);
-  useEffect(() => {}, [authToken]);
+  console.log("im in the employee");
   const renderData = async (
     currpage: number,
     limit: number,
@@ -63,7 +65,6 @@ export default function Employees() {
       page: currpage,
       limit: limit,
       search: search,
-      token: authToken,
     });
   };
   const onHandelUpdate = async (row: any) => {
@@ -78,8 +79,7 @@ export default function Employees() {
       const result = await updateUserData({
         user_id: row._id,
         data: mydata,
-        owner_id: authUser?.userId,
-        token: authToken,
+        owner_id: "66fa989f82603080b4a64da9",
       });
     } catch (error) {
       throw error;
@@ -90,15 +90,14 @@ export default function Employees() {
     setCurrentPage(page);
     const params = {
       page: page,
-      limit: 5,
-      token: authToken,
+      limit: 10,
     };
     allDataApi(params);
     renderData(page, tableDataLimit, search);
   };
   useEffect(() => {
     renderData(currentpage, tableDataLimit, search);
-  }, [currentpage, updateUserSuccess, deleteSuccess, createSuccess, authToken]);
+  }, [currentpage, updateUserSuccess, deleteSuccess, createSuccess]);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const updatedSearch = event.target.value;
@@ -110,9 +109,8 @@ export default function Employees() {
       isDeleted: true,
     };
     const response = await deleteUserData({
-      owner_id: authUser?.userId,
+      owner_id: "66fa989f82603080b4a64da9",
       user_id: row._id,
-      token: authToken,
     });
     notifications.show({
       color: "red",
@@ -128,8 +126,7 @@ export default function Employees() {
     const result = await updateUserData({
       user_id: row._id,
       data: mydata,
-      owner_id: authUser?.userId,
-      token: authToken,
+      owner_id: "670f65977a0a5180c8198e45",
     });
   };
 
@@ -275,7 +272,6 @@ export default function Employees() {
                     form={form}
                     onHandelUpdate={onHandelUpdate}
                     createTrigger={postData}
-                    token={authToken}
                   />
                 </>
               }

@@ -6,37 +6,28 @@ export const leavesApi = createApi({
   }),
   endpoints: (builder) => ({
     getAllLeaveDataApiByName: builder.query({
-      query: ({ page, limit, search, token }) => {
+      query: ({ page, limit, search }) => {
         return {
           url: `leaves/`,
           method: "GET",
           params: { page, limit, search },
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
         };
       },
     }),
     createLeave: builder.mutation({
-      query: ({ createdById, leavedata, token }) => {
+      query: ({ createdById, leavedata }) => {
         return {
           url: `/leaves/${createdById}`,
           method: "POST",
           body: leavedata,
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
         };
       },
     }),
     updateLeaveDataApiByName: builder.mutation({
-      query: ({ leaveId, status, updatedById, data, token }) => {
+      query: ({ leaveId, status, updatedById, data }) => {
         return {
           url: `/leaves/update/${updatedById}/${leaveId}?status=${status}`,
           method: "PATCH",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
         };
       },
     }),
