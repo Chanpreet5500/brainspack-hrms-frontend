@@ -64,17 +64,17 @@ export default function LeaveComponent() {
       {
         status == "rejected"
           ? notifications.show({
-              color: "red",
-              title: "Rejected",
-              message: "Leave request rejected",
-              position: "bottom-left",
-            })
+            color: "red",
+            title: "Rejected",
+            message: "Leave request rejected",
+            position: "bottom-left",
+          })
           : notifications.show({
-              color: "green",
-              title: "Approved",
-              message: "Leave request approved",
-              position: "bottom-left",
-            });
+            color: "green",
+            title: "Approved",
+            message: "Leave request approved",
+            position: "bottom-left",
+          });
       }
     } catch (err) {
       console.error("Error updating leave:", err);
