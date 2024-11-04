@@ -123,17 +123,14 @@ const mockdata = [
     icon: IconCalendarStats,
     link: "/employees",
   },
+
   {
     label: "Leaves Management",
     icon: IconCalendarStats,
-    link: "/leaves",
-  },
-  {
-    label: "Leave Policy",
-    icon: IconCalendarStats,
     links: [
-      { label: "Type", link: "/typePolicies" },
-      { label: "Policies", link: "/leavesPolicies" },
+      { label: "Leaves", link: "/leavepolicies/leaves" },
+      { label: "Type", link: "/leavepolicies/typepolicies" },
+      { label: "Policies", link: "/leavepolicies/leavespolicies" },
     ],
   },
   {

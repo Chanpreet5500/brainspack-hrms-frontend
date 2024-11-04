@@ -35,11 +35,14 @@ const Calendar = () => {
   const { authToken } = useSelector(manageAuthUserSelector);
 
   useEffect(() => {
-    onGetData();
+    if (authToken) {
+      onGetData();
+    }
   }, [createSuccess, updateSuccess, deleteSuccess, authToken]);
 
   const onGetData = async () => {
     const response = await allDataApi({ token: authToken });
+
     dispatch(getAllholidayData(response.data));
   };
 

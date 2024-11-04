@@ -18,6 +18,7 @@ import {
 import { CustumCard } from "@/components/policiesSection/Card";
 import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
+import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
 
 const initialState = {
   allLeavesPolicies: [],
@@ -32,19 +33,23 @@ export default function TypeComponent() {
   const { allLeavesPolicies, totalleavesPolicies } = useSelector(
     manageLeavePoliciesSelector
   );
+  const { authUser, authToken } = useSelector(manageAuthUserSelector);
   const [search, setSearch] = useState("");
   const dispatch = useDispatch();
   const [opened, { open, close }] = useDisclosure(false);
   const [triggerLeavePolicies, { data, isSuccess, isError }] =
     useLazyGetAllLeavePoliciesApiApiByNameQuery();
 
+  console.log(authToken, "token");
   useEffect(() => {
-    triggerLeavePolicies("ss");
+    if (authToken) {
+      triggerLeavePolicies({ token: authToken });
+    }
     if (data) {
       dispatch(setallLeavesPolicies(data));
       dispatch(settotalleavesPolicies(data?.length));
     }
-  }, [data, createSuccess, updateSuccess]);
+  }, [data, createSuccess, updateSuccess, authToken]);
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const searchValue = event.target.value;
     setSearch(searchValue);
@@ -122,7 +127,7 @@ export default function TypeComponent() {
   return (
     <>
       <div className="flex justify-between p-2 max-sm:flex-col-reverse">
-        <div>My Team ({totalleavesPolicies})</div>
+        <div>Leave Policies ({totalleavesPolicies})</div>
         <div className="flex flex-grow gap-2 justify-end items-center w-[32%]  max-sm:w-full">
           <Searchbar
             value={search}
@@ -143,6 +148,7 @@ export default function TypeComponent() {
                 onHandelUpdate={onHandelUpdate}
                 form={form}
                 onClose={close}
+                token={authToken}
                 triggerCreate={createLeavePolicies}
               />
             }

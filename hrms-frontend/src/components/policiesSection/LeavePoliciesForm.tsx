@@ -13,22 +13,27 @@ interface dataValue {
   triggerCreate: any;
   onHandelUpdate: any;
   form: any;
+  token: any;
 }
 const LeaveForm: React.FC<dataValue> = ({
   onClose,
   triggerCreate,
   onHandelUpdate,
   form,
+  token,
 }) => {
   const dispatch = useDispatch();
   let data = form.getValues();
   useEffect(() => {
-    allleaveTypeDataApi("v");
-  }, []);
+    if (token) {
+      allleaveTypeDataApi({ token: token });
+    }
+  }, [token]);
   const [
     allleaveTypeDataApi,
     { data: leaveTypeData, error, isLoading, isSuccess },
   ] = useLazyGetAllLeaveTypePoliciesApiByNameQuery();
+
   const getTypedata = async () => {
     const response = await allleaveTypeDataApi("v");
   };

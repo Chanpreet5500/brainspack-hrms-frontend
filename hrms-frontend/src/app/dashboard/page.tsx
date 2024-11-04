@@ -71,7 +71,7 @@ const Dashboard = () => {
     });
   };
   useEffect(() => {
-    if (employeeData || leavesData || holidaysData) {
+    if ((authToken && employeeData) || leavesData || holidaysData) {
       setDummyData((prevDummy: any) =>
         prevDummy.map((item: any) => {
           switch (item.title) {
@@ -97,9 +97,11 @@ const Dashboard = () => {
   }, [employeeData, isSuccess, authToken, authUser]);
 
   useEffect(() => {
-    fetchUserData(currentPage, limit, search);
-    fetchLeaveData(currentPage, limit, search);
-    fetchHolidayData(currentPage, limit, search);
+    if (authToken) {
+      fetchUserData(currentPage, limit, search);
+      fetchLeaveData(currentPage, limit, search);
+      fetchHolidayData(currentPage, limit, search);
+    }
   }, [currentPage, limit, search, authToken]);
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading data</div>;

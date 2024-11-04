@@ -21,6 +21,7 @@ import {
   setallLeavesPolicies,
   settotalleavesPolicies,
 } from "@/redux/leavePolicies/leave";
+import { useLazyGetAllLeaveTypePoliciesApiByNameQuery } from "@/services/typePolicies/typeApi";
 interface dataValue {
   onClose: any;
   triggerCreate: any;
@@ -31,7 +32,6 @@ const initialState = {
   allLeavesPolicies: [],
   totalleavesPolicies: 0,
 };
-// const LeaveForm: React.FC<dataValue> = ({ onClose, triggerCreate }) => {
 const LeaveForm: React.FC<dataValue> = ({
   onClose,
   triggerCreate,
@@ -47,24 +47,26 @@ const LeaveForm: React.FC<dataValue> = ({
     useLazyGetAllLeaveDataApiByNameQuery();
   const [allDataApi, { data: employeData, error, isLoading, isSuccess }] =
     useLazyGetAllDataApiByNameQuery();
+
   const { allLeavesPolicies, totalleavesPolicies } = useSelector(
     manageLeavePoliciesSelector
   );
-  const [
-    triggerLeavePolicies,
-    { data: leavePoliciesData, isSuccess: leavePoliciesSuccess, isError },
-  ] = useLazyGetAllLeavePoliciesApiApiByNameQuery();
-  const dispatch = useDispatch();
+  const [allleaveTypeDataApi, { data: leaveTypeData }] =
+    useLazyGetAllLeaveTypePoliciesApiByNameQuery();
   useEffect(() => {
-    triggerLeavePolicies("ss");
-    if (leaveData) {
-      dispatch(setallLeavesPolicies(leaveData));
-      dispatch(settotalleavesPolicies(leaveData?.length));
+    if (token) {
+      allleaveTypeDataApi({ token: token });
     }
-  }, [leavePoliciesData, leavePoliciesSuccess]);
+  }, [token]);
+  const leaveOptions =
+    leaveTypeData?.map((leave: any) => ({
+      value: leave?._id,
+      label: leave?.description,
+    })) || [];
+  console.log(leaveTypeData, leaveOptions, "leaveTypeData");
   useEffect(() => {
-    allDataApi({ page, limit, search });
-  }, [allDataApi, page, limit, search]);
+    allDataApi({ page, limit, search, token });
+  }, [allDataApi, page, limit, search, token]);
   const handleSubmit = async (data: any) => {
     try {
       const { employee, ...rest } = data;
@@ -89,19 +91,22 @@ const LeaveForm: React.FC<dataValue> = ({
         icon: <IconCheck size={18} />,
         autoClose: 1000,
       });
+
       allLeaveData(response);
+
       onClose();
       form.reset();
     } catch (err) {
       console.error("Error creating leave:", err);
     }
   };
+
   const form = useForm({
     mode: "controlled",
     validateInputOnChange: true,
     initialValues: {
       employee: "",
-      // leave_type: "",
+
       start_date: startDate,
       end_date: endDate,
       start_day: "",
@@ -111,8 +116,7 @@ const LeaveForm: React.FC<dataValue> = ({
     },
     validate: {
       employee: (value) => (value ? null : "Please select an employee."),
-      // leave_type_id: (value) =>
-      //   value ? null : "Please select the type of leave.",
+
       start_date: (value) =>
         DateFormatConvertor(value) ? null : "Please select the start date.",
       end_date: (value) =>
@@ -124,11 +128,6 @@ const LeaveForm: React.FC<dataValue> = ({
     employeData?.users?.map((user: any) => ({
       value: user._id,
       label: user.fname,
-    })) || [];
-  const leaveOptions =
-    leavePoliciesData?.map((leave: any) => ({
-      value: leave?.leave_type_id?._id,
-      label: leave?.leave_type_id?.description,
     })) || [];
 
   let formateddate = DateFormatConvertor(data.start_date);

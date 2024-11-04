@@ -7,102 +7,113 @@ import { DateFormatConvertor } from "@/constants/commonFunction";
 import { useSelector } from "react-redux";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
 
+const HolidayForm = ({
+  form,
+  triggerCreate,
+  triggerUpdate,
+  triggerDelete,
+  modalClose,
+}) => {
+  const { authToken, authUser } = useSelector(manageAuthUserSelector);
 
-const HolidayForm = ({ form, triggerCreate, triggerUpdate, triggerDelete, modalClose }) => {
-    const { authToken, authUser } = useSelector(manageAuthUserSelector);
-
-    const handleSubmit = async (data: any) => {
-        const formattedDate = DateFormatConvertor(data.date)
-        data.date = formattedDate;
-        if (data?.holiday_id) {
-            await triggerUpdate({ data: data, owner_id: authUser?.userId, token: authToken });
-        } else {
-            await triggerCreate(data);
-        }
-        modalClose();
-        form?.reset();
-    };
-    const onRemove = async (data) => {
-        await triggerDelete({ data: data, token: authToken })
-        modalClose();
+  const handleSubmit = async (data: any) => {
+    const formattedDate = DateFormatConvertor(data.date);
+    data.date = formattedDate;
+    if (data?.holiday_id) {
+      await triggerUpdate({
+        data: data,
+        owner_id: authUser?.userId,
+        token: authToken,
+      });
+    } else {
+      await triggerCreate(data);
     }
-    return (
+    modalClose();
+    form?.reset();
+  };
+  const onRemove = async (data) => {
+    await triggerDelete({ data: data, token: authToken });
+    modalClose();
+  };
+  return (
+    <form
+      onSubmit={form.onSubmit((localUserDetails: any) => {
+        handleSubmit(localUserDetails);
+      })}
+    >
+      <div className="flex flex-col m-auto gap-3 ">
+        <TextInputField
+          withAsterisk={true}
+          name={"title"}
+          label={"Holiday Title"}
+          placeholder={"Enter the holiday title"}
+          validateKey={form.getInputProps("title")}
+        />
 
-        <form
-            onSubmit={form.onSubmit((localUserDetails: any) => {
-                handleSubmit(localUserDetails);
-            })}  >
-            <div className="flex flex-col m-auto gap-3 ">
+        <TextInputField
+          withAsterisk
+          name={"description"}
+          label={"Holiday Description"}
+          placeholder={"Enter the holiday description"}
+          validateKey={form.getInputProps("description")}
+        />
 
-                <TextInputField
-                    withAsterisk={true}
-                    name={"title"}
-                    label={"Holiday Title"}
-                    placeholder={"Enter the holiday title"}
-                    validateKey={form.getInputProps("title")}
-                />
+        <SelectInputField
+          label={"Type"}
+          form={form}
+          name={"type"}
+          placeholder={"Select Holiday Type"}
+          data={holidayType}
+          validateKey={form.getInputProps("type")}
+        />
 
-                <TextInputField
-                    withAsterisk
-                    name={"description"}
-                    label={"Holiday Description"}
-                    placeholder={"Enter the holiday description"}
-                    validateKey={form.getInputProps("description")}
-                />
+        {!form.getInputProps("holiday_id").value ? (
+          <MantineProvider>
+            <Group className=" !flex !justify-end !w-full ">
+              <Button
+                variant="default"
+                className="!h-[32px] !w-[90px] !font-[500]"
+                radius="md"
+                onClick={() => modalClose()}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                variant="filled"
+                className="!h-[32px] !w-[90px] !font-[500]"
+                radius="md"
+              >
+                Add
+              </Button>
+            </Group>
+          </MantineProvider>
+        ) : (
+          <MantineProvider>
+            <Group className=" !flex !justify-end !w-full ">
+              <Button
+                variant="filled"
+                className="!h-[32px] !w-[90px] !font-[500]"
+                radius="md"
+                onClick={() => onRemove(form.getInputProps("holiday_id").value)}
+                color="red"
+              >
+                Delete
+              </Button>
+              <Button
+                type="submit"
+                variant="filled"
+                className="!h-[32px] !w-[90px] !font-[500]"
+                radius="md"
+              >
+                Update
+              </Button>
+            </Group>
+          </MantineProvider>
+        )}
+      </div>
+    </form>
+  );
+};
 
-                <SelectInputField
-                    label={"Type"}
-                    form={form}
-                    name={"type"}
-                    placeholder={"Select Holiday Type"}
-                    data={holidayType}
-                    validateKey={form.getInputProps("type")}
-                />
-
-                {!form.getInputProps('holiday_id').value ? <MantineProvider>
-                    <Group className=" !flex !justify-end !w-full ">
-                        <Button
-                            variant="default"
-                            className="!h-[32px] !w-[90px] !font-[500]"
-                            radius="md"
-                            onClick={() => modalClose()}
-                        >
-                            Cancel
-                        </Button>
-                        <Button
-                            type="submit"
-                            variant="filled"
-                            className="!h-[32px] !w-[90px] !font-[500]"
-                            radius="md"
-                        >
-                            Add
-                        </Button>
-                    </Group>
-                </MantineProvider> : <MantineProvider>
-                    <Group className=" !flex !justify-end !w-full ">
-                        <Button
-                            variant="filled"
-                            className="!h-[32px] !w-[90px] !font-[500]"
-                            radius="md"
-                            onClick={() => onRemove(form.getInputProps('holiday_id').value)}
-                            color="red"
-                        >
-                            Delete
-                        </Button>
-                        <Button
-                            type="submit"
-                            variant="filled"
-                            className="!h-[32px] !w-[90px] !font-[500]"
-                            radius="md"
-                        >
-                            Update
-                        </Button>
-                    </Group>
-                </MantineProvider>}
-
-            </div>
-        </form>
-    )
-}
-
-export default HolidayForm
+export default HolidayForm;

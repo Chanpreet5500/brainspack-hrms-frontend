@@ -108,7 +108,9 @@ export default function LeaveComponent() {
   };
 
   useEffect(() => {
-    renderData(currentpage, tableDataLimit, search);
+    if (authToken) {
+      renderData(currentpage, tableDataLimit, search);
+    }
   }, [currentpage, createSuccess, leavesData, authToken]);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -261,7 +263,7 @@ export default function LeaveComponent() {
   return (
     <>
       <div className="flex justify-between p-2 max-sm:flex-col-reverse">
-        <div>My Team ({totalleaves})</div>
+        <div>Total Leaves ({totalleaves})</div>
         <div className="flex flex-grow gap-2 justify-end items-center w-[32%]  max-sm:w-full">
           <Searchbar
             value={search}
