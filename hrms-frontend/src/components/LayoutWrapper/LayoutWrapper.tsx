@@ -29,8 +29,8 @@ export function LayoutWrapper({
   const { authToken } = useSelector(manageAuthUserSelector);
   useEffect(() => {
     if (status === "authenticated" && session) {
-      if (session?.apiAccessToken && authToken === null) {
-        console.log("Session:", session);
+      if (session && session?.apiAccessToken && authToken === null) {
+        dispatch(setAuthToken(session?.apiAccessToken));
         try {
           const decodedToken = jwt.decode(session.apiAccessToken);
           if (decodedToken) {
@@ -41,7 +41,6 @@ export function LayoutWrapper({
         } catch (err) {
           console.log("error in decoding the code", err);
         }
-        dispatch(setAuthToken(session?.apiAccessToken));
       }
     }
   }, [status]);

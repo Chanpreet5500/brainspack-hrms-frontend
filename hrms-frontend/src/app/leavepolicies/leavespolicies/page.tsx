@@ -8,7 +8,7 @@ import { manageLeavePoliciesSelector } from "@/redux/leavePolicies/leaveSelector
 import {
   useCreateLeavePoliciesApiMutation,
   useLazyGetAllLeavePoliciesApiApiByNameQuery,
-  useUpdateLeavePoliciesTypeApiApiByNameMutation,
+  useUpdateLeavePoliciesApiByNameMutation,
 } from "@/services/leavePolicies/leavesApi";
 import LeaveForm from "@/components/policiesSection/LeavePoliciesForm";
 import {
@@ -18,6 +18,7 @@ import {
 import { CustumCard } from "@/components/policiesSection/Card";
 import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
+import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
 
 const initialState = {
   allLeavesPolicies: [],
@@ -28,39 +29,42 @@ export default function TypeComponent() {
   const [createLeavePolicies, { isLoading, error, isSuccess: createSuccess }] =
     useCreateLeavePoliciesApiMutation();
   const [updateData, { data: updateLeaveData, isSuccess: updateSuccess }] =
-    useUpdateLeavePoliciesTypeApiApiByNameMutation();
+    useUpdateLeavePoliciesApiByNameMutation();
   const { allLeavesPolicies, totalleavesPolicies } = useSelector(
     manageLeavePoliciesSelector
   );
+  const { authUser, authToken } = useSelector(manageAuthUserSelector);
   const [search, setSearch] = useState("");
   const dispatch = useDispatch();
   const [opened, { open, close }] = useDisclosure(false);
   const [triggerLeavePolicies, { data, isSuccess, isError }] =
     useLazyGetAllLeavePoliciesApiApiByNameQuery();
 
+  console.log(authToken, "token");
   useEffect(() => {
-    triggerLeavePolicies("ss");
+    if (authToken) {
+      triggerLeavePolicies({ token: authToken });
+    }
     if (data) {
       dispatch(setallLeavesPolicies(data));
       dispatch(settotalleavesPolicies(data?.length));
     }
-  }, [data, createSuccess, updateSuccess]);
+  }, [data, createSuccess, updateSuccess, authToken]);
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const searchValue = event.target.value;
     setSearch(searchValue);
   };
   const onHandelUpdate = async (leavePolicies: any) => {
     try {
-      const { leave_type_id, max_leaves_per_year } = leavePolicies;
-      const leaveTypeIdString = String(leave_type_id._id);
-      if (true) {
-        // notifications.show({
-        //   title: "Error",
-        //   message: "Invalid leave type ID. Please select a valid leave type.",
-        //   color: "red",
-        // });
-        // return;
-      }
+      const { leave_policy_id, max_leaves_per_year } = leavePolicies;
+      // if (true) {
+      //   notifications.show({
+      //     title: "Error",
+      //     message: "Invalid leave type ID. Please select a valid leave type.",
+      //     color: "red",
+      //   });
+      //   return;
+      // }
       if (isNaN(Number(max_leaves_per_year))) {
         notifications.show({
           title: "Error",
@@ -70,11 +74,10 @@ export default function TypeComponent() {
         return;
       }
       const payload = {
-        leave_type_id: leave_type_id,
+        leave_policy_id: leave_policy_id,
         max_leaves_per_year: Number(max_leaves_per_year),
       };
       const result = await updateData({
-        leave_type_id: leave_type_id,
         data: payload,
       });
 
@@ -106,6 +109,7 @@ export default function TypeComponent() {
     mode: "controlled",
     validateInputOnChange: true,
     initialValues: {
+      leave_policy_id: "",
       leave_type_id: "",
       max_leaves_per_year: "",
     },
@@ -123,7 +127,7 @@ export default function TypeComponent() {
   return (
     <>
       <div className="flex justify-between p-2 max-sm:flex-col-reverse">
-        <div>My Team ({totalleavesPolicies})</div>
+        <div>Leave Policies ({totalleavesPolicies})</div>
         <div className="flex flex-grow gap-2 justify-end items-center w-[32%]  max-sm:w-full">
           <Searchbar
             value={search}
@@ -144,20 +148,20 @@ export default function TypeComponent() {
                 onHandelUpdate={onHandelUpdate}
                 form={form}
                 onClose={close}
+                token={authToken}
                 triggerCreate={createLeavePolicies}
               />
             }
           />
         </div>
       </div>
-      <div className="w-full">
-        <div className="flex flex-wrap  align-middle gap-8 p-[20px]">
-          <CustumCard
-            form={form}
-            open={open}
-            allLeavesPolicies={allLeavesPolicies}
-          />
-        </div>
+      <div className="flex flex-wrap  align-middle gap-8">
+        <CustumCard
+          module={"leavePolicies"}
+          form={form}
+          open={open}
+          allPolicies={allLeavesPolicies}
+        />
       </div>
     </>
   );

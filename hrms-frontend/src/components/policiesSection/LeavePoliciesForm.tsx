@@ -7,38 +7,44 @@ import { notifications } from "@mantine/notifications";
 import { IconCheck } from "@tabler/icons-react";
 import TextInputField from "../Inputs/textInput/Input";
 import DynamicSelectBox from "../Inputs/selectInput/comonSelect";
-import { useLazyGetAllLeavePoliciesTypeApiApiByNameQuery } from "@/services/leavePolicies/leavesApi";
+import { useLazyGetAllLeaveTypePoliciesApiByNameQuery } from "@/services/typePolicies/typeApi";
 interface dataValue {
   onClose: any;
   triggerCreate: any;
   onHandelUpdate: any;
   form: any;
+  token: any;
 }
 const LeaveForm: React.FC<dataValue> = ({
   onClose,
   triggerCreate,
   onHandelUpdate,
   form,
+  token,
 }) => {
   const dispatch = useDispatch();
+  let data = form.getValues();
   useEffect(() => {
-    allleaveTypeDataApi("v");
-  }, []);
+    if (token) {
+      allleaveTypeDataApi({ token: token });
+    }
+  }, [token]);
   const [
     allleaveTypeDataApi,
     { data: leaveTypeData, error, isLoading, isSuccess },
-  ] = useLazyGetAllLeavePoliciesTypeApiApiByNameQuery();
+  ] = useLazyGetAllLeaveTypePoliciesApiByNameQuery();
+
   const getTypedata = async () => {
     const response = await allleaveTypeDataApi("v");
   };
-  const handleSubmit = async (data: any) => {
+  const handleSubmit = async (formData: any) => {
     try {
-      if (data?._id) {
-        onHandelUpdate(data);
+      if (formData?.leave_policy_id) {
+        onHandelUpdate(formData);
       } else {
         const formattedData = {
-          ...data,
-          max_leaves_per_year: Number(data.max_leaves_per_year),
+          ...formData,
+          max_leaves_per_year: Number(formData.max_leaves_per_year),
         };
         await triggerCreate(formattedData);
         {
@@ -60,7 +66,6 @@ const LeaveForm: React.FC<dataValue> = ({
     }
   };
 
-  let data = form.getValues();
   return (
     <form
       onSubmit={form.onSubmit((values: any) => {

@@ -12,14 +12,11 @@ import {
   rem,
 } from "@mantine/core";
 import {
+  IconAlignBoxLeftStretch,
+  IconCalendarMonth,
   IconCalendarStats,
   IconChevronRight,
-  IconAlignBoxLeftStretch,
   IconUsersGroup,
-  IconCalendarMonth,
-  IconCalendarPlus,
-  IconCalendarCheck,
-  IconUser,
 } from "@tabler/icons-react";
 import classes from "./Navbar.module.css";
 import { usePathname, useRouter } from "next/navigation";
@@ -30,6 +27,7 @@ interface LinkItem {
   icon: React.FC<any>;
   links?: { label: string; link: string }[];
   initiallyOpened?: boolean;
+  data?: any; // Optional
 }
 
 interface NavbarProps {
@@ -41,49 +39,50 @@ export function LinksGroup({
   label,
   initiallyOpened,
   links,
-  data,
+  link,
 }: LinkItem) {
   const pathname = usePathname();
   const hasLinks = Array.isArray(links);
   const [opened, setOpened] = useState(initiallyOpened || false);
   const router = useRouter();
-  const handleNavigation = (link: string) => {
-    if (link) {
-      router.push(link);
-    } else {
-      console.log(link);
+
+  // Navigation handler
+  const handleNavigation = (itemLink: string | undefined) => {
+    if (itemLink) {
+      router.push(itemLink);
     }
   };
-  console.log();
-  const items = (hasLinks ? links : []).map((link) => (
+
+  // Render nested items if present
+  const items = (hasLinks ? links : []).map((subLink) => (
     <Text<"a">
       component="a"
       className={classes.link}
-      href={link.link}
-      key={link.label}
+      href={subLink.link}
+      key={subLink.label}
       onClick={(event) => {
-        event.preventDefault();
+        event.preventDefault(); // Prevent default anchor behavior
+        handleNavigation(subLink.link); // Navigate to nested link
       }}
     >
-      {link.label}
+      {subLink.label}
     </Text>
   ));
 
   return (
     <>
       <UnstyledButton
-        onClick={() => setOpened((o) => !o)}
-        className={
-          pathname == data?.link ? classes.pathcontrol : classes.control
-        }
+        onClick={() => {
+          if (!hasLinks) {
+            handleNavigation(link); // Direct navigation for non-nested items
+          } else {
+            setOpened((o) => !o); // Toggle dropdown for items with nested links
+          }
+        }}
+        className={pathname === link ? classes.pathcontrol : classes.control}
       >
         <Group justify="space-between" gap={0}>
-          <Box
-            style={{ display: "flex", alignItems: "center" }}
-            onClick={() => {
-              handleNavigation(data?.link);
-            }}
-          >
+          <Box style={{ display: "flex", alignItems: "center" }}>
             <ThemeIcon variant="light" size={30}>
               <Icon style={{ width: rem(18), height: rem(18) }} />
             </ThemeIcon>
@@ -102,15 +101,17 @@ export function LinksGroup({
           )}
         </Group>
       </UnstyledButton>
+
+      {/* Collapse nested items */}
       {hasLinks && <Collapse in={opened}>{items}</Collapse>}
     </>
   );
 }
+
 export function Navbar({ linksData }: NavbarProps) {
   const links = linksData.map((item) => (
-    <LinksGroup {...item} key={item.label} data={item} />
+    <LinksGroup {...item} key={item.label} />
   ));
-  console.log(linksData, "hgghgfhgfhgfh");
 
   return (
     <div className={classes.navbar}>
@@ -128,17 +129,14 @@ const mockdata = [
     icon: IconUsersGroup,
     link: "/employees",
   },
+
   {
     label: "Leaves Management",
-    icon: IconCalendarCheck,
-    link: "/leaves",
-  },
-  {
-    label: "Leave Policy",
     icon: IconCalendarStats,
     links: [
-      { label: "Type", link: "/typePolicies" },
-      { label: "Policies", link: "/leavesPolicies" },
+      { label: "Leaves", link: "/leavepolicies/leaves" },
+      { label: "Type", link: "/leavepolicies/typepolicies" },
+      { label: "Policies", link: "/leavepolicies/leavespolicies" },
     ],
   },
   {

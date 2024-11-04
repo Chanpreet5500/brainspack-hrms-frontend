@@ -23,21 +23,57 @@ import SelectSearch from "@/components/reusableComponents/SearchSelect";
 import { useDispatch } from "react-redux";
 import { notifications } from "@mantine/notifications";
 import { IconCheck } from "@tabler/icons-react";
-import { DatePickerComponent } from "@/components/reusableComponents/CustomDatePicker/CustomDatePicker";
-import SelectInputField from "@/components/Inputs/selectInput/Select";
+import { useLazyGetAllDataApiByNameQuery } from "@/services/user/usersApi";
+import { manageLeavePoliciesSelector } from "@/redux/leavePolicies/leaveSelector";
+import { useLazyGetAllLeavePoliciesApiApiByNameQuery } from "@/services/leavePolicies/leavesApi";
+import {
+  setallLeavesPolicies,
+  settotalleavesPolicies,
+} from "@/redux/leavePolicies/leave";
+import { useLazyGetAllLeaveTypePoliciesApiByNameQuery } from "@/services/typePolicies/typeApi";
 interface dataValue {
   onClose: any;
   triggerCreate: any;
-  token: any
-  editBy: string
+  token: any;
+  editBy: string;
 }
-const LeaveForm: React.FC<dataValue> = ({ onClose, triggerCreate, token, editBy }) => {
+const initialState = {
+  allLeavesPolicies: [],
+  totalleavesPolicies: 0,
+};
+const LeaveForm: React.FC<dataValue> = ({
+  onClose,
+  triggerCreate,
+  token,
+  editBy,
+}) => {
   const [startDate, setStartDate] = useState<Date | null>(new Date());
   const [endDate, setEndDate] = useState<Date | null>(startDate);
   const [search, setSearch] = useState("");
   const [allLeaveData, { data: leaveData, isSuccess: isSuccessToGetAllData }] =
     useLazyGetAllLeaveDataApiByNameQuery();
-  const dispatch = useDispatch();
+  const [allDataApi, { data: employeData, error, isLoading, isSuccess }] =
+    useLazyGetAllDataApiByNameQuery();
+
+  const { allLeavesPolicies, totalleavesPolicies } = useSelector(
+    manageLeavePoliciesSelector
+  );
+  const [allleaveTypeDataApi, { data: leaveTypeData }] =
+    useLazyGetAllLeaveTypePoliciesApiByNameQuery();
+  useEffect(() => {
+    if (token) {
+      allleaveTypeDataApi({ token: token });
+    }
+  }, [token]);
+  const leaveOptions =
+    leaveTypeData?.map((leave: any) => ({
+      value: leave?._id,
+      label: leave?.description,
+    })) || [];
+  console.log(leaveTypeData, leaveOptions, "leaveTypeData");
+  useEffect(() => {
+    allDataApi({ page, limit, search, token });
+  }, [allDataApi, page, limit, search, token]);
   const handleSubmit = async (data: any) => {
     try {
       const { employee, ...rest } = data;
@@ -46,14 +82,14 @@ const LeaveForm: React.FC<dataValue> = ({ onClose, triggerCreate, token, editBy 
         createdById: editBy,
         leavedata: {
           ...rest,
-          employee_id: "66f2d6a2a957ff778f4384fb",
-          leave_type_id: "67054b53377f1b9f0e64bd25",
+          employee_id: data?.employee,
+          leave_type_id: data?.leave_type_id,
           start_date: DateFormatConvertor(startDate),
           end_date: DateFormatConvertor(endDate),
-          start_day: 'full',
-          end_day: 'full'
-        }
-        , token: token
+          start_day: "full",
+          end_day: "full",
+        },
+        token: token,
       });
       notifications.show({
         title: "Leave Successful",
@@ -62,31 +98,22 @@ const LeaveForm: React.FC<dataValue> = ({ onClose, triggerCreate, token, editBy 
         icon: <IconCheck size={18} />,
         autoClose: 1000,
       });
+
       allLeaveData(response);
+
       onClose();
       form.reset();
     } catch (err) {
       console.error("Error creating leave:", err);
     }
   };
-  const combobox = useCombobox({
-    onDropdownClose: () => {
-      combobox.resetSelectedOption();
-      combobox.focusTarget();
-      setSearch("");
-    },
-
-    onDropdownOpen: () => {
-      combobox.focusSearchInput();
-    },
-  });
 
   const form = useForm({
     mode: "controlled",
     validateInputOnChange: true,
     initialValues: {
       employee: "",
-      // leave_type: "",
+
       start_date: startDate,
       end_date: endDate,
       start_day: "",
@@ -96,8 +123,7 @@ const LeaveForm: React.FC<dataValue> = ({ onClose, triggerCreate, token, editBy 
     },
     validate: {
       employee: (value) => (value ? null : "Please select an employee."),
-      // leave_type_id: (value) =>
-      //   value ? null : "Please select the type of leave.",
+
       start_date: (value) =>
         DateFormatConvertor(value) ? null : "Please select the start date.",
       end_date: (value) =>
@@ -105,7 +131,12 @@ const LeaveForm: React.FC<dataValue> = ({ onClose, triggerCreate, token, editBy 
     },
   });
   let data = form.getValues();
-  console.log(data, "DATA");
+  const employeeOptions =
+    employeData?.users?.map((user: any) => ({
+      value: user._id,
+      label: user.fname,
+    })) || [];
+
   let formateddate = DateFormatConvertor(data.start_date);
   return (
     <form
@@ -123,16 +154,14 @@ const LeaveForm: React.FC<dataValue> = ({ onClose, triggerCreate, token, editBy 
           data={employeeData}
           validateKey={form.getInputProps("employee")}
         />
-        {/* <SelectInputField
+        <SelectInputField
           label={"Leave Type"}
           form={form}
           name={"leave_type_id"}
           placeholder={"Select the leave type"}
-          data={leaveTypes}
-          validateKey={form.getInputProps("leave_type")}
-        /> */}
-        {/* validateKey={form.getInputProps("leave_type_id")}
-        /> */}
+          data={leaveOptions}
+          validateKey={form.getInputProps("leave_type_id")}
+        />
         <div className="flex gap-4">
           <DatePickerComponent
             datePickerLabel={"Start Date"}
