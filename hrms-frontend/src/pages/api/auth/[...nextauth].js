@@ -42,7 +42,10 @@ export default NextAuth({
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email: profile.email }),
+          body: JSON.stringify({
+            email: profile.email,
+            image: profile?.picture
+          }),
         });
         if (response.ok) {
           const data = await response.json();

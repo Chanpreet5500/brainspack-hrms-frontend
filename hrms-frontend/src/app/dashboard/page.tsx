@@ -7,7 +7,7 @@ import {
   IconPlus,
 } from "@tabler/icons-react";
 
-import { StringDateFormatConvertor } from "@/constants/commonFunction";
+import { StringDateFormatConvertor } from "@/utils/commonFunction";
 import { useLazyGetAllDataApiByNameQuery } from "@/services/user/usersApi";
 import { manageUserSelector } from "@/redux/user/userSelector";
 import { useEffect, useState } from "react";

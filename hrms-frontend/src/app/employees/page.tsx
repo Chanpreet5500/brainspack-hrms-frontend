@@ -12,7 +12,7 @@ import {
   IconLockOpen,
   IconTrash,
 } from "@tabler/icons-react";
-import EmployeeForm from "@/components/employeeSection/employeeCreateForm/EmployeeForm";
+
 import { DataTable } from "mantine-datatable";
 import {
   useCreateUserMutation,
@@ -25,6 +25,7 @@ import { CustomModal } from "@/components/reusableComponents/CustomModal/CustomM
 import { getAllUserData, setUserDataLength } from "@/redux/user/user";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
 import { notifications, showNotification } from "@mantine/notifications";
+import EmployeeForm from "@/containers/Employee/EmployeeForm";
 export default function Employees() {
   const [postData, { data: addData, isSuccess: createSuccess, isError }] =
     useCreateUserMutation();
@@ -142,6 +143,7 @@ export default function Employees() {
       email: "",
       role: "",
       department: "",
+      phoneNumber: ""
     },
     validate: {
       fname: (value) => {
@@ -174,6 +176,13 @@ export default function Employees() {
       },
       role: (value) => (value ? null : "Select field is required"),
       department: (value) => (value ? null : "Select field is required"),
+      phoneNumber: (value) => {
+        if (!value) {
+          return "Field is required";
+        } else {
+          return /^\d{10}$/.test(value) ? null : "Phone number must contain 10 digits";
+        }
+      },
     },
   });
 
@@ -187,6 +196,7 @@ export default function Employees() {
     status: string;
     isActive: boolean;
     columns?: [];
+    phoneNumber: string
   };
 
   const records: any[] = allUserData?.slice(
@@ -205,6 +215,7 @@ export default function Employees() {
     { accessor: "fname", width: "15%" },
     { accessor: "lname", width: "15%" },
     { accessor: "email", width: "22%" },
+    { accessor: "phoneNumber", width: "12%" },
     { accessor: "role", width: "12%" },
     { accessor: "department", width: "12%" },
     {

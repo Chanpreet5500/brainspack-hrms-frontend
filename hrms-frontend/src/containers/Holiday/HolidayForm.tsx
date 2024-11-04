@@ -1,42 +1,48 @@
 import { holidayType } from "@/constants/constants";
-import SelectInputField from "../Inputs/selectInput/Select";
-import TextInputField from "../Inputs/textInput/Input";
+import SelectInputField from "../../components/Inputs/selectInput/Select";
+import TextInputField from "../../components/Inputs/textInput/Input";
 import { Button, Group, MantineProvider } from "@mantine/core";
-import { useDeleteHolidayDataApiByNameMutation } from "@/services/holiday/holidayApi";
-import { DateFormatConvertor } from "@/constants/commonFunction";
-import { useSelector } from "react-redux";
+import { useCreateHolidayMutation, useDeleteHolidayDataApiByNameMutation, useUpdateHolidayDataApiByNameMutation } from "@/services/holiday/holidayApi";
+import { DateFormatConvertor } from "@/utils/commonFunction";
+import { useDispatch, useSelector } from "react-redux";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
+import { HolidayFormData, HolidayFormProps } from "@/utils/interfaces/interfaces";
+import { useEffect } from "react";
+import { trackChange } from "@/redux/holiday/holiday";
 
 
-const HolidayForm = ({ form, triggerCreate, triggerUpdate, triggerDelete, modalClose }) => {
+const HolidayForm: React.FC<HolidayFormProps> = ({
+  form,
+  modalClose,
+}) => {
+
+  const [updateHolidayData, { isSuccess: updateSuccess }] = useUpdateHolidayDataApiByNameMutation();
+  const [deleteHolidayData, { isSuccess: deleteSuccess }] = useDeleteHolidayDataApiByNameMutation();
+  const [postData, { isSuccess: createSuccess }] = useCreateHolidayMutation();
   const { authToken, authUser } = useSelector(manageAuthUserSelector);
-
-  const handleSubmit = async (data: any) => {
+  const dispatch = useDispatch();
+  const handleSubmit = async (data: HolidayFormData) => {
     const formattedDate = DateFormatConvertor(data.date)
     data.date = formattedDate;
     if (data?.holiday_id) {
-      await triggerUpdate({ data: data, owner_id: authUser?.userId, token: authToken });
+      await updateHolidayData({ data: data, owner_id: authUser?.userId, token: authToken });
     } else {
-      await triggerCreate(data);
+      await postData({ data: data, owner_id: authUser?.userId, token: authToken });
     }
     modalClose();
     form?.reset();
   };
-  const onRemove = async (data) => {
-    await triggerDelete({ data: data, token: authToken })
+  const onRemove = async (holidayId: string) => {
+    await deleteHolidayData({ data: holidayId, token: authToken })
     modalClose();
   }
-  //   modalClose();
-  //   form?.reset();
-  // };
-  // const onRemove = async (data) => {
-  //   await triggerDelete(data);
-  //   modalClose();
-  // };
+  useEffect(() => {
+    dispatch(trackChange(true))
+  }, [updateSuccess, deleteSuccess, createSuccess])
   return (
     <form
-      onSubmit={form.onSubmit((localUserDetails: any) => {
-        handleSubmit(localUserDetails);
+      onSubmit={form.onSubmit((localUserDetails) => {
+        handleSubmit(localUserDetails as HolidayFormData);
       })}
     >
       <div className="flex flex-col m-auto gap-3 ">

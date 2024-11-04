@@ -1,9 +1,7 @@
 import { useEffect } from "react";
 import { Button, Group, MantineProvider } from "@mantine/core";
-import TextInputField from "../../Inputs/textInput/Input";
-import SelectInputField from "../../Inputs/selectInput/Select";
 import { employeeDepartment, employeProfetion } from "@/constants/constants";
-import { variantColorResolver } from "@/constants/commonFunction";
+import { variantColorResolver } from "@/utils/commonFunction";
 import { useDispatch } from "react-redux";
 import {
   useCreateUserMutation,
@@ -12,19 +10,14 @@ import {
 import { getAllUserData } from "@/redux/user/user";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
+import { EmployeeFormProps } from "@/utils/interfaces/interfaces";
+import TextInputField from "@/components/Inputs/textInput/Input";
+import SelectInputField from "@/components/Inputs/selectInput/Select";
 
-interface value {
-  onClose: any;
-  form: any;
-  onHandelUpdate: any;
-  createTrigger: any;
-  token: any;
-}
-
-const EmployeeForm: React.FC<value> = (props) => {
+const EmployeeForm: React.FC<EmployeeFormProps> = (props) => {
   const { onClose, form, onHandelUpdate, createTrigger, token } = props;
-  const [postData, { data: addData, isSuccess, isError }] =
-    useCreateUserMutation();
+  // const [postData, { data: addData, isSuccess, isError }] =
+  //   useCreateUserMutation();
   const dispatch = useDispatch();
 
   const [allDataApi, { data, isSuccess: isSuccessToGetAllData }] =
@@ -36,14 +29,14 @@ const EmployeeForm: React.FC<value> = (props) => {
     }
   }, [data, isSuccessToGetAllData]);
 
-  useEffect(() => {
-    const params = {
-      page: 1,
-      limit: 5,
-      token: token,
-    };
-    allDataApi(params);
-  }, [isSuccess]);
+  // useEffect(() => {
+  //   const params = {
+  //     page: 1,
+  //     limit: 5,
+  //     token: token,
+  //   };
+  //   allDataApi(params);
+  // }, [isSuccess]);
 
   const handleSubmit = async (data: any) => {
     try {
@@ -105,6 +98,14 @@ const EmployeeForm: React.FC<value> = (props) => {
           name={"email"}
           placeholder={"Enter your email address"}
           validateKey={form.getInputProps("email")}
+        />
+
+        <TextInputField
+          withAsterisk
+          label={"Phone Number"}
+          name={"phoneNumber"}
+          placeholder={"Enter your Phone Number"}
+          validateKey={form.getInputProps("phoneNumber")}
         />
 
         <SelectInputField
