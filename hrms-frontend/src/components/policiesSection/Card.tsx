@@ -6,7 +6,7 @@ import {
   MantineProvider,
   Menu,
 } from "@mantine/core";
-import { variantColorResolver } from "@/constants/commonFunction";
+import { variantColorResolver } from "@/utils/commonFunction";
 interface allValue {
   allLeavesPolicies: [];
   open: any;

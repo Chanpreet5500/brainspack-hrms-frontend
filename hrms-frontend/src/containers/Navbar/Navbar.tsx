@@ -1,15 +1,12 @@
 import {
-  IconBell,
-  IconHttpDelete,
-  IconSearch,
   IconTransfer,
 } from "@tabler/icons-react";
 import { Burger } from "@mantine/core";
-import Droper from "../reusableComponents/Droper/Droper";
+import Droper from "../../components/reusableComponents/Droper/Droper";
 import { signOut } from "next-auth/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
-import { appdroperdata, dangerdroperdata } from "@/constants/constants";
+import { appdroperdata } from "@/constants/constants";
 import { useSelector } from "react-redux";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
 import Link from "next/link";
@@ -21,12 +18,12 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ opened, toggle }) => {
   const [open, setopen] = useState(false);
   const { authUser } = useSelector(manageAuthUserSelector);
-  console.log(authUser, "hgjhkl;jhgfhghjkl;jkjvcbnm,");
   const handleSignOut = () => {
-    document.cookie =
-      "userData=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     signOut();
   };
+  useEffect(() => {
+
+  }, [authUser])
   return (
     <div className="w-full">
       <div className="flex py-3 justify-between items-center">
@@ -46,12 +43,19 @@ const Navbar: React.FC<NavbarProps> = ({ opened, toggle }) => {
             >
               <div className="flex items-center gap-1">
                 <div className=" h-[45px] w-[45px] rounded-full flex items-center justify-center overflow-hidden">
-                  <img
-                    // src="https://static.vecteezy.com/system/resources/previews/004/819/327/original/male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg"
-                    // src={'https://lh3.googleusercontent.com/a/ACg8ocJUB9_FiuS4BTxmYA3e-32sYipdnSCPCWXUeQfzmHd46SErbSre=s96-c'}
+                  {/* <img
                     src={authUser?.img}
                     className="object-cover w-full h-full"
                     alt="Avatar"
+                  /> */}
+                  <Image
+                    src={authUser?.img || '/images/tree.jpg'}
+                    alt="Avatar"
+                    className="object-cover w-full h-full"
+                    width={100}
+                    height={100}
+                    layout="fixed"
+                    objectFit="conatin"
                   />
                 </div>
                 <div className="max-sm:hidden">

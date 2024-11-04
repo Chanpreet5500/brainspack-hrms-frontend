@@ -1,12 +1,7 @@
 "use client";
-import { getAllholidayData } from "@/redux/holiday/holiday";
+import { getAllholidayData, trackChange } from "@/redux/holiday/holiday";
 import { manageHolidaySelector } from "@/redux/holiday/holidaySelector";
-import {
-  useCreateHolidayMutation,
-  useDeleteHolidayDataApiByNameMutation,
-  useLazyGetAllHolidayDataApiByNameQuery,
-  useUpdateHolidayDataApiByNameMutation,
-} from "@/services/holiday/holidayApi";
+import { useLazyGetAllHolidayDataApiByNameQuery } from "@/services/holiday/holidayApi";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import FullCalendar from "@fullcalendar/react";
@@ -16,30 +11,24 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "@mantine/form";
 import { CustomModal } from "@/components/reusableComponents/CustomModal/CustomModal";
-import HolidayForm from "@/components/Holiday/HolidayForm";
+import HolidayForm from "@/containers/Holiday/HolidayForm";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
+import { DateSelectArg, EventClickArg } from "@fullcalendar/core/index.js";
+import { HolidayFormData } from "@/utils/interfaces/interfaces";
 const Calendar = () => {
-  const [postData, { data: addData, isSuccess: createSuccess, isError }] =
-    useCreateHolidayMutation();
-  const [allDataApi, { data, error, isLoading, isSuccess }] =
-    useLazyGetAllHolidayDataApiByNameQuery();
-  const [
-    updateHolidayData,
-    { data: holidayUpdatedData, isSuccess: updateSuccess },
-  ] = useUpdateHolidayDataApiByNameMutation();
-  const [deleteHolidayData, { isSuccess: deleteSuccess }] =
-    useDeleteHolidayDataApiByNameMutation();
+  const [allDataApi] = useLazyGetAllHolidayDataApiByNameQuery();
   const dispatch = useDispatch();
   const { allData } = useSelector(manageHolidaySelector);
   const [opened, { open, close }] = useDisclosure(false);
   const { authToken } = useSelector(manageAuthUserSelector);
+  const { change } = useSelector(manageHolidaySelector);
 
   useEffect(() => {
     onGetData();
-  }, [createSuccess, updateSuccess, deleteSuccess, authToken]);
+    dispatch(trackChange(false))
+  }, [change, authToken]);
 
   const onGetData = async () => {
-    console.log(authToken, "authTokenauthToken");
     const response = await allDataApi({ token: authToken });
     dispatch(getAllholidayData(response.data));
   };
@@ -48,7 +37,7 @@ const Calendar = () => {
     close();
     form.reset();
   };
-  const form = useForm({
+  const form = useForm<HolidayFormData>({
     mode: "controlled",
     validateInputOnChange: true,
     initialValues: {
@@ -86,19 +75,19 @@ const Calendar = () => {
       type: (value) => (value ? null : "Select field is required"),
     },
   });
-  const handleEventClick = (eventInfo: any) => {
+  const handleEventClick = (eventInfo: EventClickArg) => {
     const data = {
       holiday_id: eventInfo.event.id,
       title: eventInfo.event.title,
       description: eventInfo.event.extendedProps.description,
       type: eventInfo.event.extendedProps.type,
-      date: eventInfo.event.start,
+      date: eventInfo.event.start ? eventInfo.event.start.toISOString() : undefined,
     };
     form.setValues(data);
     open();
   };
-  const handleDateSelect = async (selectInfo: any) => {
-    form.setValues({ date: selectInfo.start });
+  const handleDateSelect = async (selectInfo: DateSelectArg) => {
+    form.setValues({ date: selectInfo.start.toISOString() });
     open();
   };
 
@@ -130,36 +119,12 @@ const Calendar = () => {
               content={
                 <HolidayForm
                   form={form}
-                  triggerUpdate={updateHolidayData}
-                  triggerCreate={postData}
-                  triggerDelete={deleteHolidayData}
                   modalClose={close}
                 />
               }
             />
           </div>
         </div>
-        {/* </div> */}
-        {/* code of form beofore new styling  */}
-        {/* <FullCalendar
-        plugins={[dayGridPlugin, interactionPlugin]}
-        initialView="dayGridMonth"
-        events={allData?.map((holiday: any) => ({
-          id: holiday._id,
-          title: holiday.title,
-          start: new Date(holiday.date).toISOString().split("T")[0],
-          type: holiday.type,
-          description: holiday.description,
-        }))}
-        // eventBackgroundColor="transparent"
-        // eventColor='#378006'
-        eventTextColor="#000"
-        selectable
-        select={handleDateSelect}
-        eventClick={handleEventClick}
-        eventContent={renderEventContent}
-        height={600}
-      /> */}
         <FullCalendar
           plugins={[dayGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"

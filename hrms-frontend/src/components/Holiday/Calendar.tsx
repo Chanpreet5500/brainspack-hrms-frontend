@@ -5,16 +5,13 @@ import { useCreateHolidayMutation, useDeleteHolidayDataApiByNameMutation, useLaz
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import FullCalendar from '@fullcalendar/react';
-import { Button, Group, MantineProvider, Tooltip } from '@mantine/core';
+import { Tooltip } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CustomModal } from '../reusableComponents/CustomModal/CustomModal';
 import { useForm } from '@mantine/form';
-import TextInputField from '../Inputs/textInput/Input';
-import SelectInputField from '../Inputs/selectInput/Select';
-import { employeProfetion, holidayType } from '@/constants/constants';
-import HolidayForm from './HolidayForm';
+import HolidayForm from '../../containers/Holiday/HolidayForm';
 const Calendar = () => {
     const [postData, { data: addData, isSuccess: createSuccess, isError }] = useCreateHolidayMutation();
     const [allDataApi, { data, error, isLoading, isSuccess }] = useLazyGetAllHolidayDataApiByNameQuery();

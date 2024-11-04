@@ -2,8 +2,8 @@
 
 import { useDisclosure } from "@mantine/hooks";
 import { AppShell, Flex } from "@mantine/core";
-import Sidebar from "../Sidebar/Sidebar";
-import Navbar from "../Navbar/Navbar";
+import Sidebar from "../../containers/Sidebar/Sidebar";
+import Navbar from "../../containers/Navbar/Navbar";
 import { usePathname } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -22,7 +22,6 @@ export function LayoutWrapper({
   children: React.ReactNode;
 }) {
   const { data: session, status } = useSession();
-  console.log(session?.apiAccessToken, status, "56789098767890");
   const [opened, { toggle }] = useDisclosure();
   const dispatch = useDispatch();
   const pathname = usePathname();
@@ -36,7 +35,6 @@ export function LayoutWrapper({
           const decodedToken = jwt.decode(session.apiAccessToken);
           if (decodedToken) {
             dispatch(setAuthUser(decodedToken));
-            console.log("Decoded Token:", decodedToken);
           } else {
             console.error("Failed to decode token");
           }

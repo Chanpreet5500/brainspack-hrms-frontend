@@ -10,7 +10,6 @@ import {
   setallLeaves,
   settotalleaves,
 } from "@/redux/leave/leaves";
-import LeaveForm from "@/components/leaveSection/Leaveform/Leaveform";
 import { useDisclosure } from "@mantine/hooks";
 import { IconEdit } from "@tabler/icons-react";
 import { Button, Group } from "@mantine/core";
@@ -20,10 +19,11 @@ import {
   useUpdateLeaveDataApiByNameMutation,
 } from "@/services/leave/getLeaves";
 import { DataTable } from "mantine-datatable";
-import { StringDateFormatConvertor } from "@/constants/commonFunction";
+import { StringDateFormatConvertor } from "@/utils/commonFunction";
 import { notifications } from "@mantine/notifications";
 import { manageLeavePoliciesSelector } from "@/redux/leavePolicies/leaveSelector";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
+import LeaveForm from "@/containers/Leave/Leaveform";
 
 const initialState = {
   allLeaves: [],
