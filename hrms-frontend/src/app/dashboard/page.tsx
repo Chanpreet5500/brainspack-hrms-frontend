@@ -16,6 +16,7 @@ import { useLazyGetAllLeaveDataApiByNameQuery } from "@/services/leave/getLeaves
 import { getAllUserData, setUserDataLength } from "@/redux/user/user";
 import { useLazyGetAllHolidayDataApiByNameQuery } from "@/services/holiday/holidayApi";
 
+import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
 const todayDate = StringDateFormatConvertor(
   new Date().toISOString(),
   "DD/MMM/YYYY",
@@ -36,6 +37,8 @@ const Dashboard = () => {
     useLazyGetAllDataApiByNameQuery();
   const dispatch = useDispatch();
   const { allUserDataLength, allUserData } = useSelector(manageUserSelector);
+  const { authUser, authToken } = useSelector(manageAuthUserSelector);
+  console.log(authToken, "234567876543");
 
   const fetchUserData = async (
     currPage: number,
@@ -46,6 +49,31 @@ const Dashboard = () => {
       page: currPage,
       limit: limit,
       search: search,
+      token: authToken,
+    });
+  };
+  const fetchLeaveData = async (
+    currPage: number,
+    limit: number,
+    search: string
+  ) => {
+    await getLeaves({
+      page: currPage,
+      limit: limit,
+      search: search,
+      token: authToken,
+    });
+  };
+  const fetchHolidayData = async (
+    currPage: number,
+    limit: number,
+    search: string
+  ) => {
+    await getHolidays({
+      page: currPage,
+      limit: limit,
+      search: search,
+      token: authToken,
     });
   };
 
@@ -56,12 +84,7 @@ const Dashboard = () => {
   //   }
   // }, [employeeData, isSuccess]);
   useEffect(() => {
-    getEmployees("");
-    getLeaves("");
-    getHolidays("");
-  }, [getLeavesSuccess, getHolidaySuccess, getEmployeeSuccess]);
-  useEffect(() => {
-    if (employeeData || leavesData) {
+    if ((authToken && employeeData) || leavesData || holidaysData) {
       setDummyData((prevDummy: any) =>
         prevDummy.map((item: any) => {
           console.log(item, "item");
@@ -78,10 +101,22 @@ const Dashboard = () => {
         })
       );
     }
-  }, [employeeData, leavesData]);
+  }, [employeeData, leavesData, authToken]);
+  // useEffect(() => {}, [authToken]);
   useEffect(() => {
-    fetchUserData(currentPage, limit, search);
-  }, [currentPage, limit, search]);
+    if (employeeData?.users.length > 0 && isSuccess) {
+      dispatch(getAllUserData(employeeData?.users));
+      dispatch(setUserDataLength(employeeData.totalusers));
+    }
+  }, [employeeData, isSuccess, authToken, authUser]);
+
+  useEffect(() => {
+    if (authToken) {
+      fetchUserData(currentPage, limit, search);
+      fetchLeaveData(currentPage, limit, search);
+      fetchHolidayData(currentPage, limit, search);
+    }
+  }, [currentPage, limit, search, authToken]);
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading data</div>;
 
@@ -147,7 +182,7 @@ const Dashboard = () => {
                 />
               </div>
               <div className="flex w-full justify-between lg:h-[70px] md:h-[70px] max-sm:h-[70px]">
-                <div className="flex text-black gap-2 flex w-[48%] flex-col">
+                <div className=" text-black gap-2 flex w-[48%] flex-col">
                   <label htmlFor="task" className="text-sm">
                     Task
                   </label>

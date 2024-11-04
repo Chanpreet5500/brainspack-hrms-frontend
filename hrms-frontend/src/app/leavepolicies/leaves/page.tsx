@@ -23,7 +23,6 @@ import { StringDateFormatConvertor } from "@/utils/commonFunction";
 import { notifications } from "@mantine/notifications";
 import { manageLeavePoliciesSelector } from "@/redux/leavePolicies/leaveSelector";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
-import LeaveForm from "@/containers/Leave/Leaveform";
 
 const initialState = {
   allLeaves: [],
@@ -65,17 +64,17 @@ export default function LeaveComponent() {
       {
         status == "rejected"
           ? notifications.show({
-            color: "red",
-            title: "Rejected",
-            message: "Leave request rejected",
-            position: "bottom-left",
-          })
+              color: "red",
+              title: "Rejected",
+              message: "Leave request rejected",
+              position: "bottom-left",
+            })
           : notifications.show({
-            color: "green",
-            title: "Approved",
-            message: "Leave request approved",
-            position: "bottom-left",
-          });
+              color: "green",
+              title: "Approved",
+              message: "Leave request approved",
+              position: "bottom-left",
+            });
       }
     } catch (err) {
       console.error("Error updating leave:", err);
@@ -108,8 +107,10 @@ export default function LeaveComponent() {
   };
 
   useEffect(() => {
-    renderData(currentpage, tableDataLimit, search);
-  }, [currentpage, createSuccess, authToken]);
+    if (authToken) {
+      renderData(currentpage, tableDataLimit, search);
+    }
+  }, [currentpage, createSuccess, leavesData, authToken]);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const searchValue = event.target.value;
@@ -261,8 +262,8 @@ export default function LeaveComponent() {
 
   return (
     <>
-      <div className="  flex justify-between p-2 max-sm:flex-col-reverse">
-        <div>My Team ({totalleaves})</div>
+      <div className="flex justify-between p-2 max-sm:flex-col-reverse">
+        <div>Total Leaves ({totalleaves})</div>
         <div className="flex flex-grow gap-2 justify-end items-center w-[32%]  max-sm:w-full">
           <Searchbar
             value={search}

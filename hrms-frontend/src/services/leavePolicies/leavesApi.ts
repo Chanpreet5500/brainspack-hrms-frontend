@@ -7,11 +7,14 @@ const leavePoliciesApi = createApi({
   }),
   endpoints: (builder) => ({
     getAllLeavePoliciesApiApiByName: builder.query({
-      query: ({ page, limit, search }) => {
+      query: ({ page, limit, search, token }) => {
         return {
           url: `/leave-policies`,
           method: "GET",
           params: { page, limit, search },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         };
       },
     }),

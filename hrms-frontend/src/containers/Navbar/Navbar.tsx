@@ -57,7 +57,7 @@ const Navbar: React.FC<NavbarProps> = ({ opened, toggle }) => {
                     alt="Avatar"
                   /> */}
                   <Image
-                    src={authUser?.img || '/images/tree.jpg'}
+                    src={authUser?.img || "/images/tree.jpg"}
                     alt="Avatar"
                     className="object-cover w-full h-full"
                     width={100}

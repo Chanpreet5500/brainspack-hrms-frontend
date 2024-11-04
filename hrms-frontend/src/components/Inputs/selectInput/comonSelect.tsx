@@ -42,7 +42,6 @@ const DynamicSelectBox: React.FC<SelectValue> = ({
   }, []);
   const [options, setOptions] = useState([]);
   const [selectedId, setSelectedId] = useState(null);
-
   useEffect(() => {
     if (data) {
       const formattedOptions = data.map((item: any) => ({

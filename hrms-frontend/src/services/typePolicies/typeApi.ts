@@ -16,11 +16,14 @@ const typePoliciesApi = createApi({
       },
     }),
     getAllLeaveTypePoliciesApiByName: builder.query({
-      query: ({ page, limit, search }) => {
+      query: ({ page, limit, search, token }) => {
         return {
           url: `/leave-policies/types`,
           method: "GET",
           params: { page, limit, search },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         };
       },
     }),

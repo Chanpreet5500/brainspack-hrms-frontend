@@ -1,5 +1,9 @@
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
-import { createApi, fetchBaseQuery, RootState } from "@reduxjs/toolkit/query/react";
+import {
+  createApi,
+  fetchBaseQuery,
+  RootState,
+} from "@reduxjs/toolkit/query/react";
 import { useSelector } from "react-redux";
 
 // const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzEwZjk2OTFlZTNjODI0Nzk1ZjhlZGYiLCJlbWFpbCI6ImthdXNoYWxzaHViaGFtNDYwQGdtYWlsLmNvbSIsImZuYW1lIjoiU2h1YmhhbSIsImxuYW1lIjoiS2F1c2hhbCIsInJvbGUiOiJlbXBsb3llZSIsImRlcGFydG1lbnQiOiJpdCIsImlzQWN0aXZlIjp0cnVlLCJpbWciOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NKVUI5X0ZpdVM0QlR4bVlBM2UtMzJzWWlwZG5TQ1BDV1hVZVFmem1IZDQ2U0VyYlNyZT1zOTYtYyIsImlhdCI6MTczMDA5NzA3NCwiZXhwIjoxNzMwMTgzNDc0fQ.i2FCO5d3jLdJPfiDQ8V6JdyE2i5k7_SEQI442sqWwO0'
@@ -11,9 +15,7 @@ export const usersApi = createApi({
       // const { authToken } = getState().authUser;
       // const authToken
       // const state = getState() as RootState;
-      // console.log('Current State-------------------------------------:', state);
       // const authToken = state.authUser.authToken;
-      // console.log(authToken, "authToken")
       // headers.set('Authorization', `Bearer ${authToken}`);
       // return headers;
     },
@@ -27,13 +29,12 @@ export const usersApi = createApi({
           body: { owner_id, user_id },
           headers: {
             Authorization: `Bearer ${token}`,
-          }
+          },
         };
       },
     }),
 
     getAllDataApiByName: builder.query({
-
       query: ({ page, limit, search, token }) => {
         return {
           url: `users/`,
@@ -93,6 +94,6 @@ export const {
   useLazyGetAllDataApiByNameQuery,
   useCreateUserMutation,
   useUpdateDataApiByNameMutation,
-  useRegisterDataApiByNameMutation
+  useRegisterDataApiByNameMutation,
 } = usersApi;
 export default usersApi;

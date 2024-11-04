@@ -23,9 +23,11 @@ import {
 import { manageUserSelector } from "@/redux/user/userSelector";
 import { CustomModal } from "@/components/reusableComponents/CustomModal/CustomModal";
 import { getAllUserData, setUserDataLength } from "@/redux/user/user";
+import { notifications } from "@mantine/notifications";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
-import { notifications, showNotification } from "@mantine/notifications";
 import EmployeeForm from "@/containers/Employee/EmployeeForm";
+// import { notifications, showNotification } from "@mantine/notifications";
+
 export default function Employees() {
   const [postData, { data: addData, isSuccess: createSuccess, isError }] =
     useCreateUserMutation();
@@ -53,9 +55,8 @@ export default function Employees() {
       dispatch(getAllUserData(data?.users));
       dispatch(setUserDataLength(data.totalusers));
     }
-  }, [data, isSuccess]);
+  }, [data, isSuccess, authToken, authUser]);
   useEffect(() => { }, [authToken]);
-  console.log("im in the employee");
   const renderData = async (
     currpage: number,
     limit: number,
@@ -144,7 +145,7 @@ export default function Employees() {
       email: "",
       role: "",
       department: "",
-      phoneNumber: ""
+      phoneNumber: "",
     },
     validate: {
       fname: (value) => {
@@ -181,7 +182,9 @@ export default function Employees() {
         if (!value) {
           return "Field is required";
         } else {
-          return /^\d{10}$/.test(value) ? null : "Phone number must contain 10 digits";
+          return /^\d{10}$/.test(value)
+            ? null
+            : "Phone number must contain 10 digits";
         }
       },
     },
@@ -197,7 +200,7 @@ export default function Employees() {
     status: string;
     isActive: boolean;
     columns?: [];
-    phoneNumber: string
+    phoneNumber: string;
   };
 
   const records: any[] = allUserData?.slice(

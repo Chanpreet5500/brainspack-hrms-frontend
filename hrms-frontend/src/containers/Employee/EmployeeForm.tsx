@@ -14,7 +14,15 @@ import { EmployeeFormProps } from "@/utils/interfaces/interfaces";
 import TextInputField from "@/components/Inputs/textInput/Input";
 import SelectInputField from "@/components/Inputs/selectInput/Select";
 
-const EmployeeForm: React.FC<EmployeeFormProps> = (props) => {
+interface value {
+  onClose: any;
+  form: any;
+  onHandelUpdate: any;
+  createTrigger: any;
+  token: any;
+}
+
+const EmployeeForm: React.FC<value> = (props) => {
   const { onClose, form, onHandelUpdate, createTrigger, token } = props;
   // const [postData, { data: addData, isSuccess, isError }] =
   //   useCreateUserMutation();
@@ -29,14 +37,14 @@ const EmployeeForm: React.FC<EmployeeFormProps> = (props) => {
     }
   }, [data, isSuccessToGetAllData]);
 
-  // useEffect(() => {
-  //   const params = {
-  //     page: 1,
-  //     limit: 5,
-  //     token: token,
-  //   };
-  //   allDataApi(params);
-  // }, [isSuccess]);
+  useEffect(() => {
+    const params = {
+      page: 1,
+      limit: 5,
+      token: token,
+    };
+    allDataApi(params);
+  }, [isSuccess]);
 
   const handleSubmit = async (data: any) => {
     try {

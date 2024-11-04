@@ -12,14 +12,11 @@ import {
   rem,
 } from "@mantine/core";
 import {
+  IconAlignBoxLeftStretch,
+  IconCalendarMonth,
   IconCalendarStats,
   IconChevronRight,
-  IconAlignBoxLeftStretch,
   IconUsersGroup,
-  IconCalendarMonth,
-  IconCalendarPlus,
-  IconCalendarCheck,
-  IconUser,
 } from "@tabler/icons-react";
 import classes from "./Navbar.module.css";
 import { usePathname, useRouter } from "next/navigation";
@@ -133,17 +130,14 @@ const mockdata = [
     icon: IconUsersGroup,
     link: "/employees",
   },
+
   {
     label: "Leaves Management",
-    icon: IconCalendarCheck,
-    link: "/leaves",
-  },
-  {
-    label: "Leave Policy",
     icon: IconCalendarStats,
     links: [
-      { label: "Type", link: "/typePolicies" },
-      { label: "Policies", link: "/leavesPolicies" },
+      { label: "Leaves", link: "/leavepolicies/leaves" },
+      { label: "Type", link: "/leavepolicies/typepolicies" },
+      { label: "Policies", link: "/leavepolicies/leavespolicies" },
     ],
   },
   {

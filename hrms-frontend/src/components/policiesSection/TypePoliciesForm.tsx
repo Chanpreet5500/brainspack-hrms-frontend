@@ -36,11 +36,9 @@ const TypeForm: React.FC<dataValue> = ({ onClose, triggerCreate, form }) => {
   };
 
   let data = form.getValues();
-  console.log(data, "formdata");
   return (
     <form
       onSubmit={form.onSubmit((values: any) => {
-        console.log(values, "val");
         handleSubmit(values);
       })}
     >

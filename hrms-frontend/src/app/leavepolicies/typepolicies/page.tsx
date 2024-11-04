@@ -17,13 +17,14 @@ import {
 import { manageTypePoliciesSelector } from "@/redux/typePolicies/typeSelector";
 import TypeForm from "@/components/policiesSection/TypePoliciesForm";
 import { CustumCard } from "@/components/policiesSection/Card";
+import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
 
 const initialState = {
   allTypesPolicies: [],
   totalTypePolicies: 0,
 };
 
-export default function TypePolicies() {
+export default function typePolicies() {
   const [
     createTypePolicies,
     { data, isLoading, error, isSuccess: createSuccess },
@@ -32,6 +33,7 @@ export default function TypePolicies() {
     triggerLeaveTypePolicies,
     { data: leaveTypeData, isSuccess, isError },
   ] = useLazyGetAllLeaveTypePoliciesApiByNameQuery();
+  const { authUser, authToken } = useSelector(manageAuthUserSelector);
   const { allTypesPolicies, totalTypePolicies } = useSelector(
     manageTypePoliciesSelector
   );
@@ -39,13 +41,14 @@ export default function TypePolicies() {
   const dispatch = useDispatch();
   const [opened, { open, close }] = useDisclosure(false);
   useEffect(() => {
-    triggerLeaveTypePolicies("");
+    if (authToken) {
+      triggerLeaveTypePolicies({ token: authToken });
+    }
     if (leaveTypeData) {
       dispatch(setallTypesPolicies(leaveTypeData));
       dispatch(settotalTypePolicies(leaveTypeData?.length));
     }
-  }, [leaveTypeData, createSuccess]);
-  console.log(allTypesPolicies, "leaveTypeData");
+  }, [leaveTypeData, createSuccess, authToken]);
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const searchValue = event.target.value;
     setSearch(searchValue);
@@ -67,7 +70,7 @@ export default function TypePolicies() {
   return (
     <>
       <div className="flex justify-between p-2 max-sm:flex-col-reverse">
-        <div>My Team ({totalTypePolicies})</div>
+        <div>Leave Type({totalTypePolicies})</div>
         <div className="flex flex-grow gap-2 justify-end items-center w-[32%]  max-sm:w-full">
           <Searchbar
             value={search}
