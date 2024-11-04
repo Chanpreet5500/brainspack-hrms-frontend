@@ -23,7 +23,7 @@ const initialState = {
   totalTypePolicies: 0,
 };
 
-export default function typePolicies() {
+export default function TypePolicies() {
   const [
     createTypePolicies,
     { data, isLoading, error, isSuccess: createSuccess },

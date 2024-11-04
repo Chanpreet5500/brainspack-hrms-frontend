@@ -127,7 +127,7 @@ const LeaveForm: React.FC<dataValue> = ({ onClose, triggerCreate, token, editBy 
           form={form}
           name={"leave_type_id"}
           placeholder={"Select the leave type"}
-          data={leaveOptions}
+          data={leaveData}
           validateKey={form.getInputProps("leave_type_id")}
         />
         <div className="flex gap-4">

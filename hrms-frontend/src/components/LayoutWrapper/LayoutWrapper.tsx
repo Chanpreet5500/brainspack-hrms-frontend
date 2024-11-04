@@ -16,7 +16,6 @@ import jwt from "jsonwebtoken";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
 
 export function LayoutWrapper({
-  authUser,
   children,
 }: {
   children: React.ReactNode;
@@ -44,7 +43,7 @@ export function LayoutWrapper({
         dispatch(setAuthToken(session?.apiAccessToken));
       }
     }
-  }, [status]);
+  }, [status, session]);
   return (
     <>
       {isRegisterPage ? (

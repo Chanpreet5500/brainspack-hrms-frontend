@@ -25,14 +25,14 @@ const todayDate = StringDateFormatConvertor(
 const Dashboard = () => {
   const [dummyData, setDummyData] = useState(countAllData);
 
-  const [getLeaves, { data: leavesData }] =
+  const [getLeaves, { data: leavesData, isSuccess: getLeavesSuccess }] =
     useLazyGetAllLeaveDataApiByNameQuery();
-  const [getHolidays, { data: holidaysData }] =
+  const [getHolidays, { data: holidaysData, isSuccess: getHolidaySuccess }] =
     useLazyGetAllHolidayDataApiByNameQuery();
   const [currentPage, setCurrentPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [search, setSearch] = useState("");
-  const [getEmployees, { data: employeeData, error, isLoading, isSuccess }] =
+  const [getEmployees, { data: employeeData, error, isLoading, isSuccess: getEmployeeSuccess }] =
     useLazyGetAllDataApiByNameQuery();
   const dispatch = useDispatch();
   const { allUserDataLength, allUserData } = useSelector(manageUserSelector);
@@ -59,7 +59,7 @@ const Dashboard = () => {
     getEmployees("");
     getLeaves("");
     getHolidays("");
-  }, []);
+  }, [getLeavesSuccess, getHolidaySuccess, getEmployeeSuccess]);
   useEffect(() => {
     if (employeeData || leavesData) {
       setDummyData((prevDummy: any) =>
