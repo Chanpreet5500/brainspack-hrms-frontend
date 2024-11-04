@@ -54,7 +54,7 @@ export default function Employees() {
       dispatch(setUserDataLength(data.totalusers));
     }
   }, [data, isSuccess]);
-  useEffect(() => { }, [authToken]);
+  useEffect(() => {}, [authToken]);
   const renderData = async (
     currpage: number,
     limit: number,
@@ -261,7 +261,7 @@ export default function Employees() {
     <>
       <div className=" customDiv flex justify-between items-center p-2 max-sm:flex-col-reverse max-sm:items-start">
         <div>My Team ({allUserDataLength})</div>
-        <div className="flex items-center gap-3 max-sm:w-full 2xl:w-[40%] parentDiv">
+        <div className="flex items-center gap-3 max-sm:w-full 2xl:w-[30%] parentDiv">
           <div className=" max-sm:w-full">
             <Searchbar
               value={search}

@@ -63,9 +63,8 @@
     overflow: hidden;
 }
 
-.fc .fc-toolbar.fc-header-toolbar {
-    margin: 0;
-    height: 50px;
+.fc .fc-toolbar {
+    background-color: #228be6 !important;
 }
 
 .fc-scrollgrid-sync-inner {

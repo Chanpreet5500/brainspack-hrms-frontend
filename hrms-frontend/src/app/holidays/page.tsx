@@ -15,6 +15,7 @@ import HolidayForm from "@/containers/Holiday/HolidayForm";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
 import { DateSelectArg, EventClickArg } from "@fullcalendar/core/index.js";
 import { HolidayFormData } from "@/utils/interfaces/interfaces";
+import "./holiday.css";
 const Calendar = () => {
   const [allDataApi] = useLazyGetAllHolidayDataApiByNameQuery();
   const dispatch = useDispatch();
@@ -107,7 +108,7 @@ const Calendar = () => {
   return (
     <>
       <div className="p-2">
-        <div className="flex items-center gap-3 max-sm:w-full 2xl:w-[40%]">
+        <div className="flex items-center gap-3 max-sm:w-full 2xl:w-[30%]">
           <div className="flex  lg:justify-end max-sm:w-[30%] max-sm:justify-between ">
             <CustomModal
               opened={opened}
