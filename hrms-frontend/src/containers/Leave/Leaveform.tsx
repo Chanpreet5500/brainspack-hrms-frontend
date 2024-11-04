@@ -46,14 +46,13 @@ const LeaveForm: React.FC<dataValue> = ({ onClose, triggerCreate, token, editBy 
         createdById: editBy,
         leavedata: {
           ...rest,
-          employee_id: "66f2d6a2a957ff778f4384fb",
-          leave_type_id: "67054b53377f1b9f0e64bd25",
+          employee_id: data?.employee,
+          leave_type_id: data?.leave_type_id,
           start_date: DateFormatConvertor(startDate),
           end_date: DateFormatConvertor(endDate),
-          start_day: 'full',
-          end_day: 'full'
-        }
-        , token: token
+          start_day: "full",
+          end_day: "full",
+        }, token: token
       });
       notifications.show({
         title: "Leave Successful",
@@ -123,16 +122,14 @@ const LeaveForm: React.FC<dataValue> = ({ onClose, triggerCreate, token, editBy 
           data={employeeData}
           validateKey={form.getInputProps("employee")}
         />
-        {/* <SelectInputField
+        <SelectInputField
           label={"Leave Type"}
           form={form}
           name={"leave_type_id"}
           placeholder={"Select the leave type"}
-          data={leaveTypes}
-          validateKey={form.getInputProps("leave_type")}
-        /> */}
-        {/* validateKey={form.getInputProps("leave_type_id")}
-        /> */}
+          data={leaveOptions}
+          validateKey={form.getInputProps("leave_type_id")}
+        />
         <div className="flex gap-4">
           <DatePickerComponent
             datePickerLabel={"Start Date"}

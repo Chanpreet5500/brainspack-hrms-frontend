@@ -54,7 +54,8 @@ export default function Employees() {
       dispatch(setUserDataLength(data.totalusers));
     }
   }, [data, isSuccess]);
-  useEffect(() => {}, [authToken]);
+  useEffect(() => { }, [authToken]);
+  console.log("im in the employee");
   const renderData = async (
     currpage: number,
     limit: number,

@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-export const leavePoliciesApi = createApi({
+const leavePoliciesApi = createApi({
   reducerPath: "leavePoliciesApi",
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:3001/api",
@@ -10,15 +10,6 @@ export const leavePoliciesApi = createApi({
       query: ({ page, limit, search }) => {
         return {
           url: `/leave-policies`,
-          method: "GET",
-          params: { page, limit, search },
-        };
-      },
-    }),
-    getAllLeavePoliciesTypeApiApiByName: builder.query({
-      query: ({ page, limit, search }) => {
-        return {
-          url: `/leave-policies/types`,
           method: "GET",
           params: { page, limit, search },
         };
@@ -35,12 +26,15 @@ export const leavePoliciesApi = createApi({
       },
     }),
 
-    updateLeavePoliciesTypeApiApiByName: builder.mutation({
-      query: ({ leave_type_id, data }) => {
+    updateLeavePoliciesApiByName: builder.mutation({
+      query: ({ data }) => {
+        const { leave_policy_id, max_leaves_per_year } = data;
         return {
-          url: `/leave-policies/update/${leave_type_id}`,
+          url: `/leave-policies/update/${leave_policy_id}`,
           method: "PUT",
-          body: data,
+          body: {
+            max_leaves_per_year: max_leaves_per_year,
+          },
         };
       },
     }),
@@ -49,8 +43,7 @@ export const leavePoliciesApi = createApi({
 
 export const {
   useLazyGetAllLeavePoliciesApiApiByNameQuery,
-  useLazyGetAllLeavePoliciesTypeApiApiByNameQuery,
   useCreateLeavePoliciesApiMutation,
-  useUpdateLeavePoliciesTypeApiApiByNameMutation,
+  useUpdateLeavePoliciesApiByNameMutation,
 } = leavePoliciesApi;
 export default leavePoliciesApi;

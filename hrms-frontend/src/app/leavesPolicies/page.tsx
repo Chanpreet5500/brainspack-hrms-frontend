@@ -8,7 +8,7 @@ import { manageLeavePoliciesSelector } from "@/redux/leavePolicies/leaveSelector
 import {
   useCreateLeavePoliciesApiMutation,
   useLazyGetAllLeavePoliciesApiApiByNameQuery,
-  useUpdateLeavePoliciesTypeApiApiByNameMutation,
+  useUpdateLeavePoliciesApiByNameMutation,
 } from "@/services/leavePolicies/leavesApi";
 import LeaveForm from "@/components/policiesSection/LeavePoliciesForm";
 import {
@@ -28,7 +28,8 @@ export default function TypeComponent() {
   const [createLeavePolicies, { isLoading, error, isSuccess: createSuccess }] =
     useCreateLeavePoliciesApiMutation();
   const [updateData, { data: updateLeaveData, isSuccess: updateSuccess }] =
-    useUpdateLeavePoliciesTypeApiApiByNameMutation();
+    useUpdateLeavePoliciesApiByNameMutation();
+  console.log(updateLeaveData, "updateLeaveData");
   const { allLeavesPolicies, totalleavesPolicies } = useSelector(
     manageLeavePoliciesSelector
   );
@@ -51,16 +52,15 @@ export default function TypeComponent() {
   };
   const onHandelUpdate = async (leavePolicies: any) => {
     try {
-      const { leave_type_id, max_leaves_per_year } = leavePolicies;
-      const leaveTypeIdString = String(leave_type_id._id);
-      if (true) {
-        // notifications.show({
-        //   title: "Error",
-        //   message: "Invalid leave type ID. Please select a valid leave type.",
-        //   color: "red",
-        // });
-        // return;
-      }
+      const { leave_policy_id, max_leaves_per_year } = leavePolicies;
+      // if (true) {
+      //   notifications.show({
+      //     title: "Error",
+      //     message: "Invalid leave type ID. Please select a valid leave type.",
+      //     color: "red",
+      //   });
+      //   return;
+      // }
       if (isNaN(Number(max_leaves_per_year))) {
         notifications.show({
           title: "Error",
@@ -70,11 +70,10 @@ export default function TypeComponent() {
         return;
       }
       const payload = {
-        leave_type_id: leave_type_id,
+        leave_policy_id: leave_policy_id,
         max_leaves_per_year: Number(max_leaves_per_year),
       };
       const result = await updateData({
-        leave_type_id: leave_type_id,
         data: payload,
       });
 
@@ -106,6 +105,7 @@ export default function TypeComponent() {
     mode: "controlled",
     validateInputOnChange: true,
     initialValues: {
+      leave_policy_id: "",
       leave_type_id: "",
       max_leaves_per_year: "",
     },
@@ -150,14 +150,13 @@ export default function TypeComponent() {
           />
         </div>
       </div>
-      <div className="w-full">
-        <div className="flex flex-wrap  align-middle gap-8 p-[20px]">
-          <CustumCard
-            form={form}
-            open={open}
-            allLeavesPolicies={allLeavesPolicies}
-          />
-        </div>
+      <div className="flex flex-wrap  align-middle gap-8">
+        <CustumCard
+          module={"leavePolicies"}
+          form={form}
+          open={open}
+          allPolicies={allLeavesPolicies}
+        />
       </div>
     </>
   );

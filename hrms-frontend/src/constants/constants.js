@@ -296,39 +296,3 @@ export const superadminimages = [
 ];
 
 export const tableDataLimit = 10;
-
-// const columns = [
-//   {
-//     accessor: "id",
-//     title: "s.no.",
-//     textAlign: "right",
-//     width: "40%",
-//     render: (index) => {
-//       return <>{index + 1}</>;
-//     },
-//   },
-//   {
-//     accessor: "Employee Name",
-//     width: "40%",
-//     render: (data) => {
-//       return <>employee</>;
-//     },
-//   },
-//   { accessor: "leave_type", width: "60%" },
-//   { accessor: "start_date", width: "60%" },
-//   { accessor: "end_date", width: "60%" },
-
-//   {
-//     accessor: "Action",
-//     width: "60%",
-//     render: (data) => {
-//       return (
-//         <div className="flex gap-2">
-//           <button>
-//             <IconEdit className="h-[25px] w-[25px] text-red-500 cursor-pointer" />
-//           </button>
-//         </div>
-//       );
-//     },
-//   },
-// ];

@@ -8,22 +8,29 @@ import {
 } from "@mantine/core";
 import { variantColorResolver } from "@/utils/commonFunction";
 interface allValue {
-  allLeavesPolicies: [];
+  allPolicies: [];
   open: any;
   form: any;
+  module: string;
 }
 export const CustumCard: React.FC<allValue> = ({
-  allLeavesPolicies,
+  allPolicies,
   open,
   form,
+  module,
 }) => {
   const updateData = (row: any) => {
     open();
-    form.setValues(row);
+    form.setValues({
+      leave_policy_id: row?._id,
+      max_leaves_per_year: row?.max_leaves_per_year,
+      leave_type_id: row?.leave_type_id?._id || "",
+    });
   };
+
   return (
     <>
-      {allLeavesPolicies.map((curr: any, indx: Number) => (
+      {allPolicies?.map((curr: any, indx: Number) => (
         <>
           {/* <div className="w-[30%] rounded-2xl p-5 flex h-[200px] bg-gray-200 justify-center items-center">
             <Card
@@ -31,7 +38,16 @@ export const CustumCard: React.FC<allValue> = ({
               withBorder
             >
               <Group justify="space-between" mt="md" mb="xs">
-                <Text fw={500}>{curr?.leave_type_id?.description}</Text>
+                {module == "leavePolicies" ? (
+                  <Text fw={500}>{curr?.leave_type_id?.description}</Text>
+                ) : (
+                  ""
+                )}
+                {module == "leaveType" ? (
+                  <Text fw={500}>{curr?.description}</Text>
+                ) : (
+                  ""
+                )}
                 <Menu shadow="md" width={200}>
                   <Menu.Target>
                     <svg
@@ -61,10 +77,13 @@ export const CustumCard: React.FC<allValue> = ({
                   </Menu.Dropdown>
                 </Menu>
               </Group>
-
-              <Text size="sm" c="dimmed">
-                {curr?.max_leaves_per_year}
-              </Text>
+              {module == "leavePolicies" ? (
+                <Text size="sm" color="dimmed">
+                  {curr?.max_leaves_per_year}
+                </Text>
+              ) : (
+                ""
+              )}
             </Card>
           </div> */}
 
