@@ -39,8 +39,6 @@ export default function TypeComponent() {
   const [opened, { open, close }] = useDisclosure(false);
   const [triggerLeavePolicies, { data, isSuccess, isError }] =
     useLazyGetAllLeavePoliciesApiApiByNameQuery();
-
-  console.log(authToken, "token");
   useEffect(() => {
     if (authToken) {
       triggerLeavePolicies({ token: authToken });
@@ -57,14 +55,6 @@ export default function TypeComponent() {
   const onHandelUpdate = async (leavePolicies: any) => {
     try {
       const { leave_policy_id, max_leaves_per_year } = leavePolicies;
-      // if (true) {
-      //   notifications.show({
-      //     title: "Error",
-      //     message: "Invalid leave type ID. Please select a valid leave type.",
-      //     color: "red",
-      //   });
-      //   return;
-      // }
       if (isNaN(Number(max_leaves_per_year))) {
         notifications.show({
           title: "Error",

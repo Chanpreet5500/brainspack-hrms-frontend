@@ -78,9 +78,9 @@ export function LinksGroup({
       <UnstyledButton
         onClick={() => {
           if (!hasLinks) {
-            handleNavigation(link); // Direct navigation for non-nested items
+            handleNavigation(link);
           } else {
-            setOpened((o) => !o); // Toggle dropdown for items with nested links
+            setOpened((o) => !o);
           }
         }}
         className={pathname === link ? classes.pathcontrol : classes.control}

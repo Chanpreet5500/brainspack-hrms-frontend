@@ -11,7 +11,6 @@ interface DroperProps {
   setOpen: any;
 }
 const Droper: React.FC<DroperProps> = ({ open, setOpen }) => {
-  console.log(appdroperdata, "hello");
   return (
     <>
       <div className="cursor-pointer">

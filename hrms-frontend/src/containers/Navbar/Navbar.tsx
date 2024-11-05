@@ -25,9 +25,7 @@ const Navbar: React.FC<NavbarProps> = ({ opened, toggle }) => {
   const [open, setOpen] = useState(false);
   const { authUser } = useSelector(manageAuthUserSelector);
 
-  useEffect(() => {
-    console.log(authUser, "USER");
-  }, [authUser]);
+  useEffect(() => {}, [authUser]);
 
   const handleSignOut = () => {
     signOut();

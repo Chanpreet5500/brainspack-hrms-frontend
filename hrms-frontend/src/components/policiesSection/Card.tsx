@@ -20,7 +20,6 @@ export const CustumCard: React.FC<allValue> = ({
   module,
 }) => {
   const updateData = (row: any) => {
-    console.log(row, "ROW");
     open();
     form.setValues({
       leave_type_id: row?.leave_type_id?._id,

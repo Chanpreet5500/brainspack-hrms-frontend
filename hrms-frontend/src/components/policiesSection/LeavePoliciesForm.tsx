@@ -15,6 +15,7 @@ interface dataValue {
   form: any;
   token: any;
 }
+
 const LeaveForm: React.FC<dataValue> = ({
   onClose,
   triggerCreate,
@@ -50,12 +51,12 @@ const LeaveForm: React.FC<dataValue> = ({
         {
           formattedData.leave_type_id !== formattedData.leave_type_id
             ? notifications.show({
-              title: "Leave Successful",
-              message: "Leave data created successfully",
-              color: "green",
-              icon: <IconCheck size={18} />,
-              autoClose: 1000,
-            })
+                title: "Leave Successful",
+                message: "Leave data created successfully",
+                color: "green",
+                icon: <IconCheck size={18} />,
+                autoClose: 1000,
+              })
             : "";
         }
         onClose();

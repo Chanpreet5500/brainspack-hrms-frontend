@@ -15,7 +15,6 @@ export default function Login() {
   const router = useRouter();
   const [registerUserData] = useRegisterDataApiByNameMutation();
   const { authUser } = useSelector(manageAuthUserSelector);
-  console.log(session, "1234567890");
   useEffect(() => {
     if (status == "authenticated") {
       router.push("/dashboard");

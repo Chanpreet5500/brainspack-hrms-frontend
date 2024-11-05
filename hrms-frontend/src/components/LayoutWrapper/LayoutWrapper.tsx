@@ -63,7 +63,7 @@ export function LayoutWrapper({
           </AppShell.Header>
 
           <AppShell.Navbar style={{ backgroundColor: "white" }}>
-            <Sidebar />
+            <Sidebar toggle={toggle} />
           </AppShell.Navbar>
           <AppShell.Main style={{ backgroundColor: "white" }}>
             {children}

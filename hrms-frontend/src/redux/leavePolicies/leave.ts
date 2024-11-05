@@ -15,9 +15,6 @@ const leavePoliciesSlice = createSlice({
     settotalleavesPolicies(state, action) {
       state.totalleavesPolicies = action.payload;
     },
-    updateLeavePoliciesStatus: (state, action) => {
-      console.log(state, "kkkk");
-    },
     resetLeaves(state) {
       state.allLeavesPolicies = [];
       state.totalleavesPolicies = 0;
@@ -25,10 +22,6 @@ const leavePoliciesSlice = createSlice({
   },
 });
 
-export const {
-  setallLeavesPolicies,
-  settotalleavesPolicies,
-  updateLeavePoliciesStatus,
-  resetLeaves,
-} = leavePoliciesSlice.actions;
+export const { setallLeavesPolicies, settotalleavesPolicies, resetLeaves } =
+  leavePoliciesSlice.actions;
 export default leavePoliciesSlice.reducer;

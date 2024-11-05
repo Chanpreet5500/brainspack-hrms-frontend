@@ -48,7 +48,6 @@ export default function LeaveComponent() {
   };
 
   const handleUpdate = async (data: any, status: string) => {
-    console.log(data, "data");
     try {
       const response = await updateLeave({
         leaveId: data._id,

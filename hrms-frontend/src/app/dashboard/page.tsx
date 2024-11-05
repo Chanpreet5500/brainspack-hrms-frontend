@@ -37,8 +37,6 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   const { allUserDataLength, allUserData } = useSelector(manageUserSelector);
   const { authUser, authToken } = useSelector(manageAuthUserSelector);
-  console.log(authToken, employeeData, "234567876543");
-
   const fetchUserData = async (
     currPage: number,
     limit: number,
@@ -86,7 +84,6 @@ const Dashboard = () => {
     if ((authToken && employeeData) || leavesData || holidaysData) {
       setDummyData((prevDummy: any) =>
         prevDummy.map((item: any) => {
-          console.log(item, "item");
           switch (item.title) {
             case "Number of Employee":
               return { ...item, count: employeeData?.users?.length || 0 };
