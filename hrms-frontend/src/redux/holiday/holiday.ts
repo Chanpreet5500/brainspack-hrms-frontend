@@ -2,12 +2,10 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     holiday: null,
-    selectedMode: "",
     editData: {},
     deleteData: {},
-    modalVisibility: false,
     allData: [],
-    allDataLength: 0,
+    change: false
 };
 
 const holidaySlice = createSlice({
@@ -16,9 +14,6 @@ const holidaySlice = createSlice({
     reducers: {
         setholiday(state, action) {
             state.holiday = action.payload;
-        },
-        updateSelectedMode(state, action) {
-            state.selectedMode = action.payload;
         },
         updateholidayEditData(state, action) {
             state.editData = action.payload;
@@ -29,27 +24,22 @@ const holidaySlice = createSlice({
         clearholiday(state) {
             state.holiday = null;
         },
-        updateModalVisibility(state, action) {
-            state.modalVisibility = action.payload;
-        },
         getAllholidayData(state, action) {
             state.allData = action.payload;
         },
-        setholidayDataLength(state, action) {
-            state.allDataLength = action.payload;
+        trackChange(state, action) {
+            state.change = action.payload;
         },
     },
 });
 
 export const {
     setholiday,
-    updateSelectedMode,
     updateholidayEditData,
     deleteholidayEditData,
     clearholiday,
-    updateModalVisibility,
     getAllholidayData,
-    setholidayDataLength
+    trackChange
 } = holidaySlice.actions;
 
 export default holidaySlice.reducer;

@@ -8,9 +8,10 @@ import { useState } from "react";
 
 interface DroperProps {
   open: boolean;
-  setopen: any;
+  setOpen: any;
 }
-const Droper: React.FC<DroperProps> = ({ open, setopen }) => {
+const Droper: React.FC<DroperProps> = ({ open, setOpen }) => {
+  console.log(appdroperdata, "hello");
   return (
     <>
       <div className="cursor-pointer">

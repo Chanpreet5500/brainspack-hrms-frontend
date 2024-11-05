@@ -1,7 +1,7 @@
 "use client";
 import { useEffect } from "react";
 import { Button, Group, MantineProvider } from "@mantine/core";
-import { variantColorResolver } from "@/constants/commonFunction";
+import { variantColorResolver } from "@/utils/commonFunction";
 import { useDispatch } from "react-redux";
 import { notifications } from "@mantine/notifications";
 import { IconCheck } from "@tabler/icons-react";
@@ -50,12 +50,12 @@ const LeaveForm: React.FC<dataValue> = ({
         {
           formattedData.leave_type_id !== formattedData.leave_type_id
             ? notifications.show({
-                title: "Leave Successful",
-                message: "Leave data created successfully",
-                color: "green",
-                icon: <IconCheck size={18} />,
-                autoClose: 1000,
-              })
+              title: "Leave Successful",
+              message: "Leave data created successfully",
+              color: "green",
+              icon: <IconCheck size={18} />,
+              autoClose: 1000,
+            })
             : "";
         }
         onClose();

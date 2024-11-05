@@ -1,5 +1,5 @@
 "use client";
-import { getAllholidayData } from "@/redux/holiday/holiday";
+import { getAllholidayData, trackChange } from "@/redux/holiday/holiday";
 import { manageHolidaySelector } from "@/redux/holiday/holidaySelector";
 import {
   useCreateHolidayMutation,
@@ -18,6 +18,9 @@ import { useForm } from "@mantine/form";
 import { CustomModal } from "@/components/reusableComponents/CustomModal/CustomModal";
 import HolidayForm from "@/components/Holiday/HolidayForm";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
+import "./holiday.css";
+import { HolidayFormData } from "@/utils/interfaces/interfaces";
+import { DateSelectArg, EventClickArg } from "@fullcalendar/core/index.js";
 const Calendar = () => {
   const [postData, { data: addData, isSuccess: createSuccess, isError }] =
     useCreateHolidayMutation();
@@ -29,6 +32,10 @@ const Calendar = () => {
   ] = useUpdateHolidayDataApiByNameMutation();
   const [deleteHolidayData, { isSuccess: deleteSuccess }] =
     useDeleteHolidayDataApiByNameMutation();
+  // import { DateSelectArg, EventClickArg } from "@fullcalendar/core/index.js";
+  // import { HolidayFormData } from "@/utils/interfaces/interfaces";
+
+  // const [allDataApi] = useLazyGetAllHolidayDataApiByNameQuery();
   const dispatch = useDispatch();
   const { allData } = useSelector(manageHolidaySelector);
   const [opened, { open, close }] = useDisclosure(false);
@@ -46,11 +53,19 @@ const Calendar = () => {
     dispatch(getAllholidayData(response.data));
   };
 
+  const { change } = useSelector(manageHolidaySelector);
+
+  useEffect(() => {
+    onGetData();
+    dispatch(trackChange(false));
+  }, [change, authToken]);
+
   const handleOnClose = () => {
     close();
     form.reset();
   };
-  const form = useForm({
+
+  const form = useForm<HolidayFormData>({
     mode: "controlled",
     validateInputOnChange: true,
     initialValues: {
@@ -88,19 +103,24 @@ const Calendar = () => {
       type: (value) => (value ? null : "Select field is required"),
     },
   });
-  const handleEventClick = (eventInfo: any) => {
+  const handleEventClick = (eventInfo: EventClickArg) => {
     const data = {
       holiday_id: eventInfo.event.id,
       title: eventInfo.event.title,
       description: eventInfo.event.extendedProps.description,
       type: eventInfo.event.extendedProps.type,
-      date: eventInfo.event.start,
+      // date: eventInfo.event.start,
+      date: eventInfo.event.start
+        ? eventInfo.event.start.toISOString()
+        : undefined,
     };
     form.setValues(data);
     open();
   };
-  const handleDateSelect = async (selectInfo: any) => {
-    form.setValues({ date: selectInfo.start });
+  // const handleDateSelect = async (selectInfo: any) => {
+  //   form.setValues({ date: selectInfo.start });
+  const handleDateSelect = async (selectInfo: DateSelectArg) => {
+    form.setValues({ date: selectInfo.start.toISOString() });
     open();
   };
 
@@ -119,8 +139,8 @@ const Calendar = () => {
   };
   return (
     <>
-      <div className="flex justify-end items-center p-2 max-sm:flex-col-reverse max-sm:items-start">
-        <div className="flex items-center gap-3 max-sm:w-full 2xl:w-[40%]">
+      <div className="p-2">
+        <div className="flex items-center gap-3 max-sm:w-full 2xl:w-[30%]">
           <div className="flex  lg:justify-end max-sm:w-[30%] max-sm:justify-between ">
             <CustomModal
               opened={opened}
@@ -141,26 +161,29 @@ const Calendar = () => {
             />
           </div>
         </div>
+        <FullCalendar
+          plugins={[dayGridPlugin, interactionPlugin]}
+          initialView="dayGridMonth"
+          events={allData?.map((holiday: any) => ({
+            id: holiday._id,
+            title: holiday.title,
+            start: new Date(holiday.date).toISOString().split("T")[0],
+            type: holiday.type,
+            description: holiday.description,
+          }))}
+          eventTextColor="#000"
+          selectable
+          select={handleDateSelect}
+          eventClick={handleEventClick}
+          eventContent={renderEventContent}
+          height={600}
+          buttonText={{
+            today: "Today",
+            week: "Week",
+            day: "Day",
+          }}
+        />
       </div>
-      <FullCalendar
-        plugins={[dayGridPlugin, interactionPlugin]}
-        initialView="dayGridMonth"
-        events={allData?.map((holiday: any) => ({
-          id: holiday._id,
-          title: holiday.title,
-          start: new Date(holiday.date).toISOString().split("T")[0],
-          type: holiday.type,
-          description: holiday.description,
-        }))}
-        // eventBackgroundColor="transparent"
-        // eventColor='#378006'
-        eventTextColor="#000"
-        selectable
-        select={handleDateSelect}
-        eventClick={handleEventClick}
-        eventContent={renderEventContent}
-        height={600}
-      />
     </>
   );
 };

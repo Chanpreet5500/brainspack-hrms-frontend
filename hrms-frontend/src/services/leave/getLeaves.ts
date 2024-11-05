@@ -37,6 +37,9 @@ export const leavesApi = createApi({
           headers: {
             Authorization: `Bearer ${token}`,
           },
+          // headers: {
+          //   Authorization: `Bearer ${authToken}`,
+          // },
         };
       },
     }),

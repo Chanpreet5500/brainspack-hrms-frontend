@@ -1,15 +1,24 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useForm } from "@mantine/form";
-import SelectInputField from "../../Inputs/selectInput/Select";
-import { Button, Group, MantineProvider, Textarea } from "@mantine/core";
-import { DatePickerComponent } from "../../reusableComponents/CustomDatePicker/CustomDatePicker";
-import { holidayData, leaveTypes, whichHalfData } from "@/constants/constants";
+import {
+  Button,
+  Group,
+  MantineProvider,
+  Textarea,
+  useCombobox,
+} from "@mantine/core";
+import {
+  employeeData,
+  holidayData,
+  leaveTypes,
+  whichHalfData,
+} from "@/constants/constants";
 import { useLazyGetAllLeaveDataApiByNameQuery } from "@/services/leave/getLeaves";
 import {
   DateFormatConvertor,
   variantColorResolver,
-} from "@/constants/commonFunction";
+} from "@/utils/commonFunction";
 import SelectSearch from "@/components/reusableComponents/SearchSelect";
 import { useDispatch, useSelector } from "react-redux";
 import { notifications } from "@mantine/notifications";
@@ -22,6 +31,8 @@ import {
   settotalleavesPolicies,
 } from "@/redux/leavePolicies/leave";
 import { useLazyGetAllLeaveTypePoliciesApiByNameQuery } from "@/services/typePolicies/typeApi";
+import { DatePickerComponent } from "@/components/reusableComponents/CustomDatePicker/CustomDatePicker";
+import SelectInputField from "@/components/Inputs/selectInput/Select";
 interface dataValue {
   onClose: any;
   triggerCreate: any;
@@ -40,17 +51,11 @@ const LeaveForm: React.FC<dataValue> = ({
 }) => {
   const [startDate, setStartDate] = useState<Date | null>(new Date());
   const [endDate, setEndDate] = useState<Date | null>(startDate);
-  const [page, setPage] = useState(1); // New state for page
-  const [limit, setLimit] = useState(10);
-  const [search, setSearch] = useState<string>("");
+  const [search, setSearch] = useState("");
   const [allLeaveData, { data: leaveData, isSuccess: isSuccessToGetAllData }] =
     useLazyGetAllLeaveDataApiByNameQuery();
   const [allDataApi, { data: employeData, error, isLoading, isSuccess }] =
     useLazyGetAllDataApiByNameQuery();
-
-  const { allLeavesPolicies, totalleavesPolicies } = useSelector(
-    manageLeavePoliciesSelector
-  );
   const [allleaveTypeDataApi, { data: leaveTypeData }] =
     useLazyGetAllLeaveTypePoliciesApiByNameQuery();
   useEffect(() => {
@@ -63,10 +68,11 @@ const LeaveForm: React.FC<dataValue> = ({
       value: leave?._id,
       label: leave?.description,
     })) || [];
-  console.log(leaveTypeData, leaveOptions, "leaveTypeData");
+
   useEffect(() => {
-    allDataApi({ page, limit, search, token });
-  }, [allDataApi, page, limit, search, token]);
+    allDataApi({ search, token });
+  }, [search, token]);
+  const dispatch = useDispatch();
   const handleSubmit = async (data: any) => {
     try {
       const { employee, ...rest } = data;
@@ -100,6 +106,17 @@ const LeaveForm: React.FC<dataValue> = ({
       console.error("Error creating leave:", err);
     }
   };
+  const combobox = useCombobox({
+    onDropdownClose: () => {
+      combobox.resetSelectedOption();
+      combobox.focusTarget();
+      setSearch("");
+    },
+
+    onDropdownOpen: () => {
+      combobox.focusSearchInput();
+    },
+  });
 
   const form = useForm({
     mode: "controlled",
@@ -134,6 +151,7 @@ const LeaveForm: React.FC<dataValue> = ({
   return (
     <form
       onSubmit={form.onSubmit((localUserDetails: any) => {
+        console.log(localUserDetails, "localUserDetails");
         handleSubmit(localUserDetails);
       })}
     >

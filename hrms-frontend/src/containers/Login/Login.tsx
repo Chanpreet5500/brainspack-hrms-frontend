@@ -10,12 +10,12 @@ import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
 import { notifications } from "@mantine/notifications";
-
 export default function Login() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [registerUserData] = useRegisterDataApiByNameMutation();
   const { authUser } = useSelector(manageAuthUserSelector);
+  console.log(session, "1234567890");
   useEffect(() => {
     if (status == "authenticated") {
       router.push("/dashboard");
@@ -28,7 +28,6 @@ export default function Login() {
   //         img: user.image,
   //         email: user.email
   //     };
-
   //     try {
   //         const response = await registerUserData(data).unwrap();
   //         document.cookie = `userData=${JSON.stringify(response)}; path=/`;
@@ -40,7 +39,7 @@ export default function Login() {
   // }
   const handleSignIn = async () => {
     const loginResponse = await signIn("google", { redirect: false });
-
+    // console.log(loginResponse, 'loginResponse ')
     // if (loginResponse?.error) {
     //     notifications.show({
     //         color: "red",
@@ -66,7 +65,7 @@ export default function Login() {
                       <IconAccessible className="w-full h-full" />
                     </div>
                     <div className="text-2xl">
-                      BRAINS<span style={{ color: "#55ad88" }}>P</span>ACK
+                      BRAINS<span style={{ color: "#55AD88" }}>P</span>ACK
                     </div>
                   </div>
                   <div className="flex gap-3 flex-col">

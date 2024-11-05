@@ -9,6 +9,7 @@ import { notifications } from "@mantine/notifications";
 import {
   useCreateTypePoliciesApiMutation,
   useLazyGetAllLeaveTypePoliciesApiByNameQuery,
+  useUpdateLeaveTypeApiByNameMutation,
 } from "@/services/typePolicies/typeApi";
 import {
   setallTypesPolicies,
@@ -29,6 +30,8 @@ export default function typePolicies() {
     createTypePolicies,
     { data, isLoading, error, isSuccess: createSuccess },
   ] = useCreateTypePoliciesApiMutation();
+  const [updateTypePolicies, { data: updateData }] =
+    useUpdateLeaveTypeApiByNameMutation();
   const [
     triggerLeaveTypePolicies,
     { data: leaveTypeData, isSuccess, isError },
@@ -40,6 +43,21 @@ export default function typePolicies() {
   const [search, setSearch] = useState("");
   const dispatch = useDispatch();
   const [opened, { open, close }] = useDisclosure(false);
+  const onHandelUpdate = async (row: any) => {
+    const mydata = {
+      name: row.name,
+      description: row.description,
+    };
+    try {
+      const result = await updateTypePolicies({
+        leaveTypeID: row.leave_policy_id,
+        data: mydata,
+        token: authToken,
+      });
+    } catch (error) {
+      throw error;
+    }
+  };
   useEffect(() => {
     if (authToken) {
       triggerLeaveTypePolicies({ token: authToken });
@@ -48,7 +66,7 @@ export default function typePolicies() {
       dispatch(setallTypesPolicies(leaveTypeData));
       dispatch(settotalTypePolicies(leaveTypeData?.length));
     }
-  }, [leaveTypeData, createSuccess, authToken]);
+  }, [leaveTypeData, createSuccess, authToken, updateData]);
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const searchValue = event.target.value;
     setSearch(searchValue);
@@ -91,6 +109,7 @@ export default function typePolicies() {
                 form={form}
                 onClose={close}
                 triggerCreate={createTypePolicies}
+                triggerUpdate={onHandelUpdate}
               />
             }
           />

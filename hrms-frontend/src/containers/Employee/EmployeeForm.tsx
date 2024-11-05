@@ -1,9 +1,7 @@
 import { useEffect } from "react";
 import { Button, Group, MantineProvider } from "@mantine/core";
-import TextInputField from "../../Inputs/textInput/Input";
-import SelectInputField from "../../Inputs/selectInput/Select";
 import { employeeDepartment, employeProfetion } from "@/constants/constants";
-import { variantColorResolver } from "@/constants/commonFunction";
+import { variantColorResolver } from "@/utils/commonFunction";
 import { useDispatch } from "react-redux";
 import {
   useCreateUserMutation,
@@ -12,6 +10,9 @@ import {
 import { getAllUserData } from "@/redux/user/user";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
+import { EmployeeFormProps } from "@/utils/interfaces/interfaces";
+import TextInputField from "@/components/Inputs/textInput/Input";
+import SelectInputField from "@/components/Inputs/selectInput/Select";
 
 interface value {
   onClose: any;
@@ -23,13 +24,9 @@ interface value {
 
 const EmployeeForm: React.FC<value> = (props) => {
   const { onClose, form, onHandelUpdate, createTrigger, token } = props;
-  const [postData, { data: addData, isSuccess, isError }] =
-    useCreateUserMutation();
   const dispatch = useDispatch();
-
   const [allDataApi, { data, isSuccess: isSuccessToGetAllData }] =
     useLazyGetAllDataApiByNameQuery();
-
   useEffect(() => {
     if (data?.users.length > 0) {
       dispatch(getAllUserData(data?.users));
@@ -43,7 +40,7 @@ const EmployeeForm: React.FC<value> = (props) => {
       token: token,
     };
     allDataApi(params);
-  }, [isSuccess]);
+  }, []);
 
   const handleSubmit = async (data: any) => {
     try {
@@ -105,6 +102,14 @@ const EmployeeForm: React.FC<value> = (props) => {
           name={"email"}
           placeholder={"Enter your email address"}
           validateKey={form.getInputProps("email")}
+        />
+
+        <TextInputField
+          withAsterisk
+          label={"Phone Number"}
+          name={"phoneNumber"}
+          placeholder={"Enter your Phone Number"}
+          validateKey={form.getInputProps("phoneNumber")}
         />
 
         <SelectInputField

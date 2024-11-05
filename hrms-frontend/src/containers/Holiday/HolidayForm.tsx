@@ -1,51 +1,48 @@
 import { holidayType } from "@/constants/constants";
-import SelectInputField from "../Inputs/selectInput/Select";
-import TextInputField from "../Inputs/textInput/Input";
+import SelectInputField from "../../components/Inputs/selectInput/Select";
+import TextInputField from "../../components/Inputs/textInput/Input";
 import { Button, Group, MantineProvider } from "@mantine/core";
-import { useDeleteHolidayDataApiByNameMutation } from "@/services/holiday/holidayApi";
-import { useSelector } from "react-redux";
-import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
+import { useCreateHolidayMutation, useDeleteHolidayDataApiByNameMutation, useUpdateHolidayDataApiByNameMutation } from "@/services/holiday/holidayApi";
 import { DateFormatConvertor } from "@/utils/commonFunction";
+import { useDispatch, useSelector } from "react-redux";
+import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
+import { HolidayFormData, HolidayFormProps } from "@/utils/interfaces/interfaces";
+import { useEffect } from "react";
+import { trackChange } from "@/redux/holiday/holiday";
 
-interface holiDayFormValue {
-  form: any;
-  triggerCreate: any;
-  triggerUpdate: any;
-  triggerDelete: any;
-  modalClose: any;
-}
-const HolidayForm: React.FC<holiDayFormValue> = ({
+
+const HolidayForm: React.FC<HolidayFormProps> = ({
   form,
-  triggerCreate,
-  triggerUpdate,
-  triggerDelete,
   modalClose,
 }) => {
-  const { authToken, authUser } = useSelector(manageAuthUserSelector);
 
-  const handleSubmit = async (data: any) => {
-    const formattedDate = DateFormatConvertor(data.date);
+  const [updateHolidayData, { isSuccess: updateSuccess }] = useUpdateHolidayDataApiByNameMutation();
+  const [deleteHolidayData, { isSuccess: deleteSuccess }] = useDeleteHolidayDataApiByNameMutation();
+  const [postData, { isSuccess: createSuccess }] = useCreateHolidayMutation();
+  const { authToken, authUser } = useSelector(manageAuthUserSelector);
+  const dispatch = useDispatch();
+  const handleSubmit = async (data: HolidayFormData) => {
+    const formattedDate = DateFormatConvertor(data.date)
     data.date = formattedDate;
     if (data?.holiday_id) {
-      await triggerUpdate({
-        data: data,
-        owner_id: authUser?.userId,
-        token: authToken,
-      });
+      await updateHolidayData({ data: data, owner_id: authUser?.userId, token: authToken });
     } else {
-      await triggerCreate(data);
+      await postData({ data: data, owner_id: authUser?.userId, token: authToken });
     }
     modalClose();
     form?.reset();
   };
-  const onRemove = async (data: any) => {
-    await triggerDelete({ data: data, token: authToken });
+  const onRemove = async (holidayId: string) => {
+    await deleteHolidayData({ data: holidayId, token: authToken })
     modalClose();
-  };
+  }
+  useEffect(() => {
+    dispatch(trackChange(true))
+  }, [updateSuccess, deleteSuccess, createSuccess])
   return (
     <form
-      onSubmit={form.onSubmit((localUserDetails: any) => {
-        handleSubmit(localUserDetails);
+      onSubmit={form.onSubmit((localUserDetails) => {
+        handleSubmit(localUserDetails as HolidayFormData);
       })}
     >
       <div className="flex flex-col m-auto gap-3 ">
@@ -56,7 +53,6 @@ const HolidayForm: React.FC<holiDayFormValue> = ({
           placeholder={"Enter the holiday title"}
           validateKey={form.getInputProps("title")}
         />
-
         <TextInputField
           withAsterisk
           name={"description"}
@@ -64,7 +60,6 @@ const HolidayForm: React.FC<holiDayFormValue> = ({
           placeholder={"Enter the holiday description"}
           validateKey={form.getInputProps("description")}
         />
-
         <SelectInputField
           label={"Type"}
           form={form}
@@ -73,7 +68,6 @@ const HolidayForm: React.FC<holiDayFormValue> = ({
           data={holidayType}
           validateKey={form.getInputProps("type")}
         />
-
         {!form.getInputProps("holiday_id").value ? (
           <MantineProvider>
             <Group className=" !flex !justify-end !w-full ">
@@ -88,7 +82,7 @@ const HolidayForm: React.FC<holiDayFormValue> = ({
               <Button
                 type="submit"
                 variant="filled"
-                className="!h-[32px] !w-[90px] !font-[500]"
+                className=" custom-button  !h-[32px] !w-[90px] !font-[500]"
                 radius="md"
               >
                 Add
@@ -110,7 +104,7 @@ const HolidayForm: React.FC<holiDayFormValue> = ({
               <Button
                 type="submit"
                 variant="filled"
-                className="!h-[32px] !w-[90px] !font-[500]"
+                className=" custom-button !h-[32px] !w-[90px] !font-[500]"
                 radius="md"
               >
                 Update
@@ -122,5 +116,4 @@ const HolidayForm: React.FC<holiDayFormValue> = ({
     </form>
   );
 };
-
 export default HolidayForm;

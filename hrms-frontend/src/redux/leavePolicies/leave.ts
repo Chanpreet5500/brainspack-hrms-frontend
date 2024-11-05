@@ -15,7 +15,9 @@ const leavePoliciesSlice = createSlice({
     settotalleavesPolicies(state, action) {
       state.totalleavesPolicies = action.payload;
     },
-    updateLeavePoliciesStatus: (state, action) => {},
+    updateLeavePoliciesStatus: (state, action) => {
+      console.log(state, "kkkk");
+    },
     resetLeaves(state) {
       state.allLeavesPolicies = [];
       state.totalleavesPolicies = 0;

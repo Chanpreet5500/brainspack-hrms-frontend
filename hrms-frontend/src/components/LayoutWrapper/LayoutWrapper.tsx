@@ -2,8 +2,8 @@
 
 import { useDisclosure } from "@mantine/hooks";
 import { AppShell, Flex } from "@mantine/core";
-import Sidebar from "../Sidebar/Sidebar";
-import Navbar from "../Navbar/Navbar";
+import Sidebar from "../../containers/Sidebar/Sidebar";
+import Navbar from "../../containers/Navbar/Navbar";
 import { usePathname } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -56,16 +56,16 @@ export function LayoutWrapper({
             collapsed: { mobile: !opened },
           }}
         >
-          <AppShell.Header style={{ backgroundColor: "#e8ecef" }}>
+          <AppShell.Header style={{ backgroundColor: "white" }}>
             <Flex px="md" style={{ width: "100%" }} align="center">
               <Navbar opened={opened} toggle={toggle} />
             </Flex>
           </AppShell.Header>
 
-          <AppShell.Navbar style={{ backgroundColor: "#e8ecef" }}>
+          <AppShell.Navbar style={{ backgroundColor: "white" }}>
             <Sidebar />
           </AppShell.Navbar>
-          <AppShell.Main style={{ backgroundColor: "#e8ecef" }}>
+          <AppShell.Main style={{ backgroundColor: "white" }}>
             {children}
           </AppShell.Main>
         </AppShell>

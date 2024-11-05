@@ -15,6 +15,18 @@ const typePoliciesApi = createApi({
         };
       },
     }),
+    updateLeaveTypeApiByName: builder.mutation({
+      query: ({ leaveTypeID, data, token }) => {
+        return {
+          url: `/leave-policies/update-type/${leaveTypeID}`,
+          method: "PUT",
+          body: data,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+      },
+    }),
     getAllLeaveTypePoliciesApiByName: builder.query({
       query: ({ page, limit, search, token }) => {
         return {
@@ -32,5 +44,6 @@ const typePoliciesApi = createApi({
 export const {
   useCreateTypePoliciesApiMutation,
   useLazyGetAllLeaveTypePoliciesApiByNameQuery,
+  useUpdateLeaveTypeApiByNameMutation,
 } = typePoliciesApi;
 export default typePoliciesApi;

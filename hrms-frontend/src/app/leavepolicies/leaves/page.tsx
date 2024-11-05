@@ -10,7 +10,6 @@ import {
   setallLeaves,
   settotalleaves,
 } from "@/redux/leave/leaves";
-import LeaveForm from "@/components/leaveSection/Leaveform/Leaveform";
 import { useDisclosure } from "@mantine/hooks";
 import { IconEdit } from "@tabler/icons-react";
 import { Button, Group } from "@mantine/core";
@@ -20,10 +19,11 @@ import {
   useUpdateLeaveDataApiByNameMutation,
 } from "@/services/leave/getLeaves";
 import { DataTable } from "mantine-datatable";
-import { StringDateFormatConvertor } from "@/constants/commonFunction";
+import { StringDateFormatConvertor } from "@/utils/commonFunction";
 import { notifications } from "@mantine/notifications";
 import { manageLeavePoliciesSelector } from "@/redux/leavePolicies/leaveSelector";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
+import LeaveForm from "@/containers/Leave/Leaveform";
 
 const initialState = {
   allLeaves: [],
@@ -34,8 +34,7 @@ export default function LeaveComponent() {
   const [createLeave, { isLoading, error, isSuccess: createSuccess }] =
     useCreateLeaveMutation();
   const [currentpage, setCurrentPage] = useState(1);
-  const [trigger, { data: leavesData }] =
-    useLazyGetAllLeaveDataApiByNameQuery();
+  const [trigger] = useLazyGetAllLeaveDataApiByNameQuery();
   const [updateLeave] = useUpdateLeaveDataApiByNameMutation();
   const { allLeaves, totalleaves } = useSelector(manageLeaveSelector);
   const [search, setSearch] = useState("");
@@ -49,11 +48,13 @@ export default function LeaveComponent() {
   };
 
   const handleUpdate = async (data: any, status: string) => {
+    console.log(data, "data");
     try {
       const response = await updateLeave({
         leaveId: data._id,
         status,
         updatedById: authUser?.userId,
+        token: authToken,
       });
 
       if (response.error) {
@@ -111,7 +112,7 @@ export default function LeaveComponent() {
     if (authToken) {
       renderData(currentpage, tableDataLimit, search);
     }
-  }, [currentpage, createSuccess, leavesData, authToken]);
+  }, [currentpage, createSuccess, authToken]);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const searchValue = event.target.value;
@@ -154,7 +155,7 @@ export default function LeaveComponent() {
       render: (data: TableRow) => {
         return (
           <>
-            {data?.employee_id?.fname} {data?.employee_id?.lname}
+            {data?.employee_id.fname} {data?.employee_id.lname}
           </>
         );
       },
@@ -212,7 +213,7 @@ export default function LeaveComponent() {
         const [editopened, { open: editopen, close: editclose }] =
           useDisclosure(false);
         return (
-          <div>
+          <div className="editIcon">
             <CustomModal
               opened={editopened}
               open={editopen}
@@ -241,6 +242,7 @@ export default function LeaveComponent() {
                       Reject
                     </Button>
                     <Button
+                      style={{ backgroundColor: "#228be6" }}
                       variant="filled"
                       color="green"
                       onClick={() => {

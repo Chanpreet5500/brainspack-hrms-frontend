@@ -1,5 +1,5 @@
 "use client";
-
+import "./sidebar.css";
 import { useState } from "react";
 import {
   Group,
@@ -11,7 +11,16 @@ import {
   UnstyledButton,
   rem,
 } from "@mantine/core";
-import { IconCalendarStats, IconChevronRight } from "@tabler/icons-react";
+import {
+  IconCalendarStats,
+  IconChevronRight,
+  IconAlignBoxLeftStretch,
+  IconUsersGroup,
+  IconCalendarMonth,
+  IconCalendarPlus,
+  IconCalendarCheck,
+  IconUser,
+} from "@tabler/icons-react";
 import classes from "./Navbar.module.css";
 import { usePathname, useRouter } from "next/navigation";
 
@@ -33,6 +42,7 @@ export function LinksGroup({
   label,
   initiallyOpened,
   links,
+  data,
   link,
 }: LinkItem) {
   const pathname = usePathname();
@@ -96,7 +106,6 @@ export function LinksGroup({
         </Group>
       </UnstyledButton>
 
-      {/* Collapse nested items */}
       {hasLinks && <Collapse in={opened}>{items}</Collapse>}
     </>
   );
@@ -117,10 +126,10 @@ export function Navbar({ linksData }: NavbarProps) {
 }
 
 const mockdata = [
-  { label: "Dashboard", icon: IconCalendarStats, link: "/dashboard" },
+  { label: "Dashboard", icon: IconAlignBoxLeftStretch, link: "/dashboard" },
   {
     label: "Employees",
-    icon: IconCalendarStats,
+    icon: IconUsersGroup,
     link: "/employees",
   },
 
@@ -135,7 +144,7 @@ const mockdata = [
   },
   {
     label: "Holiday Calendar",
-    icon: IconCalendarStats,
+    icon: IconCalendarMonth,
     link: "/holidays",
   },
 ];
