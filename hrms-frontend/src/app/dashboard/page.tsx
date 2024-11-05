@@ -17,6 +17,7 @@ import { getAllUserData, setUserDataLength } from "@/redux/user/user";
 import { useLazyGetAllHolidayDataApiByNameQuery } from "@/services/holiday/holidayApi";
 
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
+import { signOut, useSession } from "next-auth/react";
 const todayDate = StringDateFormatConvertor(
   new Date().toISOString(),
   "DD/MMM/YYYY",
@@ -38,7 +39,15 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   const { allUserDataLength, allUserData } = useSelector(manageUserSelector);
   const { authUser, authToken } = useSelector(manageAuthUserSelector);
-  console.log(authToken, "234567876543");
+  const { data: session, status } = useSession();
+
+  // useEffect(()=>{
+  // if(!session?.apiAccessToken){
+  //   signOut();
+  // }
+  // },[session])
+
+
 
   const fetchUserData = async (
     currPage: number,
@@ -104,11 +113,11 @@ const Dashboard = () => {
   }, [employeeData, leavesData, authToken]);
   // useEffect(() => {}, [authToken]);
   useEffect(() => {
-    if (employeeData?.users.length > 0 && isSuccess) {
+    if (employeeData?.users.length > 0 && getEmployeeSuccess) {
       dispatch(getAllUserData(employeeData?.users));
       dispatch(setUserDataLength(employeeData.totalusers));
     }
-  }, [employeeData, isSuccess, authToken, authUser]);
+  }, [employeeData, getEmployeeSuccess, authToken, authUser]);
 
   useEffect(() => {
     if (authToken) {

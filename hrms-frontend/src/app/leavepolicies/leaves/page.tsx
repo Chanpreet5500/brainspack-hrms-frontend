@@ -23,6 +23,7 @@ import { StringDateFormatConvertor } from "@/utils/commonFunction";
 import { notifications } from "@mantine/notifications";
 import { manageLeavePoliciesSelector } from "@/redux/leavePolicies/leaveSelector";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
+import LeaveForm from "@/containers/Leave/Leaveform";
 
 const initialState = {
   allLeaves: [],
@@ -64,17 +65,17 @@ export default function LeaveComponent() {
       {
         status == "rejected"
           ? notifications.show({
-              color: "red",
-              title: "Rejected",
-              message: "Leave request rejected",
-              position: "bottom-left",
-            })
+            color: "red",
+            title: "Rejected",
+            message: "Leave request rejected",
+            position: "bottom-left",
+          })
           : notifications.show({
-              color: "green",
-              title: "Approved",
-              message: "Leave request approved",
-              position: "bottom-left",
-            });
+            color: "green",
+            title: "Approved",
+            message: "Leave request approved",
+            position: "bottom-left",
+          });
       }
     } catch (err) {
       console.error("Error updating leave:", err);
@@ -110,7 +111,7 @@ export default function LeaveComponent() {
     if (authToken) {
       renderData(currentpage, tableDataLimit, search);
     }
-  }, [currentpage, createSuccess, leavesData, authToken]);
+  }, [currentpage, createSuccess, authToken]);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const searchValue = event.target.value;

@@ -7,23 +7,38 @@ import { useEffect } from "react";
 import { useRegisterDataApiByNameMutation } from "@/services/user/usersApi";
 import { useRouter } from "next/navigation";
 // import Cookies from "js-cookie";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
 import { notifications } from "@mantine/notifications";
+import { setauthorized } from "@/redux/authorizedUser/authorizedUser";
+
 
 export default function Login() {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const dispatch = useDispatch()
   const [registerUserData] = useRegisterDataApiByNameMutation();
-  const { authUser } = useSelector(manageAuthUserSelector);
+  const { authUser, authorized } = useSelector(manageAuthUserSelector);
   console.log(session, "1234567890");
   useEffect(() => {
-    if (status == "authenticated") {
-      router.push("/dashboard");
-    } else {
-      console.log("you are not authorized");
+    if (session) {
+      if (status == "authenticated" && session.apiAccessToken) {
+        router.push("/dashboard");
+      } else {
+        // if (!authorized)
+        // notifications.show({
+        //   color: "red",
+        //   title: "Access Denied",
+        //   message: "Please register yourself to Sign In",
+        // });
+        // dispatch(setauthorized(true))
+        console.log("you are not authorized");
+      }
     }
-  }, [status]);
+
+  }, [status, session]);
+
+
   // const register = async (user) => {
   //     const data = {
   //         img: user.image,

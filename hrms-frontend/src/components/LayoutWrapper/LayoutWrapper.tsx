@@ -7,13 +7,15 @@ import Navbar from "../../containers/Navbar/Navbar";
 import { usePathname } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  setauthorized,
   setAuthToken,
   setAuthUser,
 } from "@/redux/authorizedUser/authorizedUser";
 import { useEffect } from "react";
-import { useSession } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import jwt from "jsonwebtoken";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
+import { notifications } from "@mantine/notifications";
 
 export function LayoutWrapper({
   children,
@@ -39,6 +41,16 @@ export function LayoutWrapper({
           }
         } catch (err) {
           console.log("error in decoding the code", err);
+        }
+      } else {
+        if (!session?.apiAccessToken) {
+          signOut();
+          notifications.show({
+            color: "red",
+            title: "Access Denied",
+            message: "Please register yourself to Sign In",
+          });
+          dispatch(setauthorized(false))
         }
       }
     }
