@@ -2,6 +2,7 @@
 import { useSelector } from "react-redux";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
 import { IconPencil, IconUserCircle } from "@tabler/icons-react";
+import Image from "next/image";
 
 const Profile = () => {
   const { authUser } = useSelector(manageAuthUserSelector);
@@ -9,7 +10,6 @@ const Profile = () => {
   const handleEditClick = () => {
     console.log("Edit profile picture clicked");
   };
-
   return (
     <div className="h-[610px] flex items-center justify-center p-4">
       <div className="h-[500px] p-6 rounded-lg w-full max-w-4xl flex flex-col md:flex-row items-center md:items-start">
@@ -19,7 +19,6 @@ const Profile = () => {
               My Profile
             </div>
           </div>
-
           <div className="flex flex-col gap-[10px]">
             <div className="flex justify-between mb-2 h-[60px] border-l-2 border-gray-300 pl-1.5">
               <div className="flex justify-between flex-col">
@@ -42,7 +41,6 @@ const Profile = () => {
               <span>{authUser?.role || "N/A"}</span>
             </div>
           </div>
-
           <button className="w-[30%] bg-blue-600 text-white py-2 rounded-lg">
             Log Out
           </button>
@@ -50,10 +48,12 @@ const Profile = () => {
         <div className="flex justify-center h-[300px] items-center w-full md:w-2/5 md:justify-end relative">
           <div className="w-[200px] h-[200px] bg-gray-300 rounded-full flex items-center justify-center relative overflow-hidden">
             {authUser?.img ? (
-              <img
+              <Image
                 src={authUser.img}
-                className="object-cover w-full h-full"
                 alt="User Avatar"
+                className="object-cover w-full h-full"
+                width={200}
+                height={200}
               />
             ) : (
               <IconUserCircle className="text-gray-500" size={100} />
@@ -69,5 +69,4 @@ const Profile = () => {
     </div>
   );
 };
-
 export default Profile;

@@ -24,27 +24,29 @@ interface value {
 
 const EmployeeForm: React.FC<value> = (props) => {
   const { onClose, form, onHandelUpdate, createTrigger, token } = props;
-  // const [postData, { data: addData, isSuccess, isError }] =
-  //   useCreateUserMutation();
   const dispatch = useDispatch();
 
   const [allDataApi, { data, isSuccess: isSuccessToGetAllData }] =
     useLazyGetAllDataApiByNameQuery();
 
+  // Trigger the API call once when the component mounts or when `token` changes
   useEffect(() => {
-    if (data?.users.length > 0) {
+    if (token) {
+      const params = {
+        page: 1,
+        limit: 5,
+        token: token,
+      };
+      allDataApi(params);
+    }
+  }, [token, allDataApi]); // Only re-run when `token` changes
+
+  // Store the fetched data into Redux
+  useEffect(() => {
+    if (isSuccessToGetAllData && data?.users.length > 0) {
       dispatch(getAllUserData(data?.users));
     }
-  }, [data, isSuccessToGetAllData]);
-
-  useEffect(() => {
-    const params = {
-      page: 1,
-      limit: 5,
-      token: token,
-    };
-    allDataApi(params);
-  }, [isSuccess]);
+  }, [data, isSuccessToGetAllData, dispatch]); // Only run this when the data is successfully fetched
 
   const handleSubmit = async (data: any) => {
     try {

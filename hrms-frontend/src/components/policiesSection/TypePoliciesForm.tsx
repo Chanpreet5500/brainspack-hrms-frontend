@@ -1,6 +1,7 @@
 "use client";
 import { Button, Group, MantineProvider, Textarea } from "@mantine/core";
-import { variantColorResolver } from "@/constants/commonFunction";
+// import { variantColorResolver } from "@/constants/commonFunction";
+import { variantColorResolver } from "@/utils/commonFunction";
 import { useDispatch } from "react-redux";
 import { notifications } from "@mantine/notifications";
 import { IconCheck } from "@tabler/icons-react";

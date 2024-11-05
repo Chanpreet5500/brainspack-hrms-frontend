@@ -127,3 +127,7 @@
 .mantine-datatable mantine-datatable-with-border {
     padding-right: 20px;
 }
+
+.fc-scrollgrid-sync-table {
+    height: 460px !important;
+}

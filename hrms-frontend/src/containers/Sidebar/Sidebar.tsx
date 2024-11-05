@@ -1,5 +1,4 @@
 "use client";
-import "./sidebar.css";
 import { useState } from "react";
 import {
   Group,
@@ -18,8 +17,8 @@ import {
   IconChevronRight,
   IconUsersGroup,
 } from "@tabler/icons-react";
-import classes from "./Navbar.module.css";
 import { usePathname, useRouter } from "next/navigation";
+import classes from "./Navbar.module.css";
 
 interface LinkItem {
   label: string;
@@ -27,11 +26,12 @@ interface LinkItem {
   icon: React.FC<any>;
   links?: { label: string; link: string }[];
   initiallyOpened?: boolean;
-  data?: any; // Optional
+  data?: any;
 }
 
 interface NavbarProps {
   linksData: LinkItem[];
+  toggleSidebar: () => void;
 }
 
 export function LinksGroup({
@@ -40,20 +40,20 @@ export function LinksGroup({
   initiallyOpened,
   links,
   link,
-}: LinkItem) {
+  toggleSidebar,
+}: LinkItem & { toggleSidebar: () => void }) {
   const pathname = usePathname();
   const hasLinks = Array.isArray(links);
   const [opened, setOpened] = useState(initiallyOpened || false);
   const router = useRouter();
 
-  // Navigation handler
   const handleNavigation = (itemLink: string | undefined) => {
     if (itemLink) {
       router.push(itemLink);
+      toggleSidebar();
     }
   };
 
-  // Render nested items if present
   const items = (hasLinks ? links : []).map((subLink) => (
     <Text<"a">
       component="a"
@@ -61,8 +61,8 @@ export function LinksGroup({
       href={subLink.link}
       key={subLink.label}
       onClick={(event) => {
-        event.preventDefault(); // Prevent default anchor behavior
-        handleNavigation(subLink.link); // Navigate to nested link
+        event.preventDefault();
+        handleNavigation(subLink.link);
       }}
     >
       {subLink.label}
@@ -74,9 +74,9 @@ export function LinksGroup({
       <UnstyledButton
         onClick={() => {
           if (!hasLinks) {
-            handleNavigation(link); // Direct navigation for non-nested items
+            handleNavigation(link);
           } else {
-            setOpened((o) => !o); // Toggle dropdown for items with nested links
+            setOpened((o) => !o);
           }
         }}
         className={pathname === link ? classes.pathcontrol : classes.control}
@@ -101,16 +101,14 @@ export function LinksGroup({
           )}
         </Group>
       </UnstyledButton>
-
-      {/* Collapse nested items */}
       {hasLinks && <Collapse in={opened}>{items}</Collapse>}
     </>
   );
 }
 
-export function Navbar({ linksData }: NavbarProps) {
+export function Navbar({ linksData, toggleSidebar }: NavbarProps) {
   const links = linksData.map((item) => (
-    <LinksGroup {...item} key={item.label} />
+    <LinksGroup {...item} key={item.label} toggleSidebar={toggleSidebar} />
   ));
 
   return (
@@ -124,12 +122,7 @@ export function Navbar({ linksData }: NavbarProps) {
 
 const mockdata = [
   { label: "Dashboard", icon: IconAlignBoxLeftStretch, link: "/dashboard" },
-  {
-    label: "Employees",
-    icon: IconUsersGroup,
-    link: "/employees",
-  },
-
+  { label: "Employees", icon: IconUsersGroup, link: "/employees" },
   {
     label: "Leaves Management",
     icon: IconCalendarStats,
@@ -139,13 +132,21 @@ const mockdata = [
       { label: "Policies", link: "/leavepolicies/leavespolicies" },
     ],
   },
-  {
-    label: "Holiday Calendar",
-    icon: IconCalendarMonth,
-    link: "/holidays",
-  },
+  { label: "Holiday Calendar", icon: IconCalendarMonth, link: "/holidays" },
 ];
 
-export default function Sidebar() {
-  return <Navbar linksData={mockdata} />;
+export default function Sidebar({
+  toggleSidebar,
+}: {
+  toggleSidebar: () => void;
+}) {
+  return (
+    <div
+      className={`bg-white shadow-md p-4 w-64 fixed inset-0 md:relative md:w-64 md:flex md:flex-col transform transition-transform duration-300 ${
+        toggleSidebar ? "translate-x-0" : "-translate-x-full"
+      }`}
+    >
+      <Navbar linksData={mockdata} toggleSidebar={toggleSidebar} />
+    </div>
+  );
 }

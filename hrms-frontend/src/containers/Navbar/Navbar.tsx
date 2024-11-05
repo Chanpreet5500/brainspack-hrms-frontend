@@ -5,9 +5,9 @@ import {
   IconUserCircle,
   IconTransfer,
   IconChevronCompactDown,
+  IconChevronCompactUp,
 } from "@tabler/icons-react";
 import { Burger } from "@mantine/core";
-import Droper from "../../components/reusableComponents/Droper/Droper";
 import { signOut } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Image from "next/image";
@@ -34,28 +34,23 @@ const Navbar: React.FC<NavbarProps> = ({ opened, toggle }) => {
   };
   return (
     <div className="w-full">
-      <div className="flex py-3 justify-between items-center">
+      <div className="flex py-3 justify-between items-center ">
         <div className="flex gap-2 items-center">
           <Burger opened={opened} onClick={toggle} hiddenFrom="md" size="sm" />
           <div className="text-2xl">
             Brains<span style={{ color: "#55ad88" }}>p</span>ack
           </div>
         </div>
-        <div className="flex justify-end relative w-full">
+        <div className="flex justify-end relative w-full sm:hidden ">
           <div className="flex avatarDiv flex-row justify-between gap-2 items-center">
             <div
-              className="border border-gray-800 h-[52px] w-full rounded-full flex items-center justify-between gap-[10px] max-sm:w-full max-sm:pr-0 max-sm:border-0 hover:cursor-pointer p-2"
+              className="border h-[52px] w-full rounded-full flex items-center justify-between gap-[10px] sm:border-none max-sm:w-full max-sm:pr-0 hover:cursor-pointer p-2"
               onClick={() => setOpen(!open)}
               aria-haspopup="true"
               aria-expanded={open}
             >
-              <div className="flex items-center gap-1">
-                <div className=" h-[45px] w-[45px] rounded-full flex items-center justify-center overflow-hidden">
-                  {/* <img
-                    src={authUser?.img}
-                    className="object-cover w-full h-full"
-                    alt="Avatar"
-                  /> */}
+              <div className="flex items-center gap-[10px]">
+                <div className="h-[45px] w-[45px] rounded-full flex items-center justify-center overflow-hidden">
                   <Image
                     src={authUser?.img || "/images/tree.jpg"}
                     alt="Avatar"
@@ -63,13 +58,15 @@ const Navbar: React.FC<NavbarProps> = ({ opened, toggle }) => {
                     width={100}
                     height={100}
                     layout="fixed"
-                    objectFit="conatin"
+                    objectFit="contain"
                   />
                 </div>
                 <div className="max-sm:hidden">
-                  <p className="text-xs">{authUser?.fname}</p>
+                  <p className="text-xs  max:sm:hidden">{authUser?.fname}</p>
                 </div>
-                <IconChevronCompactDown />
+                <div>
+                  {open ? <IconChevronCompactUp /> : <IconChevronCompactDown />}
+                </div>
               </div>
             </div>
 

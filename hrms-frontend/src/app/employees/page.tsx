@@ -25,6 +25,7 @@ import { CustomModal } from "@/components/reusableComponents/CustomModal/CustomM
 import { getAllUserData, setUserDataLength } from "@/redux/user/user";
 import { notifications } from "@mantine/notifications";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
+import EmployeeForm from "@/containers/Employee/EmployeeForm";
 // import { notifications, showNotification } from "@mantine/notifications";
 
 export default function Employees() {

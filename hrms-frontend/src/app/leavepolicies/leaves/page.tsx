@@ -23,6 +23,8 @@ import { StringDateFormatConvertor } from "@/utils/commonFunction";
 import { notifications } from "@mantine/notifications";
 import { manageLeavePoliciesSelector } from "@/redux/leavePolicies/leaveSelector";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
+// import LeaveForm from "@/components/policiesSection/LeavePoliciesForm";
+import LeaveForm from "@/containers/Leave/Leaveform";
 
 const initialState = {
   allLeaves: [],
@@ -109,7 +111,7 @@ export default function LeaveComponent() {
     if (authToken) {
       renderData(currentpage, tableDataLimit, search);
     }
-  }, [currentpage, createSuccess, leavesData, authToken]);
+  }, [currentpage, createSuccess, authToken]);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const searchValue = event.target.value;

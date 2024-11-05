@@ -16,8 +16,10 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "@mantine/form";
 import { CustomModal } from "@/components/reusableComponents/CustomModal/CustomModal";
-import HolidayForm from "@/components/Holiday/HolidayForm";
+// import HolidayForm from "@/components/Holiday/HolidayForm";
+import HolidayForm from "@/containers/Holiday/HolidayForm";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
+import "./holiday.css";
 const Calendar = () => {
   const [postData, { data: addData, isSuccess: createSuccess, isError }] =
     useCreateHolidayMutation();
