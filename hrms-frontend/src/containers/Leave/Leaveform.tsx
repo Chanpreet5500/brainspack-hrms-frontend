@@ -75,8 +75,8 @@ const LeaveForm: React.FC<dataValue> = ({
     })) || [];
   console.log(leaveTypeData, leaveOptions, "leaveTypeData");
   useEffect(() => {
-    allDataApi({ page, limit, search, token });
-  }, [allDataApi, page, limit, search, token]);
+    allDataApi({ search, token });
+  }, [search, token]);
   const handleSubmit = async (data: any) => {
     try {
       const { employee, ...rest } = data;

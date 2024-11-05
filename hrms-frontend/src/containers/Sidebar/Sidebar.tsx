@@ -39,6 +39,7 @@ export function LinksGroup({
   label,
   initiallyOpened,
   links,
+  data,
   link,
   toggleSidebar,
 }: LinkItem & { toggleSidebar: () => void }) {

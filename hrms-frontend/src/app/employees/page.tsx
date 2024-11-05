@@ -6,7 +6,6 @@ import { useDisclosure } from "@mantine/hooks";
 import { useForm } from "@mantine/form";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  IconCheck,
   IconEdit,
   IconLock,
   IconLockOpen,
@@ -56,7 +55,7 @@ export default function Employees() {
       dispatch(setUserDataLength(data.totalusers));
     }
   }, [data, isSuccess, authToken, authUser]);
-  useEffect(() => {}, [authToken]);
+  useEffect(() => { }, [authToken]);
   const renderData = async (
     currpage: number,
     limit: number,

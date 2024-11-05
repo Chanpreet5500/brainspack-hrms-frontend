@@ -9,6 +9,8 @@ import ReduxProvider from "@/services/reduxProvider";
 import { SessionProviderWrapper } from "@/components/session/SessionProviderWrapper";
 import { Notifications } from "@mantine/notifications";
 import "@mantine/notifications/styles.css";
+import { cookies } from "next/headers";
+import React from "react";
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Brainspack | HRMS",
@@ -22,14 +24,15 @@ export default async function RootLayout({
   children: React.ReactNode;
   pageProps: { session?: any };
 }>) {
+  // const allCookies = cookies();
+  // const authUser = allCookies.get("authUser")?.value || null;
+  // const apiAccessToken = allCookies.get("apiAccessToken")?.value || null;
   return (
     <html lang="en">
       <head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
         <title>Brainspack:HRMS</title>
-
         <ColorSchemeScript />
         <link
           rel="stylesheet"

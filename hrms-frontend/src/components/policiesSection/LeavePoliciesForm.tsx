@@ -33,7 +33,6 @@ const LeaveForm: React.FC<dataValue> = ({
     allleaveTypeDataApi,
     { data: leaveTypeData, error, isLoading, isSuccess },
   ] = useLazyGetAllLeaveTypePoliciesApiByNameQuery();
-
   const getTypedata = async () => {
     const response = await allleaveTypeDataApi("v");
   };

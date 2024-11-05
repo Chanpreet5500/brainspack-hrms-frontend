@@ -1,6 +1,5 @@
 "use client";
 import { Button, Group, MantineProvider, Textarea } from "@mantine/core";
-// import { variantColorResolver } from "@/constants/commonFunction";
 import { variantColorResolver } from "@/utils/commonFunction";
 import { useDispatch } from "react-redux";
 import { notifications } from "@mantine/notifications";
@@ -16,6 +15,7 @@ const TypeForm: React.FC<dataValue> = ({ onClose, triggerCreate, form }) => {
   const dispatch = useDispatch();
 
   const handleSubmit = async (data: any) => {
+    console.log(data, "data");
     try {
       await triggerCreate(data);
       {

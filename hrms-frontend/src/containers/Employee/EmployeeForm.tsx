@@ -46,7 +46,16 @@ const EmployeeForm: React.FC<value> = (props) => {
     if (isSuccessToGetAllData && data?.users.length > 0) {
       dispatch(getAllUserData(data?.users));
     }
-  }, [data, isSuccessToGetAllData, dispatch]); // Only run this when the data is successfully fetched
+  }, [data, isSuccessToGetAllData]);
+
+  useEffect(() => {
+    const params = {
+      page: 1,
+      limit: 5,
+      token: token,
+    };
+    allDataApi(params);
+  }, [isSuccessToGetAllData]);
 
   const handleSubmit = async (data: any) => {
     try {

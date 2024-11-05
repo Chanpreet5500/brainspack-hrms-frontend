@@ -8,9 +8,10 @@ import {
   IconChevronCompactUp,
 } from "@tabler/icons-react";
 import { Burger } from "@mantine/core";
-import { signOut } from "next-auth/react";
-import { useEffect, useState } from "react";
+import Droper from "../../components/reusableComponents/Droper/Droper";
 import Image from "next/image";
+import { signOut } from "next-auth/react";
+import { useState, useEffect } from "react";
 import { appdroperdata } from "@/constants/constants";
 import { useSelector } from "react-redux";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
@@ -52,7 +53,7 @@ const Navbar: React.FC<NavbarProps> = ({ opened, toggle }) => {
               <div className="flex items-center gap-[10px]">
                 <div className="h-[45px] w-[45px] rounded-full flex items-center justify-center overflow-hidden">
                   <Image
-                    src={authUser?.img || "/images/tree.jpg"}
+                    src={authUser?.img || "/default_profile.jpg"}
                     alt="Avatar"
                     className="object-cover w-full h-full"
                     width={100}

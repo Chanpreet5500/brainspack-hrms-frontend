@@ -1,12 +1,7 @@
 "use client";
-import { getAllholidayData } from "@/redux/holiday/holiday";
+import { getAllholidayData, trackChange } from "@/redux/holiday/holiday";
 import { manageHolidaySelector } from "@/redux/holiday/holidaySelector";
-import {
-  useCreateHolidayMutation,
-  useDeleteHolidayDataApiByNameMutation,
-  useLazyGetAllHolidayDataApiByNameQuery,
-  useUpdateHolidayDataApiByNameMutation,
-} from "@/services/holiday/holidayApi";
+import { useLazyGetAllHolidayDataApiByNameQuery } from "@/services/holiday/holidayApi";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import FullCalendar from "@fullcalendar/react";
@@ -16,23 +11,13 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "@mantine/form";
 import { CustomModal } from "@/components/reusableComponents/CustomModal/CustomModal";
-// import HolidayForm from "@/components/Holiday/HolidayForm";
 import HolidayForm from "@/containers/Holiday/HolidayForm";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
 import "./holiday.css";
 const Calendar = () => {
-  const [postData, { data: addData, isSuccess: createSuccess, isError }] =
-    useCreateHolidayMutation();
-  const [allDataApi, { data, error, isLoading, isSuccess }] =
-    useLazyGetAllHolidayDataApiByNameQuery();
-  const [
-    updateHolidayData,
-    { data: holidayUpdatedData, isSuccess: updateSuccess },
-  ] = useUpdateHolidayDataApiByNameMutation();
-  const [deleteHolidayData, { isSuccess: deleteSuccess }] =
-    useDeleteHolidayDataApiByNameMutation();
+  const [allDataApi] = useLazyGetAllHolidayDataApiByNameQuery();
   const dispatch = useDispatch();
-  const { allData } = useSelector(manageHolidaySelector);
+  const { allData, change } = useSelector(manageHolidaySelector);
   const [opened, { open, close }] = useDisclosure(false);
   const { authToken } = useSelector(manageAuthUserSelector);
 
@@ -40,12 +25,13 @@ const Calendar = () => {
     if (authToken) {
       onGetData();
     }
-  }, [createSuccess, updateSuccess, deleteSuccess, authToken]);
+  }, [authToken, change]);
 
   const onGetData = async () => {
     const response = await allDataApi({ token: authToken });
 
     dispatch(getAllholidayData(response.data));
+    dispatch(trackChange(false));
   };
 
   const handleOnClose = () => {
@@ -131,15 +117,7 @@ const Calendar = () => {
               buttonlabel={""}
               modalTitle={"Add Holiday"}
               showButton={false}
-              content={
-                <HolidayForm
-                  form={form}
-                  triggerUpdate={updateHolidayData}
-                  triggerCreate={postData}
-                  triggerDelete={deleteHolidayData}
-                  modalClose={close}
-                />
-              }
+              content={<HolidayForm form={form} modalClose={close} />}
             />
           </div>
         </div>
