@@ -1,22 +1,15 @@
 "use client";
-
 import { useDisclosure } from "@mantine/hooks";
 import { AppShell, Flex } from "@mantine/core";
 import Sidebar from "../../containers/Sidebar/Sidebar";
 import Navbar from "../../containers/Navbar/Navbar";
 import { usePathname } from "next/navigation";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  setauthorized,
-  setAuthToken,
-  setAuthUser,
-} from "@/redux/authorizedUser/authorizedUser";
-import { useEffect } from "react";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { setAuthToken, setAuthUser } from "@/redux/authorizedUser/authorizedUser";
 import jwt from "jsonwebtoken";
+import { useSession } from "next-auth/react";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
-import { notifications } from "@mantine/notifications";
-
 export function LayoutWrapper({
   children,
 }: {
@@ -24,37 +17,19 @@ export function LayoutWrapper({
 }) {
   const { data: session, status } = useSession();
   const [opened, { toggle }] = useDisclosure();
-  const dispatch = useDispatch();
   const pathname = usePathname();
+  const dispatch = useDispatch()
   const isRegisterPage = pathname !== "/";
   const { authToken } = useSelector(manageAuthUserSelector);
+
   useEffect(() => {
-    if (status === "authenticated" && session) {
-      if (session && session?.apiAccessToken && authToken === null) {
-        dispatch(setAuthToken(session?.apiAccessToken));
-        try {
-          const decodedToken = jwt.decode(session.apiAccessToken);
-          if (decodedToken) {
-            dispatch(setAuthUser(decodedToken));
-          } else {
-            console.error("Failed to decode token");
-          }
-        } catch (err) {
-          console.log("error in decoding the code", err);
-        }
-      } else {
-        if (!session?.apiAccessToken) {
-          signOut();
-          notifications.show({
-            color: "red",
-            title: "Access Denied",
-            message: "Please register yourself to Sign In",
-          });
-          dispatch(setauthorized(false))
-        }
-      }
+    if (status == "authenticated" && session.apiAccessToken && authToken === null) {
+      dispatch(setAuthToken(session?.apiAccessToken));
+      const decodedToken = jwt.decode(session.apiAccessToken);
+      dispatch(setAuthUser(decodedToken));
     }
-  }, [status, session]);
+  }, [status])
+
   return (
     <>
       {isRegisterPage ? (

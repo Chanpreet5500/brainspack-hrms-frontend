@@ -1,9 +1,7 @@
 "use client";
 import { getAllholidayData, trackChange } from "@/redux/holiday/holiday";
 import { manageHolidaySelector } from "@/redux/holiday/holidaySelector";
-import {
-  useLazyGetAllHolidayDataApiByNameQuery,
-} from "@/services/holiday/holidayApi";
+import { useLazyGetAllHolidayDataApiByNameQuery } from "@/services/holiday/holidayApi";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import FullCalendar from "@fullcalendar/react";
@@ -17,8 +15,7 @@ import HolidayForm from "@/containers/Holiday/HolidayForm";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
 import "./holiday.css";
 const Calendar = () => {
-  const [allDataApi, { data, error, isLoading, isSuccess }] =
-    useLazyGetAllHolidayDataApiByNameQuery();
+  const [allDataApi] = useLazyGetAllHolidayDataApiByNameQuery();
   const dispatch = useDispatch();
   const { allData, change } = useSelector(manageHolidaySelector);
   const [opened, { open, close }] = useDisclosure(false);

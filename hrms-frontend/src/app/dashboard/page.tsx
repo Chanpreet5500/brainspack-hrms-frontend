@@ -1,23 +1,14 @@
 "use client";
-import { attendancedata, countAllData } from "@/constants/constants";
-import {
-  IconArrowUpRight,
-  IconChevronDown,
-  IconCircleArrowRight,
-  IconPlus,
-} from "@tabler/icons-react";
-
+import { countAllData } from "@/constants/constants";
+import { IconChevronDown, IconCircleArrowRight } from "@tabler/icons-react";
 import { StringDateFormatConvertor } from "@/utils/commonFunction";
 import { useLazyGetAllDataApiByNameQuery } from "@/services/user/usersApi";
-import { manageUserSelector } from "@/redux/user/userSelector";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLazyGetAllLeaveDataApiByNameQuery } from "@/services/leave/getLeaves";
 import { getAllUserData, setUserDataLength } from "@/redux/user/user";
 import { useLazyGetAllHolidayDataApiByNameQuery } from "@/services/holiday/holidayApi";
-
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
-import { signOut, useSession } from "next-auth/react";
 const todayDate = StringDateFormatConvertor(
   new Date().toISOString(),
   "DD/MMM/YYYY",
@@ -37,17 +28,7 @@ const Dashboard = () => {
   const [getEmployees, { data: employeeData, error, isLoading, isSuccess: getEmployeeSuccess }] =
     useLazyGetAllDataApiByNameQuery();
   const dispatch = useDispatch();
-  const { allUserDataLength, allUserData } = useSelector(manageUserSelector);
   const { authUser, authToken } = useSelector(manageAuthUserSelector);
-  const { data: session, status } = useSession();
-
-  // useEffect(()=>{
-  // if(!session?.apiAccessToken){
-  //   signOut();
-  // }
-  // },[session])
-
-
 
   const fetchUserData = async (
     currPage: number,

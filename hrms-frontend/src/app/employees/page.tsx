@@ -6,7 +6,6 @@ import { useDisclosure } from "@mantine/hooks";
 import { useForm } from "@mantine/form";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  IconCheck,
   IconEdit,
   IconLock,
   IconLockOpen,
