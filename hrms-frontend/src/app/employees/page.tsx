@@ -6,7 +6,6 @@ import { useDisclosure } from "@mantine/hooks";
 import { useForm } from "@mantine/form";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  IconCheck,
   IconEdit,
   IconLock,
   IconLockOpen,
@@ -24,10 +23,9 @@ import { manageUserSelector } from "@/redux/user/userSelector";
 import { CustomModal } from "@/components/reusableComponents/CustomModal/CustomModal";
 import { getAllUserData, setUserDataLength } from "@/redux/user/user";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
-// import { notifications, showNotification } from "@mantine/notifications";
-
-import { notifications, showNotification } from "@mantine/notifications";
+import { notifications } from "@mantine/notifications";
 import EmployeeForm from "@/containers/Employee/EmployeeForm";
+
 export default function Employees() {
   const [postData, { data: addData, isSuccess: createSuccess, isError }] =
     useCreateUserMutation();

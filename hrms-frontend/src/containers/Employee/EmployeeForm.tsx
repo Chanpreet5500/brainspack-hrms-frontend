@@ -40,7 +40,7 @@ const EmployeeForm: React.FC<value> = (props) => {
       token: token,
     };
     allDataApi(params);
-  }, []);
+  }, [isSuccessToGetAllData]);
 
   const handleSubmit = async (data: any) => {
     try {

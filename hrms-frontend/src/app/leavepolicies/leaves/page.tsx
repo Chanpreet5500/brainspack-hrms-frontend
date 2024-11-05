@@ -41,7 +41,8 @@ export default function LeaveComponent() {
   const dispatch = useDispatch();
   const [opened, { open, close }] = useDisclosure(false);
   const { authUser, authToken } = useSelector(manageAuthUserSelector);
-
+  const [editopened, { open: editopen, close: editclose }] =
+    useDisclosure(false);
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
     renderData(page, tableDataLimit, search);
@@ -209,8 +210,8 @@ export default function LeaveComponent() {
       accessor: "Action",
       width: "40%",
       render: (data: TableRow) => {
-        const [editopened, { open: editopen, close: editclose }] =
-          useDisclosure(false);
+        // const [editopened, { open: editopen, close: editclose }] =
+        //   useDisclosure(false);
         return (
           <div className="editIcon">
             <CustomModal

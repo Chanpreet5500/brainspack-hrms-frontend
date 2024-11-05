@@ -1,50 +1,39 @@
 "use client";
-
 import { useDisclosure } from "@mantine/hooks";
 import { AppShell, Flex } from "@mantine/core";
 import Sidebar from "../../containers/Sidebar/Sidebar";
 import Navbar from "../../containers/Navbar/Navbar";
 import { usePathname } from "next/navigation";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setAuthToken,
   setAuthUser,
 } from "@/redux/authorizedUser/authorizedUser";
-import { useEffect } from "react";
-import { useSession } from "next-auth/react";
 import jwt from "jsonwebtoken";
+import { useSession } from "next-auth/react";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
-
-export function LayoutWrapper({
-  authUser,
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const { data: session, status } = useSession();
 
   const [opened, { toggle }] = useDisclosure();
-  const dispatch = useDispatch();
   const pathname = usePathname();
+  const dispatch = useDispatch();
   const isRegisterPage = pathname !== "/";
   const { authToken } = useSelector(manageAuthUserSelector);
+
   useEffect(() => {
-    if (status === "authenticated" && session) {
-      if (session && session?.apiAccessToken && authToken === null) {
-        dispatch(setAuthToken(session?.apiAccessToken));
-        try {
-          const decodedToken = jwt.decode(session.apiAccessToken);
-          if (decodedToken) {
-            dispatch(setAuthUser(decodedToken));
-          } else {
-            console.error("Failed to decode token");
-          }
-        } catch (err) {
-          console.log("error in decoding the code", err);
-        }
-      }
+    if (
+      status == "authenticated" &&
+      session.apiAccessToken &&
+      authToken === null
+    ) {
+      dispatch(setAuthToken(session?.apiAccessToken));
+      const decodedToken = jwt.decode(session.apiAccessToken);
+      dispatch(setAuthUser(decodedToken));
     }
   }, [status]);
+
   return (
     <>
       {isRegisterPage ? (
@@ -63,7 +52,7 @@ export function LayoutWrapper({
           </AppShell.Header>
 
           <AppShell.Navbar style={{ backgroundColor: "white" }}>
-            <Sidebar toggle={toggle} />
+            <Sidebar />
           </AppShell.Navbar>
           <AppShell.Main style={{ backgroundColor: "white" }}>
             {children}

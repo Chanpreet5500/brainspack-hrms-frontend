@@ -1,12 +1,4 @@
-import {
-  Card,
-  Text,
-  Button,
-  Group,
-  MantineProvider,
-  Menu,
-} from "@mantine/core";
-import { variantColorResolver } from "@/utils/commonFunction";
+import { Card, Text, Group, Menu } from "@mantine/core";
 interface allValue {
   allPolicies: [];
   open: any;

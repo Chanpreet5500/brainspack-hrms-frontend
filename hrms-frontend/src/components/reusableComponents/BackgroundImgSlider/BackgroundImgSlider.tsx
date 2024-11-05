@@ -1,10 +1,10 @@
-"use client"
+"use client";
 import Image from "next/image";
 import React from "react";
-import Slider from "react-slick"
+import Slider from "react-slick";
 
 interface BackgroundImgProps {
-  images: string[]
+  images: string[];
 }
 const BackgroundImgSlider: React.FC<BackgroundImgProps> = ({ images }) => {
   const settings = {
@@ -27,15 +27,18 @@ const BackgroundImgSlider: React.FC<BackgroundImgProps> = ({ images }) => {
     <Slider {...settings}>
       {images?.map((ele, index) => {
         return (
-          <div className="w-full h-[100vh]" key={index}>
-            <Image
-              src={ele}
-              alt="background-images"
-              layout="fill"
-              priority
-            />
+          <div className="relative w-full h-[100vh]">
+            <div className="absolute w-full h-full top-0 left-0 bg-black bg-opacity-50">
+              <Image
+                src={ele}
+                alt="background-images"
+                fill
+                priority
+                className="object-cover"
+              />
+            </div>
           </div>
-        )
+        );
       })}
     </Slider>
   );

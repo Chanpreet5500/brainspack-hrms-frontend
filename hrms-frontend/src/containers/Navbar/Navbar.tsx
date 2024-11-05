@@ -49,13 +49,8 @@ const Navbar: React.FC<NavbarProps> = ({ opened, toggle }) => {
             >
               <div className="flex items-center gap-1">
                 <div className=" h-[45px] w-[45px] rounded-full flex items-center justify-center overflow-hidden">
-                  {/* <img
-                    src={authUser?.img}
-                    className="object-cover w-full h-full"
-                    alt="Avatar"
-                  /> */}
                   <Image
-                    src={authUser?.img || "/images/tree.jpg"}
+                    src={authUser?.img || "/default_profile.jpg"}
                     alt="Avatar"
                     className="object-cover w-full h-full"
                     width={100}

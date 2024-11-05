@@ -32,12 +32,8 @@ const Calendar = () => {
   ] = useUpdateHolidayDataApiByNameMutation();
   const [deleteHolidayData, { isSuccess: deleteSuccess }] =
     useDeleteHolidayDataApiByNameMutation();
-  // import { DateSelectArg, EventClickArg } from "@fullcalendar/core/index.js";
-  // import { HolidayFormData } from "@/utils/interfaces/interfaces";
-
-  // const [allDataApi] = useLazyGetAllHolidayDataApiByNameQuery();
   const dispatch = useDispatch();
-  const { allData } = useSelector(manageHolidaySelector);
+  const { allData, change } = useSelector(manageHolidaySelector);
   const [opened, { open, close }] = useDisclosure(false);
   const { authToken } = useSelector(manageAuthUserSelector);
 
@@ -59,7 +55,6 @@ const Calendar = () => {
     onGetData();
     dispatch(trackChange(false));
   }, [change, authToken]);
-
   const handleOnClose = () => {
     close();
     form.reset();
@@ -103,7 +98,7 @@ const Calendar = () => {
       type: (value) => (value ? null : "Select field is required"),
     },
   });
-  const handleEventClick = (eventInfo: EventClickArg) => {
+  const handleEventClick = (eventInfo: any) => {
     const data = {
       holiday_id: eventInfo.event.id,
       title: eventInfo.event.title,
@@ -117,8 +112,6 @@ const Calendar = () => {
     form.setValues(data);
     open();
   };
-  // const handleDateSelect = async (selectInfo: any) => {
-  //   form.setValues({ date: selectInfo.start });
   const handleDateSelect = async (selectInfo: DateSelectArg) => {
     form.setValues({ date: selectInfo.start.toISOString() });
     open();
@@ -139,8 +132,8 @@ const Calendar = () => {
   };
   return (
     <>
-      <div className="p-2">
-        <div className="flex items-center gap-3 max-sm:w-full 2xl:w-[30%]">
+      <div className="flex justify-end items-center p-2 max-sm:flex-col-reverse max-sm:items-start">
+        <div className="flex items-center gap-3 max-sm:w-full 2xl:w-[40%]">
           <div className="flex  lg:justify-end max-sm:w-[30%] max-sm:justify-between ">
             <CustomModal
               opened={opened}
@@ -161,29 +154,24 @@ const Calendar = () => {
             />
           </div>
         </div>
-        <FullCalendar
-          plugins={[dayGridPlugin, interactionPlugin]}
-          initialView="dayGridMonth"
-          events={allData?.map((holiday: any) => ({
-            id: holiday._id,
-            title: holiday.title,
-            start: new Date(holiday.date).toISOString().split("T")[0],
-            type: holiday.type,
-            description: holiday.description,
-          }))}
-          eventTextColor="#000"
-          selectable
-          select={handleDateSelect}
-          eventClick={handleEventClick}
-          eventContent={renderEventContent}
-          height={600}
-          buttonText={{
-            today: "Today",
-            week: "Week",
-            day: "Day",
-          }}
-        />
       </div>
+      <FullCalendar
+        plugins={[dayGridPlugin, interactionPlugin]}
+        initialView="dayGridMonth"
+        events={allData?.map((holiday: any) => ({
+          id: holiday._id,
+          title: holiday.title,
+          start: new Date(holiday.date).toISOString().split("T")[0],
+          type: holiday.type,
+          description: holiday.description,
+        }))}
+        eventTextColor="#000"
+        selectable
+        select={handleDateSelect}
+        eventClick={handleEventClick}
+        eventContent={renderEventContent}
+        height={600}
+      />
     </>
   );
 };

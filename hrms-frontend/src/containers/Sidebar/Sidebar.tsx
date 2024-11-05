@@ -12,14 +12,11 @@ import {
   rem,
 } from "@mantine/core";
 import {
+  IconAlignBoxLeftStretch,
+  IconCalendarMonth,
   IconCalendarStats,
   IconChevronRight,
-  IconAlignBoxLeftStretch,
   IconUsersGroup,
-  IconCalendarMonth,
-  IconCalendarPlus,
-  IconCalendarCheck,
-  IconUser,
 } from "@tabler/icons-react";
 import classes from "./Navbar.module.css";
 import { usePathname, useRouter } from "next/navigation";

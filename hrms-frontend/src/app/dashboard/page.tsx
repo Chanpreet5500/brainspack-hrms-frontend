@@ -1,21 +1,15 @@
 "use client";
-import { attendancedata, countAllData } from "@/constants/constants";
-import {
-  IconArrowUpRight,
-  IconChevronDown,
-  IconCircleArrowRight,
-  IconPlus,
-} from "@tabler/icons-react";
-
+import { countAllData } from "@/constants/constants";
+import { IconChevronDown, IconCircleArrowRight } from "@tabler/icons-react";
 import { StringDateFormatConvertor } from "@/utils/commonFunction";
 import { useLazyGetAllDataApiByNameQuery } from "@/services/user/usersApi";
-import { manageUserSelector } from "@/redux/user/userSelector";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLazyGetAllLeaveDataApiByNameQuery } from "@/services/leave/getLeaves";
 import { getAllUserData, setUserDataLength } from "@/redux/user/user";
 import { useLazyGetAllHolidayDataApiByNameQuery } from "@/services/holiday/holidayApi";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
+import { manageUserSelector } from "@/redux/user/userSelector";
 const todayDate = StringDateFormatConvertor(
   new Date().toISOString(),
   "DD/MMM/YYYY",
@@ -25,15 +19,17 @@ const todayDate = StringDateFormatConvertor(
 const Dashboard = () => {
   const [dummyData, setDummyData] = useState(countAllData);
 
-  const [getLeaves, { data: leavesData }] =
+  const [getLeaves, { data: leavesData, isSuccess: getLeavesSuccess }] =
     useLazyGetAllLeaveDataApiByNameQuery();
-  const [getHolidays, { data: holidaysData }] =
+  const [getHolidays, { data: holidaysData, isSuccess: getHolidaySuccess }] =
     useLazyGetAllHolidayDataApiByNameQuery();
   const [currentPage, setCurrentPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [search, setSearch] = useState("");
-  const [getEmployees, { data: employeeData, error, isLoading, isSuccess }] =
-    useLazyGetAllDataApiByNameQuery();
+  const [
+    getEmployees,
+    { data: employeeData, error, isLoading, isSuccess: getEmployeeSuccess },
+  ] = useLazyGetAllDataApiByNameQuery();
   const dispatch = useDispatch();
   const { allUserDataLength, allUserData } = useSelector(manageUserSelector);
   const { authUser, authToken } = useSelector(manageAuthUserSelector);
@@ -75,11 +71,11 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    if (employeeData?.users.length > 0 && isSuccess) {
+    if (employeeData?.users.length > 0 && getEmployeeSuccess) {
       dispatch(getAllUserData(employeeData?.users));
       dispatch(setUserDataLength(employeeData.totalusers));
     }
-  }, [employeeData, isSuccess]);
+  }, [employeeData, getEmployeeSuccess]);
   useEffect(() => {
     if ((authToken && employeeData) || leavesData || holidaysData) {
       setDummyData((prevDummy: any) =>
@@ -99,12 +95,19 @@ const Dashboard = () => {
     }
   }, [employeeData, leavesData, authToken]);
   useEffect(() => {}, [authToken]);
+  // useEffect(() => {
+  //   if (employeeData?.users.length > 0 && isSuccess) {
+  //     dispatch(getAllUserData(employeeData?.users));
+  //     dispatch(setUserDataLength(employeeData.totalusers));
+  //   }
+  // }, [employeeData, isSuccess, authToken, authUser]);
+  // useEffect(() => {}, [authToken]);
   useEffect(() => {
-    if (employeeData?.users.length > 0 && isSuccess) {
+    if (employeeData?.users.length > 0 && getEmployeeSuccess) {
       dispatch(getAllUserData(employeeData?.users));
       dispatch(setUserDataLength(employeeData.totalusers));
     }
-  }, [employeeData, isSuccess, authToken, authUser]);
+  }, [employeeData, getEmployeeSuccess, authToken, authUser]);
 
   useEffect(() => {
     if (authToken) {

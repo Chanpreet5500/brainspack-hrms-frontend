@@ -106,17 +106,6 @@ const LeaveForm: React.FC<dataValue> = ({
       console.error("Error creating leave:", err);
     }
   };
-  const combobox = useCombobox({
-    onDropdownClose: () => {
-      combobox.resetSelectedOption();
-      combobox.focusTarget();
-      setSearch("");
-    },
-
-    onDropdownOpen: () => {
-      combobox.focusSearchInput();
-    },
-  });
 
   const form = useForm({
     mode: "controlled",

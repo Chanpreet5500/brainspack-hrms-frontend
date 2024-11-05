@@ -1,54 +1,49 @@
 "use client";
-import BackgroundImgSlider from "@/components/reusableComponents/BackgroundImgSlider/BackgroundImgSlider";
 import { superadminimages } from "@/constants/constants";
-import { IconAccessible, IconBrandGoogleFilled } from "@tabler/icons-react";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useEffect } from "react";
-import { useRegisterDataApiByNameMutation } from "@/services/user/usersApi";
 import { useRouter } from "next/navigation";
-// import Cookies from "js-cookie";
-import { useSelector } from "react-redux";
+import jwt from "jsonwebtoken";
+import { useDispatch, useSelector } from "react-redux";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
 import { notifications } from "@mantine/notifications";
+import {
+  setAuthToken,
+  setAuthUser,
+} from "@/redux/authorizedUser/authorizedUser";
+import BackgroundImgSlider from "@/components/reusableComponents/BackgroundImgSlider/BackgroundImgSlider";
+import { IconAccessible, IconBrandGoogleFilled } from "@tabler/icons-react";
+import Cookies from "js-cookie";
+
 export default function Login() {
   const { data: session, status } = useSession();
   const router = useRouter();
-  const [registerUserData] = useRegisterDataApiByNameMutation();
-  const { authUser } = useSelector(manageAuthUserSelector);
+  const dispatch = useDispatch();
+  const { authToken } = useSelector(manageAuthUserSelector);
   useEffect(() => {
-    if (status == "authenticated") {
-      router.push("/dashboard");
-    } else {
-      console.log("you are not authorized");
+    if (session) {
+      if (status == "authenticated" && session.apiAccessToken) {
+        // dispatch(setAuthToken(session?.apiAccessToken));
+        // const decodedToken = jwt.decode(session.apiAccessToken);
+        // dispatch(setAuthUser(decodedToken));
+        // Cookies.set("authUser", JSON.stringify(decodedToken), { expires: 7 });
+        // Cookies.set("apiAccessToken", JSON.stringify(session?.apiAccessToken), { expires: 7 });
+        router.push("/dashboard");
+      } else {
+        if (status === "authenticated" && session && !session?.apiAccessToken) {
+          signOut({ redirect: false });
+          notifications.show({
+            color: "red",
+            title: "Access Denied",
+            message: "Please register yourself to Sign Up",
+          });
+        }
+      }
     }
   }, [status]);
-  // const register = async (user) => {
-  //     const data = {
-  //         img: user.image,
-  //         email: user.email
-  //     };
-  //     try {
-  //         const response = await registerUserData(data).unwrap();
-  //         document.cookie = `userData=${JSON.stringify(response)}; path=/`;
-  //         router.push("/dashboard");
-  //     } catch (error) {
-  //         document.cookie = "userData=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
-  //         signOut();
-  //     }
-  // }
+
   const handleSignIn = async () => {
-    const loginResponse = await signIn("google", { redirect: false });
-    // console.log(loginResponse, 'loginResponse ')
-    // if (loginResponse?.error) {
-    //     notifications.show({
-    //         color: "red",
-    //         title: "Login Uncessfull",
-    //         message: "Please register yourself to Login",
-    //     });
-    //     router.back();
-    // } else {
-    //     router.push("/dashboard");
-    // }
+    await signIn("google", { redirect: false });
   };
   return (
     <main>

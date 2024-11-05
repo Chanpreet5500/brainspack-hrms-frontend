@@ -1,7 +1,5 @@
-
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-
 
 export default NextAuth({
   providers: [
@@ -20,7 +18,7 @@ export default NextAuth({
   ],
   secret: process.env.NEXTAUTH_SECRET,
   session: {
-    strategy: 'jwt',
+    strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60,
   },
   cookies: {
@@ -28,9 +26,9 @@ export default NextAuth({
       name: `next-auth.session-token`,
       options: {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        path: '/',
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        path: "/",
       },
     },
   },
@@ -44,17 +42,16 @@ export default NextAuth({
           },
           body: JSON.stringify({
             email: profile.email,
-            image: profile?.picture
+            image: profile?.picture,
           }),
         });
         if (response.ok) {
           const data = await response.json();
           if (data.accessToken) {
-            profile.apiAccessToken = data.accessToken
-            return true;
+            profile.apiAccessToken = data.accessToken;
           }
         }
-        return false
+        return true;
       } catch (error) {
         console.error("Error checking email during sign-in:", error);
         return false;
@@ -62,13 +59,13 @@ export default NextAuth({
     },
     async jwt({ token, user, profile, account }) {
       if (account) {
-        token.accessToken = account.access_token
+        token.accessToken = account.access_token;
       }
       if (user) {
         token.id = user.id;
         token.email = user.email;
         token.name = user.name;
-        token.image = profile?.picture || '';
+        token.image = profile?.picture || "";
       }
       if (profile?.apiAccessToken) {
         token.apiAccessToken = profile.apiAccessToken;
@@ -77,16 +74,14 @@ export default NextAuth({
     },
     async session({ session, token }) {
       if (token.apiAccessToken) {
-        session.accessToken = token.accessToken;
-        session.user.id = token.id;
-        session.user.email = token.email;
-        session.user.name = token.name;
-        session.user.image = token.image;
         session.apiAccessToken = token.apiAccessToken;
-        return session;
       }
-      return false
+      session.accessToken = token.accessToken;
+      session.user.id = token.id;
+      session.user.email = token.email;
+      session.user.name = token.name;
+      session.user.image = token.image;
+      return session;
     },
-
   },
 });
