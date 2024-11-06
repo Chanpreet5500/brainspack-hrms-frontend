@@ -16,6 +16,7 @@ export function LayoutWrapper({
   children: React.ReactNode;
 }) {
   const { data: session, status } = useSession();
+
   const [opened, { toggle }] = useDisclosure();
   const pathname = usePathname();
   const dispatch = useDispatch()

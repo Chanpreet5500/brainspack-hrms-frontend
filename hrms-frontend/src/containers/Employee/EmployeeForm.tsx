@@ -24,13 +24,9 @@ interface value {
 
 const EmployeeForm: React.FC<value> = (props) => {
   const { onClose, form, onHandelUpdate, createTrigger, token } = props;
-  // const [postData, { data: addData, isSuccess, isError }] =
-  //   useCreateUserMutation();
   const dispatch = useDispatch();
-
   const [allDataApi, { data, isSuccess: isSuccessToGetAllData }] =
     useLazyGetAllDataApiByNameQuery();
-
   useEffect(() => {
     if (data?.users.length > 0) {
       dispatch(getAllUserData(data?.users));

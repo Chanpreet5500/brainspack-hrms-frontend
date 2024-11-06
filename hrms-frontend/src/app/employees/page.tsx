@@ -22,8 +22,9 @@ import {
 import { manageUserSelector } from "@/redux/user/userSelector";
 import { CustomModal } from "@/components/reusableComponents/CustomModal/CustomModal";
 import { getAllUserData, setUserDataLength } from "@/redux/user/user";
-import { notifications } from "@mantine/notifications";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
+
+import { notifications, showNotification } from "@mantine/notifications";
 import EmployeeForm from "@/containers/Employee/EmployeeForm";
 // import { notifications, showNotification } from "@mantine/notifications";
 
@@ -75,6 +76,7 @@ export default function Employees() {
       fname: row.fname,
       lname: row.lname,
       email: row.email,
+      phoneNumber: row.phoneNumber,
     };
     try {
       const result = await updateUserData({
@@ -234,7 +236,6 @@ export default function Employees() {
       render: (data: TableRow) => {
         const editModal = (row: TableRow) => {
           open();
-          console.log(row, "vbkjfkbvfbvkfvkjfvbk");
           form.setValues(row);
         };
         return (

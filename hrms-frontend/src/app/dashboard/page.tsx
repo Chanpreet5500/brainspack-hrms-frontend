@@ -9,6 +9,7 @@ import { useLazyGetAllLeaveDataApiByNameQuery } from "@/services/leave/getLeaves
 import { getAllUserData, setUserDataLength } from "@/redux/user/user";
 import { useLazyGetAllHolidayDataApiByNameQuery } from "@/services/holiday/holidayApi";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
+import { manageUserSelector } from "@/redux/user/userSelector";
 const todayDate = StringDateFormatConvertor(
   new Date().toISOString(),
   "DD/MMM/YYYY",
@@ -25,11 +26,11 @@ const Dashboard = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [search, setSearch] = useState("");
-  const [getEmployees, { data: employeeData, error, isLoading, isSuccess: getEmployeeSuccess }] =
+  const [getEmployees, { data: employeeData, error, isLoading, isSuccess }] =
     useLazyGetAllDataApiByNameQuery();
   const dispatch = useDispatch();
+  const { allUserDataLength, allUserData } = useSelector(manageUserSelector);
   const { authUser, authToken } = useSelector(manageAuthUserSelector);
-
   const fetchUserData = async (
     currPage: number,
     limit: number,
@@ -67,17 +68,16 @@ const Dashboard = () => {
     });
   };
 
-  // useEffect(() => {
-  //   if (employeeData?.users.length > 0 && isSuccess) {
-  //     dispatch(getAllUserData(employeeData?.users));
-  //     dispatch(setUserDataLength(employeeData.totalusers));
-  //   }
-  // }, [employeeData, isSuccess]);
+  useEffect(() => {
+    if (employeeData?.users.length > 0 && isSuccess) {
+      dispatch(getAllUserData(employeeData?.users));
+      dispatch(setUserDataLength(employeeData.totalusers));
+    }
+  }, [employeeData, isSuccess]);
   useEffect(() => {
     if ((authToken && employeeData) || leavesData || holidaysData) {
       setDummyData((prevDummy: any) =>
         prevDummy.map((item: any) => {
-          console.log(item, "item");
           switch (item.title) {
             case "Number of Employee":
               return { ...item, count: employeeData?.users?.length || 0 };
@@ -92,13 +92,13 @@ const Dashboard = () => {
       );
     }
   }, [employeeData, leavesData, authToken]);
-  // useEffect(() => {}, [authToken]);
+  useEffect(() => { }, [authToken]);
   useEffect(() => {
-    if (employeeData?.users.length > 0 && getEmployeeSuccess) {
+    if (employeeData?.users.length > 0 && isSuccess) {
       dispatch(getAllUserData(employeeData?.users));
       dispatch(setUserDataLength(employeeData.totalusers));
     }
-  }, [employeeData, getEmployeeSuccess, authToken, authUser]);
+  }, [employeeData, isSuccess, authToken, authUser]);
 
   useEffect(() => {
     if (authToken) {

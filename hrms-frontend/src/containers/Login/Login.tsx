@@ -58,7 +58,7 @@ export default function Login() {
                       <IconAccessible className="w-full h-full" />
                     </div>
                     <div className="text-2xl">
-                      BRAINS<span style={{ color: "#55ad88" }}>P</span>ACK
+                      BRAINS<span style={{ color: "#55AD88" }}>P</span>ACK
                     </div>
                   </div>
                   <div className="flex gap-3 flex-col">

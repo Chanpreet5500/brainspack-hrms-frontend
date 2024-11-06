@@ -143,7 +143,6 @@ const LeaveForm: React.FC<dataValue> = ({
   return (
     <form
       onSubmit={form.onSubmit((localUserDetails: any) => {
-        console.log(localUserDetails, "localUserDetails");
         handleSubmit(localUserDetails);
       })}
     >
@@ -153,7 +152,7 @@ const LeaveForm: React.FC<dataValue> = ({
           form={form}
           name={"employee"}
           placeholder={"Select the employee name"}
-          data={employeeData}
+          data={employeeOptions}
           validateKey={form.getInputProps("employee")}
         />
         <SelectInputField

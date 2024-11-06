@@ -14,9 +14,10 @@ export const CustumCard: React.FC<allValue> = ({
   const updateData = (row: any) => {
     open();
     form.setValues({
-      leave_policy_id: row?._id,
+      leave_type_id: row?.leave_type_id?._id,
+      name: row?.name,
+      description: row?.description,
       max_leaves_per_year: row?.max_leaves_per_year,
-      leave_type_id: row?.leave_type_id?._id || "",
     });
   };
 
@@ -85,8 +86,10 @@ export const CustumCard: React.FC<allValue> = ({
               withBorder
             >
               <Group justify="space-between" mt="md" mb="xs">
-                <Text fw={600} className="text-lg text-gray-800">
-                  {curr?.leave_type_id?.description}
+                <Text fw={600} className="text-lg text-gray-800 disabled">
+                  {curr.max_leaves_per_year
+                    ? curr?.leave_type_id?.description
+                    : curr?.description}
                 </Text>
                 <Menu shadow="md" width={200}>
                   <Menu.Target>

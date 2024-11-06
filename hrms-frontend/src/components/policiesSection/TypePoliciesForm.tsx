@@ -9,30 +9,45 @@ import TextAreaField from "../Inputs/textArea/TextArea";
 interface dataValue {
   onClose: any;
   triggerCreate: any;
+  triggerUpdate: any;
   form: any;
 }
-const TypeForm: React.FC<dataValue> = ({ onClose, triggerCreate, form }) => {
+const TypeForm: React.FC<dataValue> = ({
+  onClose,
+  triggerCreate,
+  triggerUpdate,
+  form,
+}) => {
   const dispatch = useDispatch();
 
   const handleSubmit = async (data: any) => {
-    console.log(data, "data");
     try {
-      await triggerCreate(data);
-      {
+      if (data?.leave_policy_id) {
+        triggerUpdate(data);
         notifications.show({
-          title: "Leave Type Successful",
-          message: "Leave Type data created successfully",
+          title: "Update Successful",
+          message: "Employee data updated successfully",
           color: "green",
           icon: <IconCheck size={18} />,
           autoClose: 1000,
         });
-
-        onClose();
-        form.reset();
+      } else {
+        await triggerCreate(data);
+        {
+          notifications.show({
+            title: "Leave Type Successful",
+            message: "Leave Type data created successfully",
+            color: "green",
+            icon: <IconCheck size={18} />,
+            autoClose: 1000,
+          });
+        }
       }
     } catch (err) {
       console.error("Error creating leave:", err);
     }
+    onClose();
+    form.reset();
   };
 
   let data = form.getValues();

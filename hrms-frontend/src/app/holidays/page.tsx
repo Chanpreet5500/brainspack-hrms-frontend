@@ -1,7 +1,12 @@
 "use client";
 import { getAllholidayData, trackChange } from "@/redux/holiday/holiday";
 import { manageHolidaySelector } from "@/redux/holiday/holidaySelector";
-import { useLazyGetAllHolidayDataApiByNameQuery } from "@/services/holiday/holidayApi";
+import {
+  useCreateHolidayMutation,
+  useDeleteHolidayDataApiByNameMutation,
+  useLazyGetAllHolidayDataApiByNameQuery,
+  useUpdateHolidayDataApiByNameMutation,
+} from "@/services/holiday/holidayApi";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import FullCalendar from "@fullcalendar/react";
@@ -11,11 +16,18 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "@mantine/form";
 import { CustomModal } from "@/components/reusableComponents/CustomModal/CustomModal";
-import HolidayForm from "@/containers/Holiday/HolidayForm";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
 import "./holiday.css";
+import { HolidayFormData } from "@/utils/interfaces/interfaces";
+import { DateSelectArg, EventClickArg } from "@fullcalendar/core/index.js";
+import HolidayForm from "@/containers/Holiday/HolidayForm";
 const Calendar = () => {
-  const [allDataApi] = useLazyGetAllHolidayDataApiByNameQuery();
+  const [allDataApi, { data, error, isLoading, isSuccess }] =
+    useLazyGetAllHolidayDataApiByNameQuery();
+  // import { DateSelectArg, EventClickArg } from "@fullcalendar/core/index.js";
+  // import { HolidayFormData } from "@/utils/interfaces/interfaces";
+
+  // const [allDataApi] = useLazyGetAllHolidayDataApiByNameQuery();
   const dispatch = useDispatch();
   const { allData, change } = useSelector(manageHolidaySelector);
   const [opened, { open, close }] = useDisclosure(false);
@@ -38,7 +50,8 @@ const Calendar = () => {
     close();
     form.reset();
   };
-  const form = useForm({
+
+  const form = useForm<HolidayFormData>({
     mode: "controlled",
     validateInputOnChange: true,
     initialValues: {
@@ -82,13 +95,18 @@ const Calendar = () => {
       title: eventInfo.event.title,
       description: eventInfo.event.extendedProps.description,
       type: eventInfo.event.extendedProps.type,
-      date: eventInfo.event.start,
+      // date: eventInfo.event.start,
+      date: eventInfo.event.start
+        ? eventInfo.event.start.toISOString()
+        : undefined,
     };
     form.setValues(data);
     open();
   };
-  const handleDateSelect = async (selectInfo: any) => {
-    form.setValues({ date: selectInfo.start });
+  // const handleDateSelect = async (selectInfo: any) => {
+  //   form.setValues({ date: selectInfo.start });
+  const handleDateSelect = async (selectInfo: DateSelectArg) => {
+    form.setValues({ date: selectInfo.start.toISOString() });
     open();
   };
 

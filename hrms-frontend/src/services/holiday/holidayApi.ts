@@ -5,6 +5,7 @@ export const holidayApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:3001/api/holidays",
   }),
+
   endpoints: (builder) => ({
     deleteHolidayDataApiByName: builder.mutation({
       query: ({ data, token }) => {
