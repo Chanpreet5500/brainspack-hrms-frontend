@@ -141,13 +141,5 @@ export default function Sidebar({
 }: {
   toggleSidebar: () => void;
 }) {
-  return (
-    <div
-      className={`bg-white shadow-md p-4 w-64 fixed inset-0 md:relative md:w-64 md:flex md:flex-col transform transition-transform duration-300 ${
-        toggleSidebar ? "translate-x-0" : "-translate-x-full"
-      }`}
-    >
-      <Navbar linksData={mockdata} toggleSidebar={toggleSidebar} />
-    </div>
-  );
+  return <Navbar linksData={mockdata} toggleSidebar={toggleSidebar} />;
 }

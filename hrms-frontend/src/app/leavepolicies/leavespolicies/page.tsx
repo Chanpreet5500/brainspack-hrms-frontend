@@ -155,7 +155,7 @@ export default function TypeComponent() {
           />
         </div>
       </div>
-      <div className="flex flex-wrap  align-middle gap-8">
+      <div className="flex flex-wrap pl-2.5 align-middle gap-8">
         <CustumCard
           module={"leavePolicies"}
           form={form}

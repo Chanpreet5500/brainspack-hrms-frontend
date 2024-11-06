@@ -51,13 +51,7 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
           </AppShell.Header>
 
           <AppShell.Navbar style={{ backgroundColor: "white" }}>
-            <div
-              className={`transform transition-transform duration-300 ${
-                opened ? "translate-x-0" : "-translate-x-full"
-              } md:translate-x-0 fixed inset-0 md:relative`}
-            >
-              <Sidebar toggleSidebar={toggle} />
-            </div>
+            <Sidebar toggleSidebar={toggle} />
           </AppShell.Navbar>
           <AppShell.Main style={{ backgroundColor: "white" }}>
             {children}
