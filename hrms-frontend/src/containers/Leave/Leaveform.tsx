@@ -1,35 +1,17 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useForm } from "@mantine/form";
-import {
-  Button,
-  Group,
-  MantineProvider,
-  Textarea,
-  useCombobox,
-} from "@mantine/core";
-import {
-  employeeData,
-  holidayData,
-  leaveTypes,
-  whichHalfData,
-} from "@/constants/constants";
+import { Button, Group, MantineProvider, Textarea } from "@mantine/core";
+import { holidayData, whichHalfData } from "@/constants/constants";
 import { useLazyGetAllLeaveDataApiByNameQuery } from "@/services/leave/getLeaves";
 import {
   DateFormatConvertor,
   variantColorResolver,
 } from "@/utils/commonFunction";
 import SelectSearch from "@/components/reusableComponents/SearchSelect";
-import { useDispatch, useSelector } from "react-redux";
 import { notifications } from "@mantine/notifications";
 import { IconCheck } from "@tabler/icons-react";
 import { useLazyGetAllDataApiByNameQuery } from "@/services/user/usersApi";
-import { manageLeavePoliciesSelector } from "@/redux/leavePolicies/leaveSelector";
-import { useLazyGetAllLeavePoliciesApiApiByNameQuery } from "@/services/leavePolicies/leavesApi";
-import {
-  setallLeavesPolicies,
-  settotalleavesPolicies,
-} from "@/redux/leavePolicies/leave";
 import { useLazyGetAllLeaveTypePoliciesApiByNameQuery } from "@/services/typePolicies/typeApi";
 import { DatePickerComponent } from "@/components/reusableComponents/CustomDatePicker/CustomDatePicker";
 import SelectInputField from "@/components/Inputs/selectInput/Select";
@@ -37,6 +19,7 @@ interface dataValue {
   onClose: any;
   triggerCreate: any;
   token: any;
+  createSuccess: any;
   editBy: string;
 }
 const initialState = {
@@ -47,20 +30,18 @@ const LeaveForm: React.FC<dataValue> = ({
   onClose,
   triggerCreate,
   token,
+  createSuccess,
   editBy,
 }) => {
   const [startDate, setStartDate] = useState<Date | null>(new Date());
   const [endDate, setEndDate] = useState<Date | null>(startDate);
-  const [search, setSearch] = useState("");
-  const [allLeaveData, { data: leaveData, isSuccess: isSuccessToGetAllData }] =
-    useLazyGetAllLeaveDataApiByNameQuery();
-  const [allDataApi, { data: employeData, error, isLoading, isSuccess }] =
-    useLazyGetAllDataApiByNameQuery();
+  const [allDataApi, { data: employeData }] = useLazyGetAllDataApiByNameQuery();
   const [allleaveTypeDataApi, { data: leaveTypeData }] =
     useLazyGetAllLeaveTypePoliciesApiByNameQuery();
   useEffect(() => {
     if (token) {
       allleaveTypeDataApi({ token: token });
+      allDataApi({ token: token });
     }
   }, [token]);
   const leaveOptions =
@@ -68,11 +49,6 @@ const LeaveForm: React.FC<dataValue> = ({
       value: leave?._id,
       label: leave?.description,
     })) || [];
-
-  useEffect(() => {
-    allDataApi({ search, token });
-  }, [search, token]);
-  const dispatch = useDispatch();
   const handleSubmit = async (data: any) => {
     try {
       const { employee, ...rest } = data;
@@ -90,23 +66,29 @@ const LeaveForm: React.FC<dataValue> = ({
         },
         token: token,
       });
-      notifications.show({
-        title: "Leave Successful",
-        message: "Leave data Created successfully",
-        color: "green",
-        icon: <IconCheck size={18} />,
-        autoClose: 1000,
-      });
-
-      allLeaveData(response);
-
+      {
+        createSuccess
+          ? notifications.show({
+              title: "Leave Successful",
+              message: "Leave data Created successfully",
+              color: "green",
+              icon: <IconCheck size={18} />,
+              autoClose: 1000,
+            })
+          : notifications.show({
+              title: "Leave UnSuccessful",
+              message: "Leave data Not Created",
+              color: "red",
+              icon: <IconCheck size={18} />,
+              autoClose: 1000,
+            });
+      }
       onClose();
       form.reset();
     } catch (err) {
       console.error("Error creating leave:", err);
     }
   };
-
   const form = useForm({
     mode: "controlled",
     validateInputOnChange: true,

@@ -5,7 +5,6 @@ import { CustomModal } from "@/components/reusableComponents/CustomModal/CustomM
 import { useDispatch, useSelector } from "react-redux";
 import { useDisclosure } from "@mantine/hooks";
 import { useForm } from "@mantine/form";
-import { notifications } from "@mantine/notifications";
 import {
   useCreateTypePoliciesApiMutation,
   useLazyGetAllLeaveTypePoliciesApiByNameQuery,
@@ -50,7 +49,7 @@ export default function typePolicies() {
     };
     try {
       const result = await updateTypePolicies({
-        leaveTypeID: row.leave_policy_id,
+        leaveTypeID: row._id,
         data: mydata,
         token: authToken,
       });
@@ -110,6 +109,8 @@ export default function typePolicies() {
                 onClose={close}
                 triggerCreate={createTypePolicies}
                 triggerUpdate={onHandelUpdate}
+                token={authToken}
+                createSuccess={isSuccess}
               />
             }
           />

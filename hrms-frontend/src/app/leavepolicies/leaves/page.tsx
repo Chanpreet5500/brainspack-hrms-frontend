@@ -34,6 +34,7 @@ export default function LeaveComponent() {
   const [createLeave, { isLoading, error, isSuccess: createSuccess }] =
     useCreateLeaveMutation();
   const [currentpage, setCurrentPage] = useState(1);
+  const [userData, setUserData] = useState({});
   const [trigger] = useLazyGetAllLeaveDataApiByNameQuery();
   const [updateLeave] = useUpdateLeaveDataApiByNameMutation();
   const { allLeaves, totalleaves } = useSelector(manageLeaveSelector);
@@ -49,6 +50,7 @@ export default function LeaveComponent() {
   };
 
   const handleUpdate = async (data: any, status: string) => {
+    console.log(data, "DATA");
     try {
       const response = await updateLeave({
         leaveId: data._id,
@@ -107,7 +109,6 @@ export default function LeaveComponent() {
       throw error;
     }
   };
-
   useEffect(() => {
     if (authToken) {
       renderData(currentpage, tableDataLimit, search);
@@ -209,57 +210,26 @@ export default function LeaveComponent() {
     {
       accessor: "Action",
       width: "40%",
+
       render: (data: TableRow) => {
-        // const [editopened, { open: editopen, close: editclose }] =
-        //   useDisclosure(false);
+        const editModal = (row: TableRow) => {
+          setUserData(row);
+          editopen();
+        };
         return (
-          <div className="editIcon">
-            <CustomModal
-              opened={editopened}
-              open={editopen}
-              size={"lg"}
-              close={editclose}
-              className="!bg-transparent !hover:bg-red-600"
-              buttonlabel={
-                <>
-                  <IconEdit className="h-[25px] w-[25px] text-blue-600 cursor-pointer" />
-                </>
-              }
-              modalTitle={"You Want to Approve the leave"}
-              bgcolor={"transparent"}
-              content={
-                <div className="flex gap-3 flex-col">
-                  <h3>Please approve or reject the leave</h3>
-                  <Group justify="flex-end">
-                    <Button
-                      variant="filled"
-                      color="red"
-                      onClick={() => {
-                        handleUpdate(data, "rejected");
-                        editclose();
-                      }}
-                    >
-                      Reject
-                    </Button>
-                    <Button
-                      style={{ backgroundColor: "#228be6" }}
-                      variant="filled"
-                      color="green"
-                      onClick={() => {
-                        handleUpdate(data, "approved");
-                        editclose();
-                      }}
-                    >
-                      Approve
-                    </Button>
-                  </Group>
-                </div>
-              }
-            />
+          <div className="flex gap-2">
+            <button onClick={() => editModal(data)}>
+              <IconEdit className="h-[25px] w-[25px] text-blue-600 cursor-pointer" />
+            </button>
           </div>
         );
       },
     },
+    // render: (data: TableRow) => {
+    //   return (
+    //
+    //   );
+    // },
   ];
 
   return (
@@ -286,6 +256,7 @@ export default function LeaveComponent() {
                 onClose={close}
                 triggerCreate={createLeave}
                 token={authToken}
+                createSuccess={createSuccess}
                 editBy={authUser?.userId}
               />
             }
@@ -304,6 +275,53 @@ export default function LeaveComponent() {
         emptyState={totalleaves ? <></> : <>no data</>}
         columns={columns}
       />
+
+      <div className="editIcon">
+        <CustomModal
+          opened={editopened}
+          open={editopen}
+          size={"lg"}
+          close={editclose}
+          // className="!bg-transparent !hover:bg-red-600"
+          // buttonlabel={
+          //   <>
+          //     <IconEdit className="h-[25px] w-[25px] text-blue-600 cursor-pointer" />
+          //   </>
+          // }
+          modalTitle={"You Want to Approve the leave"}
+          bgcolor={"transparent"}
+          content={
+            <div className="flex gap-3 flex-col">
+              <h3>Please approve or reject the leave</h3>
+              <Group justify="flex-end">
+                <Button
+                  variant="filled"
+                  color="red"
+                  onClick={() => {
+                    // console.log(data, "first");
+                    handleUpdate(userData, "rejected");
+                    editclose();
+                  }}
+                >
+                  Reject
+                </Button>
+                <Button
+                  style={{ backgroundColor: "#228be6" }}
+                  variant="filled"
+                  color="green"
+                  onClick={() => {
+                    // console.log(data, "second");
+                    handleUpdate(userData, "approved");
+                    editclose();
+                  }}
+                >
+                  Approve
+                </Button>
+              </Group>
+            </div>
+          }
+        />
+      </div>
     </>
   );
 }

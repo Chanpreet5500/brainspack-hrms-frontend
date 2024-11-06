@@ -30,16 +30,13 @@ export const leavesApi = createApi({
       },
     }),
     updateLeaveDataApiByName: builder.mutation({
-      query: ({ leaveId, status, updatedById, data, token }) => {
+      query: ({ leaveId, status, updatedById, token }) => {
         return {
           url: `/leaves/update/${updatedById}/${leaveId}?status=${status}`,
           method: "PATCH",
           headers: {
             Authorization: `Bearer ${token}`,
           },
-          // headers: {
-          //   Authorization: `Bearer ${authToken}`,
-          // },
         };
       },
     }),

@@ -60,12 +60,14 @@ export default function Employees() {
     limit: number,
     search: string
   ) => {
-    const response = await allDataApi({
-      page: currpage,
-      limit: limit,
-      search: search,
-      token: authToken,
-    });
+    if (authToken) {
+      const response = await allDataApi({
+        page: currpage,
+        limit: limit,
+        search: search,
+        token: authToken,
+      });
+    }
   };
   const onHandelUpdate = async (row: any) => {
     const mydata = {
@@ -92,9 +94,10 @@ export default function Employees() {
     setCurrentPage(page);
     const params = {
       page: page,
-      limit: 5,
+      limit: 10,
       token: authToken,
     };
+
     allDataApi(params);
     renderData(page, tableDataLimit, search);
   };

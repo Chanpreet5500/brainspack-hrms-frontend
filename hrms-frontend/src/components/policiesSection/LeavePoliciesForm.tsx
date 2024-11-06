@@ -40,12 +40,13 @@ const LeaveForm: React.FC<dataValue> = ({
   };
   const handleSubmit = async (formData: any) => {
     try {
-      if (formData?.leave_policy_id) {
-        onHandelUpdate(formData);
+      if (formData?.leave_type_id) {
+        onHandelUpdate(formData, token);
       } else {
         const formattedData = {
           ...formData,
           max_leaves_per_year: Number(formData.max_leaves_per_year),
+          token,
         };
         await triggerCreate(formattedData);
         {

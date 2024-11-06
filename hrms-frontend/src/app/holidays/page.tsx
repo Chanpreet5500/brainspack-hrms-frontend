@@ -48,9 +48,6 @@ const Calendar = () => {
 
     dispatch(getAllholidayData(response.data));
   };
-
-  const { change } = useSelector(manageHolidaySelector);
-
   useEffect(() => {
     onGetData();
     dispatch(trackChange(false));
@@ -104,7 +101,6 @@ const Calendar = () => {
       title: eventInfo.event.title,
       description: eventInfo.event.extendedProps.description,
       type: eventInfo.event.extendedProps.type,
-      // date: eventInfo.event.start,
       date: eventInfo.event.start
         ? eventInfo.event.start.toISOString()
         : undefined,
