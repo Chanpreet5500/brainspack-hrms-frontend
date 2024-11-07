@@ -14,10 +14,12 @@ interface value {
   onHandelUpdate: any;
   createTrigger: any;
   token: any;
+  createSuccess: boolean;
 }
 
 const EmployeeForm: React.FC<value> = (props) => {
-  const { onClose, form, onHandelUpdate, createTrigger, token } = props;
+  const { onClose, form, onHandelUpdate, createTrigger, token, createSuccess } =
+    props;
   const handleSubmit = async (data: any) => {
     try {
       if (data?._id) {
@@ -31,6 +33,7 @@ const EmployeeForm: React.FC<value> = (props) => {
         });
       } else {
         await createTrigger({ data: data, token: token });
+
         notifications.show({
           title: "Creation Successful",
           message: "Employee created successfully",

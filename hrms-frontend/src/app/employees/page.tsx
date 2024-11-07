@@ -26,9 +26,16 @@ import { getAllUserData, setUserDataLength } from "@/redux/user/user";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
 import { notifications } from "@mantine/notifications";
 import EmployeeForm from "@/containers/Employee/EmployeeForm";
-import { Box, Loader } from "@mantine/core";
+import { Box, Button, Group, Loader } from "@mantine/core";
+
+interface EmployeeData {
+  fname?: string;
+}
 
 export default function Employees() {
+  const [editopened, { open: editopen, close: editclose }] =
+    useDisclosure(false);
+  const [employeeData, setEmployeeData] = useState<EmployeeData>({});
   const [loading, setLoading] = useState(false);
   const [postData, { data: addData, isSuccess: createSuccess, isError }] =
     useCreateUserMutation();
@@ -112,6 +119,10 @@ export default function Employees() {
     const updatedSearch = event.target.value;
     setSearch(updatedSearch);
     renderData(currentpage, tableDataLimit, updatedSearch);
+  };
+  const openModal = async (row: any) => {
+    editopen();
+    setEmployeeData(row);
   };
   const deleteModal = async (row: any) => {
     const mydata = {
@@ -221,15 +232,15 @@ export default function Employees() {
         (currentpage - 1) * tableDataLimit + index + 1,
     },
 
-    { accessor: "fname", width: "15%" },
-    { accessor: "lname", width: "15%" },
-    { accessor: "email", width: "22%" },
+    { accessor: "fname", width: "12%" },
+    { accessor: "lname", width: "12%" },
+    { accessor: "email", width: "12%" },
     { accessor: "phoneNumber", width: "12%" },
     { accessor: "role", width: "12%" },
     { accessor: "department", width: "12%" },
     {
       accessor: "status",
-      width: "15%",
+      width: "12%",
       render: (data: TableRow) => {
         return <div>{data.isActive ? "Active" : "Inactive"}</div>;
       },
@@ -247,7 +258,7 @@ export default function Employees() {
             <button onClick={() => editModal(data)}>
               <IconEdit className="h-[25px] w-[25px] text-blue-600 cursor-pointer" />
             </button>
-            <button onClick={() => deleteModal(data)}>
+            <button onClick={() => openModal(data)}>
               <IconTrash className="h-[25px] w-[25px] text-red-500 cursor-pointer" />
             </button>
             {data.isActive ? (
@@ -295,6 +306,7 @@ export default function Employees() {
                     onHandelUpdate={onHandelUpdate}
                     createTrigger={postData}
                     token={authToken}
+                    createSuccess={createSuccess}
                   />
                 </>
               }
@@ -315,11 +327,15 @@ export default function Employees() {
           page={currentpage}
           onPageChange={(p) => handlePageChange(p)}
           emptyState={
-            !allUserData && (
-              <Box p={4} mb={4}>
-                <IconMoodSad size={36} strokeWidth={1.5} />
-                No data
-              </Box>
+            allUserDataLength ? (
+              <></>
+            ) : (
+              <>
+                <Box p={4} mb={4}>
+                  <IconMoodSad size={36} strokeWidth={1.5} />
+                  No data
+                </Box>
+              </>
             )
           }
           columns={columns}
@@ -329,6 +345,40 @@ export default function Employees() {
           <Loader color="blue" />
         </Box>
       )}
+      <CustomModal
+        opened={editopened}
+        open={editopen}
+        size={"lg"}
+        close={editclose}
+        modalTitle={`Are you sure you want to delete employee: ${employeeData?.fname}`}
+        bgcolor={"transparent"}
+        content={
+          <div className="flex gap-3 flex-col">
+            <h3>This will also delete leave balance!</h3>
+            <Group justify="flex-end">
+              <Button
+                variant="filled"
+                onClick={() => {
+                  editclose();
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="filled"
+                color="red"
+                onClick={() => {
+                  deleteModal(employeeData);
+                  editclose();
+                }}
+              >
+                Delete
+              </Button>
+            </Group>
+          </div>
+        }
+      ></CustomModal>
+      ;
     </>
   );
 }

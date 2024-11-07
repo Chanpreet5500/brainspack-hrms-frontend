@@ -15,6 +15,7 @@ import { useLazyGetAllDataApiByNameQuery } from "@/services/user/usersApi";
 import { useLazyGetAllLeaveTypePoliciesApiByNameQuery } from "@/services/typePolicies/typeApi";
 import { DatePickerComponent } from "@/components/reusableComponents/CustomDatePicker/CustomDatePicker";
 import SelectInputField from "@/components/Inputs/selectInput/Select";
+
 interface dataValue {
   onClose: any;
   triggerCreate: any;
@@ -22,10 +23,7 @@ interface dataValue {
   createSuccess: any;
   editBy: string;
 }
-const initialState = {
-  allLeavesPolicies: [],
-  totalleavesPolicies: 0,
-};
+
 const LeaveForm: React.FC<dataValue> = ({
   onClose,
   triggerCreate,
@@ -33,44 +31,61 @@ const LeaveForm: React.FC<dataValue> = ({
   createSuccess,
   editBy,
 }) => {
-  const [startDate, setStartDate] = useState<Date | null>(new Date());
+  const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date | null>(startDate);
   const [allDataApi, { data: employeData }] = useLazyGetAllDataApiByNameQuery();
   const [allleaveTypeDataApi, { data: leaveTypeData }] =
     useLazyGetAllLeaveTypePoliciesApiByNameQuery();
+
   useEffect(() => {
     if (token) {
       allleaveTypeDataApi({ token: token });
       allDataApi({ token: token });
     }
   }, [token]);
+
   const leaveOptions =
     leaveTypeData?.map((leave: any) => ({
       value: leave?._id,
       label: leave?.description,
     })) || [];
+
   const handleSubmit = async (data: any) => {
     try {
       const { employee, ...rest } = data;
+
+      let adjustedEndDate = endDate;
+      let adjustedEndDay = data?.end_day;
+      if (
+        data.start_day === "second half" &&
+        endDate?.getTime() === startDate?.getTime()
+      ) {
+        adjustedEndDate = new Date(startDate);
+        adjustedEndDate.setDate(adjustedEndDate.getDate() + 1);
+        adjustedEndDay = "full";
+      }
+
       const myleavedata = {
         ...rest,
         employee_id: data?.employee,
         leave_type_id: data?.leave_type_id,
         start_date: DateFormatConvertor(startDate),
         start_day: data?.start_day,
+        end_date: DateFormatConvertor(adjustedEndDate),
+        end_day: adjustedEndDay,
       };
-      if (startDate !== endDate) {
-        myleavedata.end_date = DateFormatConvertor(endDate);
-        myleavedata.end_day = data?.end_day;
-      }
+
+      console.log(myleavedata, "localUserDetails");
+
       const response = await triggerCreate({
         createdById: editBy,
         leavedata: myleavedata,
         token: token,
       });
+
       notifications.show({
         title: "Leave Successful",
-        message: "Leave data Created successfully",
+        message: "Leave data created successfully",
         color: "green",
         icon: <IconCheck size={18} />,
         autoClose: 1000,
@@ -82,6 +97,7 @@ const LeaveForm: React.FC<dataValue> = ({
       console.error("Error creating leave:", err);
     }
   };
+
   const form = useForm({
     mode: "controlled",
     validateInputOnChange: true,
@@ -96,21 +112,31 @@ const LeaveForm: React.FC<dataValue> = ({
     },
     validate: {
       employee: (value) => (value ? null : "Please select an employee."),
-
       start_date: (value) =>
         DateFormatConvertor(value) ? null : "Please select the start date.",
       end_date: (value) =>
         DateFormatConvertor(value) ? null : "Please select the end date.",
     },
   });
-  let data = form.getValues();
+
+  useEffect(() => {
+    if (startDate && (!endDate || endDate < startDate)) {
+      setEndDate(startDate);
+      form.setFieldValue("end_date", startDate);
+    }
+  }, [startDate]);
+
+  useEffect(() => {
+    form.setFieldValue("end_day", form.values.start_day);
+    form.setFieldValue("end_half_day_time", form.values.start_half_day_time);
+  }, [form.values.start_day, form.values.start_half_day_time]);
+
   const employeeOptions =
     employeData?.users?.map((user: any) => ({
       value: user._id,
       label: user.fname,
     })) || [];
 
-  let formateddate = DateFormatConvertor(data.start_date);
   return (
     <form
       onSubmit={form.onSubmit((localUserDetails: any) => {
@@ -161,7 +187,7 @@ const LeaveForm: React.FC<dataValue> = ({
             validateKey={form.getInputProps("start_day")}
           />
           <SelectInputField
-            disabled={data?.start_day === "half" ? false : true}
+            disabled={form.values.start_day === "half" ? false : true}
             label={"For ? Half"}
             form={form}
             name={"start_half_day_time"}
@@ -195,7 +221,7 @@ const LeaveForm: React.FC<dataValue> = ({
             validateKey={form.getInputProps("end_day")}
           />
           <SelectInputField
-            disabled={data?.end_day === "half" ? false : true}
+            disabled={form.values.end_day === "half" ? false : true}
             label={"For ? Half"}
             form={form}
             name={"end_half_day_time"}
@@ -210,7 +236,7 @@ const LeaveForm: React.FC<dataValue> = ({
           placeholder="Leave Reason*"
         />
         <MantineProvider theme={{ variantColorResolver }}>
-          <Group className=" !flex !justify-end !w-full ">
+          <Group className="!flex !justify-end !w-full">
             <Button
               variant="default"
               className="!h-[32px] !w-[90px] !font-[500]"
@@ -233,4 +259,5 @@ const LeaveForm: React.FC<dataValue> = ({
     </form>
   );
 };
+
 export default LeaveForm;

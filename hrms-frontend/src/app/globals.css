@@ -90,6 +90,7 @@ body {
 .mantine-Group-root {
   display: flex !important;
   gap: 15px !important;
+  flex-wrap: nowrap !important;
 }
 
 .m_b242d975 {

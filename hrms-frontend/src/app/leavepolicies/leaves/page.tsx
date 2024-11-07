@@ -152,7 +152,7 @@ export default function LeaveComponent() {
     },
     {
       accessor: "Employee Name",
-      width: "15%",
+      width: "16%",
       render: (data: TableRow) => {
         return (
           <>
@@ -163,14 +163,14 @@ export default function LeaveComponent() {
     },
     {
       accessor: "leave_type ",
-      width: "20%",
+      width: "16%",
       render: (data: any) => {
         return <>{data?.leave_type_id?.description}</>;
       },
     },
     {
       accessor: "start date for half",
-      width: "25%",
+      width: "18%",
       render: (data: any) => {
         const formattedDate = StringDateFormatConvertor(
           data.start_date,
@@ -189,7 +189,7 @@ export default function LeaveComponent() {
 
     {
       accessor: "end_date for half ",
-      width: "25%",
+      width: "18%",
       render: (data: any) => {
         const formattedDate = StringDateFormatConvertor(
           data.end_date,
@@ -209,7 +209,7 @@ export default function LeaveComponent() {
     { accessor: "status", width: "15%" },
     {
       accessor: "Action",
-      width: "40%",
+      width: "12%",
 
       render: (data: TableRow) => {
         const editModal = (row: TableRow) => {
@@ -272,11 +272,15 @@ export default function LeaveComponent() {
           onPageChange={handlePageChange}
           columns={columns}
           emptyState={
-            !totalleaves && (
-              <Box p={4} mb={4}>
-                <IconMoodSad size={36} strokeWidth={1.5} />
-                No data
-              </Box>
+            totalleaves ? (
+              <></>
+            ) : (
+              <>
+                <Box p={4} mb={4}>
+                  <IconMoodSad size={36} strokeWidth={1.5} />
+                  No data
+                </Box>
+              </>
             )
           }
         />

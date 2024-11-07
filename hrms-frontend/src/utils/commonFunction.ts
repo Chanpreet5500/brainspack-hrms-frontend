@@ -27,8 +27,7 @@ export const variantColorResolver: VariantColorsResolver = (input) => {
 export const DateFormatConvertor = (date: any) => {
   const newDate = new Date(date);
   const formateddate = newDate.getDate();
-  const cformateddate =
-    formateddate - 1 >= 10 ? formateddate - 1 : `0${formateddate - 1}`;
+  const cformateddate = formateddate >= 10 ? formateddate : `0${formateddate}`;
   const formatedMonth = newDate.getMonth() + 1;
   const formatedYear = newDate.getFullYear();
   return `${formatedYear}/${formatedMonth}/${cformateddate}`;
