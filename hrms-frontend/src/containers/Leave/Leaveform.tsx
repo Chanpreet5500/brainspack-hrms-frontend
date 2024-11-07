@@ -52,37 +52,30 @@ const LeaveForm: React.FC<dataValue> = ({
   const handleSubmit = async (data: any) => {
     try {
       const { employee, ...rest } = data;
-
+      const myleavedata = {
+        ...rest,
+        employee_id: data?.employee,
+        leave_type_id: data?.leave_type_id,
+        start_date: DateFormatConvertor(startDate),
+        start_day: data?.start_day,
+      };
+      if (startDate !== endDate) {
+        myleavedata.end_date = DateFormatConvertor(endDate);
+        myleavedata.end_day = data?.end_day;
+      }
       const response = await triggerCreate({
         createdById: editBy,
-        leavedata: {
-          ...rest,
-          employee_id: data?.employee,
-          leave_type_id: data?.leave_type_id,
-          start_date: DateFormatConvertor(startDate),
-          end_date: DateFormatConvertor(endDate),
-          start_day: data?.start_day,
-          end_day: data?.end_day,
-        },
+        leavedata: myleavedata,
         token: token,
       });
-      {
-        createSuccess
-          ? notifications.show({
-              title: "Leave Successful",
-              message: "Leave data Created successfully",
-              color: "green",
-              icon: <IconCheck size={18} />,
-              autoClose: 1000,
-            })
-          : notifications.show({
-              title: "Leave UnSuccessful",
-              message: "Leave data Not Created",
-              color: "red",
-              icon: <IconCheck size={18} />,
-              autoClose: 1000,
-            });
-      }
+      notifications.show({
+        title: "Leave Successful",
+        message: "Leave data Created successfully",
+        color: "green",
+        icon: <IconCheck size={18} />,
+        autoClose: 1000,
+      });
+
       onClose();
       form.reset();
     } catch (err) {
@@ -94,7 +87,6 @@ const LeaveForm: React.FC<dataValue> = ({
     validateInputOnChange: true,
     initialValues: {
       employee: "",
-
       start_date: startDate,
       end_date: endDate,
       start_day: "",
