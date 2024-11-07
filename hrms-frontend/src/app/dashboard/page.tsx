@@ -1,7 +1,10 @@
 "use client";
 import { countAllData } from "@/constants/constants";
 import { IconChevronDown, IconCircleArrowRight } from "@tabler/icons-react";
-import { StringDateFormatConvertor } from "@/utils/commonFunction";
+import {
+  getGreetingBasedOnTime,
+  StringDateFormatConvertor,
+} from "@/utils/commonFunction";
 import { useLazyGetAllDataApiByNameQuery } from "@/services/user/usersApi";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -95,13 +98,6 @@ const Dashboard = () => {
     }
   }, [employeeData, leavesData, authToken]);
   useEffect(() => {}, [authToken]);
-  // useEffect(() => {
-  //   if (employeeData?.users.length > 0 && isSuccess) {
-  //     dispatch(getAllUserData(employeeData?.users));
-  //     dispatch(setUserDataLength(employeeData.totalusers));
-  //   }
-  // }, [employeeData, isSuccess, authToken, authUser]);
-  // useEffect(() => {}, [authToken]);
   useEffect(() => {
     if (employeeData?.users.length > 0 && getEmployeeSuccess) {
       dispatch(getAllUserData(employeeData?.users));
@@ -123,10 +119,12 @@ const Dashboard = () => {
     <div className="flex flex-col gap-8 max-sm:gap-6 p-4">
       <div className="flex flex-col gap-2">
         <span className="text-4xl font-bold">Hello User!</span>
-        {/* <div className="flex justify-between">
-          <span className="text-xl font-medium">Good Morning</span>
+        <div className="flex justify-between">
+          <span className="text-xl font-medium">
+            {getGreetingBasedOnTime()}
+          </span>
           <span className="text-xl font-medium ">Latest Member's</span>
-        </div> */}
+        </div>
       </div>
       <div className="flex w-full justify-between flex-wrap sm:gap-5 md:gap-5 lg:gap-0 max-sm:gap-6">
         <div className="flex flex-col lg:w-[40%] md:w-full">
@@ -161,9 +159,9 @@ const Dashboard = () => {
           </div>
         </div>
         <div className="flex flex-col lg:w-[30%] md:w-[48%] w-full">
-          <span className="text-2xl font-medium lg:h-[75px]  md:h-[50px] max-sm:h-[45px]">
+          {/* <span className="text-2xl font-medium lg:h-[75px]  md:h-[50px] max-sm:h-[45px]">
             Time Sheet
-          </span>
+          </span> */}
           <div className=" bg-slate-200 h-auto items-center flex flex-col rounded-xl py-4">
             <div className="text-black text-lg h-[50px] flex w-[90%] font-bold items-start">
               {todayDate}
@@ -215,9 +213,9 @@ const Dashboard = () => {
           </div>
         </div>
         <div className="flex flex-col lg:w-[27%] md:w-[49%] w-full">
-          <span className="text-2xl font-medium lg:h-[75px]  md:h-[50px] max-sm:h-[45px]">
+          {/* <span className="text-2xl font-medium lg:h-[75px]  md:h-[50px] max-sm:h-[45px]">
             Latest Member
-          </span>
+          </span> */}
           <div className="bg-slate-200 h-auto rounded-xl">
             {/* <div className="w-full flex flex-col justify-center items-center">
               {employeeData?.users?.map((value: any, index: number) => {

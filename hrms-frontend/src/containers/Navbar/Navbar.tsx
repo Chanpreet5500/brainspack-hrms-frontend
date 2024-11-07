@@ -25,7 +25,7 @@ const Navbar: React.FC<NavbarProps> = ({ opened, toggle }) => {
   const [open, setOpen] = useState(false);
   const { authUser } = useSelector(manageAuthUserSelector);
 
-  useEffect(() => {}, [authUser]);
+  useEffect(() => { }, [authUser]);
 
   const handleSignOut = () => {
     signOut();
@@ -67,9 +67,8 @@ const Navbar: React.FC<NavbarProps> = ({ opened, toggle }) => {
             </div>
 
             <div
-              className={`absolute right-0 top-14 min-w-[150px] shadow-lg transition-all duration-300 ease-in-out ${
-                open ? "dropdown-enter-active" : "dropdown-exit"
-              }`}
+              className={`absolute right-0 top-14 min-w-[150px] shadow-lg transition-all duration-300 ease-in-out ${open ? "dropdown-enter-active" : "dropdown-exit"
+                }`}
               role="menu"
               aria-orientation="vertical"
               style={{

@@ -11,8 +11,8 @@ import {
   settotalleaves,
 } from "@/redux/leave/leaves";
 import { useDisclosure } from "@mantine/hooks";
-import { IconEdit } from "@tabler/icons-react";
-import { Button, Group } from "@mantine/core";
+import { IconEdit, IconMoodSad } from "@tabler/icons-react";
+import { Box, Button, Group, Loader } from "@mantine/core";
 import {
   useCreateLeaveMutation,
   useLazyGetAllLeaveDataApiByNameQuery,
@@ -31,6 +31,7 @@ const initialState = {
 };
 
 export default function LeaveComponent() {
+  const [loading, setLoading] = useState(false);
   const [createLeave, { isLoading, error, isSuccess: createSuccess }] =
     useCreateLeaveMutation();
   const [currentpage, setCurrentPage] = useState(1);
@@ -50,7 +51,6 @@ export default function LeaveComponent() {
   };
 
   const handleUpdate = async (data: any, status: string) => {
-    console.log(data, "DATA");
     try {
       const response = await updateLeave({
         leaveId: data._id,
@@ -169,7 +169,7 @@ export default function LeaveComponent() {
       },
     },
     {
-      accessor: "start date",
+      accessor: "start date for half",
       width: "25%",
       render: (data: any) => {
         const formattedDate = StringDateFormatConvertor(
@@ -225,11 +225,6 @@ export default function LeaveComponent() {
         );
       },
     },
-    // render: (data: TableRow) => {
-    //   return (
-    //
-    //   );
-    // },
   ];
 
   return (
@@ -263,31 +258,39 @@ export default function LeaveComponent() {
           />
         </div>
       </div>
-      <DataTable
-        height={300}
-        records={[...allLeaves]}
-        withTableBorder
-        highlightOnHover
-        totalRecords={totalleaves}
-        recordsPerPage={tableDataLimit}
-        page={currentpage}
-        onPageChange={(p) => handlePageChange(p)}
-        emptyState={totalleaves ? <></> : <>no data</>}
-        columns={columns}
-      />
-
+      {loading ? (
+        <Loader color="blue" size="xl" />
+      ) : allLeaves.length > 0 ? (
+        <DataTable
+          height={300}
+          records={allLeaves}
+          withTableBorder
+          highlightOnHover
+          totalRecords={totalleaves}
+          recordsPerPage={tableDataLimit}
+          page={currentpage}
+          onPageChange={handlePageChange}
+          columns={columns}
+          emptyState={
+            !totalleaves && (
+              <Box p={4} mb={4}>
+                <IconMoodSad size={36} strokeWidth={1.5} />
+                No data
+              </Box>
+            )
+          }
+        />
+      ) : (
+        <Box className="flex align-middle justify-center">
+          <Loader color="blue" />
+        </Box>
+      )}
       <div className="editIcon">
         <CustomModal
           opened={editopened}
           open={editopen}
           size={"lg"}
           close={editclose}
-          // className="!bg-transparent !hover:bg-red-600"
-          // buttonlabel={
-          //   <>
-          //     <IconEdit className="h-[25px] w-[25px] text-blue-600 cursor-pointer" />
-          //   </>
-          // }
           modalTitle={"You Want to Approve the leave"}
           bgcolor={"transparent"}
           content={
@@ -298,7 +301,6 @@ export default function LeaveComponent() {
                   variant="filled"
                   color="red"
                   onClick={() => {
-                    // console.log(data, "first");
                     handleUpdate(userData, "rejected");
                     editclose();
                   }}
@@ -310,7 +312,6 @@ export default function LeaveComponent() {
                   variant="filled"
                   color="green"
                   onClick={() => {
-                    // console.log(data, "second");
                     handleUpdate(userData, "approved");
                     editclose();
                   }}

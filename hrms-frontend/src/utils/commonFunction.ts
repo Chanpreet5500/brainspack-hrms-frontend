@@ -27,7 +27,8 @@ export const variantColorResolver: VariantColorsResolver = (input) => {
 export const DateFormatConvertor = (date: any) => {
   const newDate = new Date(date);
   const formateddate = newDate.getDate();
-  const cformateddate = formateddate >= 10 ? formateddate : `0${formateddate}`;
+  const cformateddate =
+    formateddate - 1 >= 10 ? formateddate - 1 : `0${formateddate - 1}`;
   const formatedMonth = newDate.getMonth() + 1;
   const formatedYear = newDate.getFullYear();
   return `${formatedYear}/${formatedMonth}/${cformateddate}`;
@@ -72,3 +73,18 @@ export const StringDateFormatConvertor = (
       return `${formattedDay}-${formattedMonth}-${year}`;
   }
 };
+
+export function getGreetingBasedOnTime(date: Date = new Date()): string {
+  const hour = date.getHours();
+  if (hour >= 5 && hour < 12) {
+    return "Good Morning";
+  } else if (hour >= 12 && hour < 17) {
+    return "Good Afternoon";
+  } else if (hour >= 17 && hour < 21) {
+    return "Good Evening";
+  } else {
+    return "Good Night";
+  }
+}
+
+console.log(getGreetingBasedOnTime());

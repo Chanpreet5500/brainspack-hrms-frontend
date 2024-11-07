@@ -16,22 +16,14 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "@mantine/form";
 import { CustomModal } from "@/components/reusableComponents/CustomModal/CustomModal";
-import HolidayForm from "@/components/Holiday/HolidayForm";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
 import "./holiday.css";
 import { HolidayFormData } from "@/utils/interfaces/interfaces";
 import { DateSelectArg, EventClickArg } from "@fullcalendar/core/index.js";
+import HolidayForm from "@/containers/Holiday/HolidayForm";
 const Calendar = () => {
-  const [postData, { data: addData, isSuccess: createSuccess, isError }] =
-    useCreateHolidayMutation();
   const [allDataApi, { data, error, isLoading, isSuccess }] =
     useLazyGetAllHolidayDataApiByNameQuery();
-  const [
-    updateHolidayData,
-    { data: holidayUpdatedData, isSuccess: updateSuccess },
-  ] = useUpdateHolidayDataApiByNameMutation();
-  const [deleteHolidayData, { isSuccess: deleteSuccess }] =
-    useDeleteHolidayDataApiByNameMutation();
   const dispatch = useDispatch();
   const { allData, change } = useSelector(manageHolidaySelector);
   const [opened, { open, close }] = useDisclosure(false);
@@ -41,17 +33,15 @@ const Calendar = () => {
     if (authToken) {
       onGetData();
     }
-  }, [createSuccess, updateSuccess, deleteSuccess, authToken]);
+  }, [authToken, change]);
 
   const onGetData = async () => {
     const response = await allDataApi({ token: authToken });
 
     dispatch(getAllholidayData(response.data));
-  };
-  useEffect(() => {
-    onGetData();
     dispatch(trackChange(false));
-  }, [change, authToken]);
+  };
+
   const handleOnClose = () => {
     close();
     form.reset();
@@ -101,6 +91,7 @@ const Calendar = () => {
       title: eventInfo.event.title,
       description: eventInfo.event.extendedProps.description,
       type: eventInfo.event.extendedProps.type,
+
       date: eventInfo.event.start
         ? eventInfo.event.start.toISOString()
         : undefined,
@@ -108,6 +99,7 @@ const Calendar = () => {
     form.setValues(data);
     open();
   };
+
   const handleDateSelect = async (selectInfo: DateSelectArg) => {
     form.setValues({ date: selectInfo.start.toISOString() });
     open();
@@ -138,15 +130,7 @@ const Calendar = () => {
               buttonlabel={""}
               modalTitle={"Add Holiday"}
               showButton={false}
-              content={
-                <HolidayForm
-                  form={form}
-                  triggerUpdate={updateHolidayData}
-                  triggerCreate={postData}
-                  triggerDelete={deleteHolidayData}
-                  modalClose={close}
-                />
-              }
+              content={<HolidayForm form={form} modalClose={close} />}
             />
           </div>
         </div>

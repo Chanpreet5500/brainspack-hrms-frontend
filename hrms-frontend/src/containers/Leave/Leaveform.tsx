@@ -61,8 +61,8 @@ const LeaveForm: React.FC<dataValue> = ({
           leave_type_id: data?.leave_type_id,
           start_date: DateFormatConvertor(startDate),
           end_date: DateFormatConvertor(endDate),
-          start_day: "full",
-          end_day: "full",
+          start_day: data?.start_day,
+          end_day: data?.end_day,
         },
         token: token,
       });

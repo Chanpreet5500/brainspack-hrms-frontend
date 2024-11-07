@@ -9,6 +9,7 @@ import {
   IconEdit,
   IconLock,
   IconLockOpen,
+  IconMoodSad,
   IconTrash,
 } from "@tabler/icons-react";
 
@@ -25,8 +26,10 @@ import { getAllUserData, setUserDataLength } from "@/redux/user/user";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
 import { notifications } from "@mantine/notifications";
 import EmployeeForm from "@/containers/Employee/EmployeeForm";
+import { Box, Loader } from "@mantine/core";
 
 export default function Employees() {
+  const [loading, setLoading] = useState(false);
   const [postData, { data: addData, isSuccess: createSuccess, isError }] =
     useCreateUserMutation();
   const [search, setSearch] = useState("");
@@ -299,19 +302,33 @@ export default function Employees() {
           </div>
         </div>
       </div>
-
-      <DataTable
-        height={300}
-        records={[...allUserData]}
-        withTableBorder
-        highlightOnHover
-        totalRecords={allUserDataLength}
-        recordsPerPage={tableDataLimit}
-        page={currentpage}
-        onPageChange={(p) => handlePageChange(p)}
-        emptyState={allUserData.length ? <></> : <>no data</>}
-        columns={columns}
-      />
+      {loading ? (
+        <Loader color="blue" size="xl" />
+      ) : allUserData.length > 0 ? (
+        <DataTable
+          height={300}
+          records={[...allUserData]}
+          withTableBorder
+          highlightOnHover
+          totalRecords={allUserDataLength}
+          recordsPerPage={tableDataLimit}
+          page={currentpage}
+          onPageChange={(p) => handlePageChange(p)}
+          emptyState={
+            !allUserData && (
+              <Box p={4} mb={4}>
+                <IconMoodSad size={36} strokeWidth={1.5} />
+                No data
+              </Box>
+            )
+          }
+          columns={columns}
+        />
+      ) : (
+        <Box className="flex align-middle justify-center">
+          <Loader color="blue" />
+        </Box>
+      )}
     </>
   );
 }

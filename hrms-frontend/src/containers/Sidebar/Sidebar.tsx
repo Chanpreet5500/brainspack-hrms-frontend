@@ -27,7 +27,7 @@ interface LinkItem {
   icon: React.FC<any>;
   links?: { label: string; link: string }[];
   initiallyOpened?: boolean;
-  data?: any; // Optional
+  data?: any;
 }
 
 interface NavbarProps {
@@ -47,14 +47,12 @@ export function LinksGroup({
   const [opened, setOpened] = useState(initiallyOpened || false);
   const router = useRouter();
 
-  // Navigation handler
   const handleNavigation = (itemLink: string | undefined) => {
     if (itemLink) {
       router.push(itemLink);
     }
   };
 
-  // Render nested items if present
   const items = (hasLinks ? links : []).map((subLink) => (
     <Text<"a">
       component="a"
@@ -62,8 +60,8 @@ export function LinksGroup({
       href={subLink.link}
       key={subLink.label}
       onClick={(event) => {
-        event.preventDefault(); // Prevent default anchor behavior
-        handleNavigation(subLink.link); // Navigate to nested link
+        event.preventDefault();
+        handleNavigation(subLink.link);
       }}
     >
       {subLink.label}
