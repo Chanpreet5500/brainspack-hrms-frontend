@@ -1,5 +1,4 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
 const typePoliciesApi = createApi({
   reducerPath: "typePoliciesApi",
   baseQuery: fetchBaseQuery({
@@ -7,11 +6,14 @@ const typePoliciesApi = createApi({
   }),
   endpoints: (builder) => ({
     createTypePoliciesApi: builder.mutation({
-      query: (body) => {
+      query: ({ data, token }) => {
         return {
           url: `/leave-policies/create-type`,
           method: "POST",
-          body,
+          body: data,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         };
       },
     }),

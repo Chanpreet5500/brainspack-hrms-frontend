@@ -56,15 +56,7 @@ export default function TypeComponent() {
   };
   const onHandelUpdate = async (leavePolicies: any) => {
     try {
-      const { leave_policy_id, max_leaves_per_year } = leavePolicies;
-      // if (true) {
-      //   notifications.show({
-      //     title: "Error",
-      //     message: "Invalid leave type ID. Please select a valid leave type.",
-      //     color: "red",
-      //   });
-      //   return;
-      // }
+      const { leave_type_id, max_leaves_per_year, _id } = leavePolicies;
       if (isNaN(Number(max_leaves_per_year))) {
         notifications.show({
           title: "Error",
@@ -74,11 +66,12 @@ export default function TypeComponent() {
         return;
       }
       const payload = {
-        leave_policy_id: leave_policy_id,
+        leave_policy_id: _id,
         max_leaves_per_year: Number(max_leaves_per_year),
       };
       const result = await updateData({
         data: payload,
+        token: authToken,
       });
 
       if (result.error) {
@@ -109,7 +102,6 @@ export default function TypeComponent() {
     mode: "controlled",
     validateInputOnChange: true,
     initialValues: {
-      leave_policy_id: "",
       leave_type_id: "",
       max_leaves_per_year: "",
     },

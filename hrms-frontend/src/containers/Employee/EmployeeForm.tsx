@@ -3,14 +3,8 @@ import { Button, Group, MantineProvider } from "@mantine/core";
 import { employeeDepartment, employeProfetion } from "@/constants/constants";
 import { variantColorResolver } from "@/utils/commonFunction";
 import { useDispatch } from "react-redux";
-import {
-  useCreateUserMutation,
-  useLazyGetAllDataApiByNameQuery,
-} from "@/services/user/usersApi";
-import { getAllUserData } from "@/redux/user/user";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
-import { EmployeeFormProps } from "@/utils/interfaces/interfaces";
 import TextInputField from "@/components/Inputs/textInput/Input";
 import SelectInputField from "@/components/Inputs/selectInput/Select";
 
@@ -24,39 +18,6 @@ interface value {
 
 const EmployeeForm: React.FC<value> = (props) => {
   const { onClose, form, onHandelUpdate, createTrigger, token } = props;
-  const dispatch = useDispatch();
-
-  const [allDataApi, { data, isSuccess: isSuccessToGetAllData }] =
-    useLazyGetAllDataApiByNameQuery();
-
-  // Trigger the API call once when the component mounts or when `token` changes
-  useEffect(() => {
-    if (token) {
-      const params = {
-        page: 1,
-        limit: 5,
-        token: token,
-      };
-      allDataApi(params);
-    }
-  }, [token, allDataApi]); // Only re-run when `token` changes
-
-  // Store the fetched data into Redux
-  useEffect(() => {
-    if (isSuccessToGetAllData && data?.users.length > 0) {
-      dispatch(getAllUserData(data?.users));
-    }
-  }, [data, isSuccessToGetAllData]);
-
-  useEffect(() => {
-    const params = {
-      page: 1,
-      limit: 5,
-      token: token,
-    };
-    allDataApi(params);
-  }, [isSuccessToGetAllData]);
-
   const handleSubmit = async (data: any) => {
     try {
       if (data?._id) {
@@ -81,11 +42,9 @@ const EmployeeForm: React.FC<value> = (props) => {
     } catch (error) {
       throw error;
     }
-
     onClose();
     form.reset();
   };
-
   return (
     <form
       onSubmit={form.onSubmit((localUserDetails: any) => {

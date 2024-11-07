@@ -5,7 +5,6 @@ import { CustomModal } from "@/components/reusableComponents/CustomModal/CustomM
 import { useDispatch, useSelector } from "react-redux";
 import { useDisclosure } from "@mantine/hooks";
 import { useForm } from "@mantine/form";
-import { notifications } from "@mantine/notifications";
 import {
   useCreateTypePoliciesApiMutation,
   useLazyGetAllLeaveTypePoliciesApiByNameQuery,
@@ -40,6 +39,21 @@ export default function typePolicies() {
   const [search, setSearch] = useState("");
   const dispatch = useDispatch();
   const [opened, { open, close }] = useDisclosure(false);
+  const onHandelUpdate = async (row: any) => {
+    const mydata = {
+      name: row.name,
+      description: row.description,
+    };
+    try {
+      const result = await updateTypePolicies({
+        leaveTypeID: row._id,
+        data: mydata,
+        token: authToken,
+      });
+    } catch (error) {
+      throw error;
+    }
+  };
   useEffect(() => {
     if (authToken) {
       triggerLeaveTypePolicies({ token: authToken });
@@ -91,6 +105,9 @@ export default function typePolicies() {
                 form={form}
                 onClose={close}
                 triggerCreate={createTypePolicies}
+                triggerUpdate={onHandelUpdate}
+                token={authToken}
+                createSuccess={isSuccess}
               />
             }
           />

@@ -7,17 +7,18 @@ import jwt from "jsonwebtoken";
 import { useDispatch, useSelector } from "react-redux";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
 import { notifications } from "@mantine/notifications";
-import { setAuthToken, setAuthUser } from "@/redux/authorizedUser/authorizedUser";
+import {
+  setAuthToken,
+  setAuthUser,
+} from "@/redux/authorizedUser/authorizedUser";
 import BackgroundImgSlider from "@/components/reusableComponents/BackgroundImgSlider/BackgroundImgSlider";
 import { IconAccessible, IconBrandGoogleFilled } from "@tabler/icons-react";
 import Cookies from "js-cookie";
 
-
-
 export default function Login() {
   const { data: session, status } = useSession();
   const router = useRouter();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const { authToken } = useSelector(manageAuthUserSelector);
   useEffect(() => {
     if (session) {

@@ -20,23 +20,30 @@ const leavePoliciesApi = createApi({
     }),
 
     createLeavePoliciesApi: builder.mutation({
-      query: (body) => {
+      query: (props) => {
+        const data = {
+          leave_type_id: props?.leave_type_id,
+          max_leaves_per_year: props?.max_leaves_per_year,
+        };
         return {
           url: `/leave-policies/create`,
           method: "POST",
-          body: body,
+          body: data,
+          headers: {
+            Authorization: `Bearer ${props?.token}`,
+          },
         };
       },
     }),
-
     updateLeavePoliciesApiByName: builder.mutation({
-      query: ({ data }) => {
+      query: ({ data, token }) => {
         const { leave_policy_id, max_leaves_per_year } = data;
         return {
           url: `/leave-policies/update/${leave_policy_id}`,
           method: "PUT",
-          body: {
-            max_leaves_per_year: max_leaves_per_year,
+          body: { max_leaves_per_year },
+          headers: {
+            Authorization: `Bearer ${token}`,
           },
         };
       },

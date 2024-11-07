@@ -9,6 +9,7 @@ import {
   IconEdit,
   IconLock,
   IconLockOpen,
+  IconMoodSad,
   IconTrash,
 } from "@tabler/icons-react";
 
@@ -25,9 +26,10 @@ import { getAllUserData, setUserDataLength } from "@/redux/user/user";
 import { notifications } from "@mantine/notifications";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
 import EmployeeForm from "@/containers/Employee/EmployeeForm";
-// import { notifications, showNotification } from "@mantine/notifications";
+import { Box, Loader } from "@mantine/core";
 
 export default function Employees() {
+  const [loading, setLoading] = useState(false);
   const [postData, { data: addData, isSuccess: createSuccess, isError }] =
     useCreateUserMutation();
   const [search, setSearch] = useState("");
@@ -55,18 +57,20 @@ export default function Employees() {
       dispatch(setUserDataLength(data.totalusers));
     }
   }, [data, isSuccess, authToken, authUser]);
-  useEffect(() => { }, [authToken]);
+  useEffect(() => {}, [authToken]);
   const renderData = async (
     currpage: number,
     limit: number,
     search: string
   ) => {
-    const response = await allDataApi({
-      page: currpage,
-      limit: limit,
-      search: search,
-      token: authToken,
-    });
+    if (authToken) {
+      const response = await allDataApi({
+        page: currpage,
+        limit: limit,
+        search: search,
+        token: authToken,
+      });
+    }
   };
   const onHandelUpdate = async (row: any) => {
     const mydata = {
@@ -92,9 +96,10 @@ export default function Employees() {
     setCurrentPage(page);
     const params = {
       page: page,
-      limit: 5,
+      limit: 10,
       token: authToken,
     };
+
     allDataApi(params);
     renderData(page, tableDataLimit, search);
   };
@@ -297,19 +302,33 @@ export default function Employees() {
           </div>
         </div>
       </div>
-
-      <DataTable
-        height={300}
-        records={[...allUserData]}
-        withTableBorder
-        highlightOnHover
-        totalRecords={allUserDataLength}
-        recordsPerPage={tableDataLimit}
-        page={currentpage}
-        onPageChange={(p) => handlePageChange(p)}
-        emptyState={allUserData.length ? <></> : <>no data</>}
-        columns={columns}
-      />
+      {loading ? (
+        <Loader color="blue" size="xl" />
+      ) : allUserData.length > 0 ? (
+        <DataTable
+          height={300}
+          records={[...allUserData]}
+          withTableBorder
+          highlightOnHover
+          totalRecords={allUserDataLength}
+          recordsPerPage={tableDataLimit}
+          page={currentpage}
+          onPageChange={(p) => handlePageChange(p)}
+          emptyState={
+            !allUserData && (
+              <Box p={4} mb={4}>
+                <IconMoodSad size={36} strokeWidth={1.5} />
+                No data
+              </Box>
+            )
+          }
+          columns={columns}
+        />
+      ) : (
+        <Box className="flex align-middle justify-center">
+          <Loader color="blue" />
+        </Box>
+      )}
     </>
   );
 }

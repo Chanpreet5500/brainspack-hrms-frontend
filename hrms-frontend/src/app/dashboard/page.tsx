@@ -1,7 +1,10 @@
 "use client";
 import { countAllData } from "@/constants/constants";
 import { IconChevronDown, IconCircleArrowRight } from "@tabler/icons-react";
-import { StringDateFormatConvertor } from "@/utils/commonFunction";
+import {
+  getGreetingBasedOnTime,
+  StringDateFormatConvertor,
+} from "@/utils/commonFunction";
 import { useLazyGetAllDataApiByNameQuery } from "@/services/user/usersApi";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -69,6 +72,12 @@ const Dashboard = () => {
     });
   };
 
+  useEffect(() => {
+    if (employeeData?.users.length > 0 && getEmployeeSuccess) {
+      dispatch(getAllUserData(employeeData?.users));
+      dispatch(setUserDataLength(employeeData.totalusers));
+    }
+  }, [employeeData, getEmployeeSuccess]);
   useEffect(() => {
     if ((authToken && employeeData) || leavesData || holidaysData) {
       setDummyData((prevDummy: any) =>
@@ -150,6 +159,9 @@ const Dashboard = () => {
           </div>
         </div>
         <div className="flex flex-col lg:w-[30%] md:w-[48%] w-full">
+          {/* <span className="text-2xl font-medium lg:h-[75px]  md:h-[50px] max-sm:h-[45px]">
+            Time Sheet
+          </span> */}
           <div className=" bg-slate-200 h-auto items-center flex flex-col rounded-xl py-4">
             <div className="text-black text-lg h-[50px] flex w-[90%] font-bold items-start">
               {todayDate}

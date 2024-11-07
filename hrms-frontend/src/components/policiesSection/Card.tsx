@@ -24,7 +24,7 @@ export const CustumCard: React.FC<allValue> = ({
     <>
       {allPolicies?.map((curr: any, indx: Number) => (
         <>
-          <div className="w-full md:w-[22%] rounded-2xl p-5 flex h-[200px] bg-stone-300 justify-center items-center shadow-lg transition-transform transform hover:scale-105">
+          <div className="w-full md:w-[22%] rounded-2xl p-5 flex h-[200px] bg-gray-200 justify-center items-center shadow-lg transition-transform transform hover:scale-105">
             <Card
               className="shadow-md p-lg rounded-2xl h-[150px] w-full flex flex-col justify-between bg-white"
               withBorder

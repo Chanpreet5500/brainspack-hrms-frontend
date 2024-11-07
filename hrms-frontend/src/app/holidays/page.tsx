@@ -82,13 +82,17 @@ const Calendar = () => {
       title: eventInfo.event.title,
       description: eventInfo.event.extendedProps.description,
       type: eventInfo.event.extendedProps.type,
-      date: eventInfo.event.start,
+
+      date: eventInfo.event.start
+        ? eventInfo.event.start.toISOString()
+        : undefined,
     };
     form.setValues(data);
     open();
   };
-  const handleDateSelect = async (selectInfo: any) => {
-    form.setValues({ date: selectInfo.start });
+
+  const handleDateSelect = async (selectInfo: DateSelectArg) => {
+    form.setValues({ date: selectInfo.start.toISOString() });
     open();
   };
 
@@ -132,8 +136,6 @@ const Calendar = () => {
           type: holiday.type,
           description: holiday.description,
         }))}
-        // eventBackgroundColor="transparent"
-        // eventColor='#378006'
         eventTextColor="#000"
         selectable
         select={handleDateSelect}
