@@ -21,7 +21,6 @@ import {
 import { DataTable } from "mantine-datatable";
 import { StringDateFormatConvertor } from "@/utils/commonFunction";
 import { notifications } from "@mantine/notifications";
-import { manageLeavePoliciesSelector } from "@/redux/leavePolicies/leaveSelector";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
 import LeaveForm from "@/containers/Leave/Leaveform";
 
@@ -170,7 +169,7 @@ export default function LeaveComponent() {
     },
     {
       accessor: "start date for half",
-      width: "18%",
+      width: "20%",
       render: (data: any) => {
         const formattedDate = StringDateFormatConvertor(
           data.start_date,
@@ -189,7 +188,7 @@ export default function LeaveComponent() {
 
     {
       accessor: "end_date for half ",
-      width: "18%",
+      width: "20%",
       render: (data: any) => {
         const formattedDate = StringDateFormatConvertor(
           data.end_date,
@@ -206,10 +205,10 @@ export default function LeaveComponent() {
       },
     },
 
-    { accessor: "status", width: "15%" },
+    { accessor: "status", width: "10%" },
     {
       accessor: "Action",
-      width: "12%",
+      width: "8%",
 
       render: (data: TableRow) => {
         const editModal = (row: TableRow) => {

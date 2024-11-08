@@ -75,8 +75,6 @@ const LeaveForm: React.FC<dataValue> = ({
         end_day: adjustedEndDay,
       };
 
-      console.log(myleavedata, "localUserDetails");
-
       const response = await triggerCreate({
         createdById: editBy,
         leavedata: myleavedata,
@@ -221,7 +219,11 @@ const LeaveForm: React.FC<dataValue> = ({
             validateKey={form.getInputProps("end_day")}
           />
           <SelectInputField
-            disabled={form.values.end_day === "half" ? false : true}
+            disabled={
+              form.values.end_day === "half" && endDate !== startDate
+                ? false
+                : true
+            }
             label={"For ? Half"}
             form={form}
             name={"end_half_day_time"}

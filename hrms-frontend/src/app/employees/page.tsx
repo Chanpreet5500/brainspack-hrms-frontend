@@ -349,6 +349,7 @@ export default function Employees() {
         opened={editopened}
         open={editopen}
         size={"lg"}
+        showButton={false}
         close={editclose}
         modalTitle={`Are you sure you want to delete employee: ${employeeData?.fname}`}
         bgcolor={"transparent"}

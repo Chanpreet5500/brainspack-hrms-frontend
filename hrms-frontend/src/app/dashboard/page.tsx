@@ -13,6 +13,7 @@ import { getAllUserData, setUserDataLength } from "@/redux/user/user";
 import { useLazyGetAllHolidayDataApiByNameQuery } from "@/services/holiday/holidayApi";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
 import { manageUserSelector } from "@/redux/user/userSelector";
+import Link from "next/link";
 const todayDate = StringDateFormatConvertor(
   new Date().toISOString(),
   "DD/MMM/YYYY",
@@ -148,7 +149,14 @@ const Dashboard = () => {
                       <div className="text-lg w-full flex justify-between">
                         <div className="font-bold">{value?.count}</div>
                         <span className="text-black">
-                          <IconCircleArrowRight size={30} stroke={1} />
+                          <Link
+                            href={value?.link || "#"}
+                            className="flex gap-2 text-sm items-center p-2 hover:bg-slate-200 rounded-full cursor-pointer"
+                            role="menuitem"
+                          >
+                            {/* {value.icon} */}
+                            <IconCircleArrowRight size={30} stroke={1} />
+                          </Link>
                         </span>
                       </div>
                     </div>

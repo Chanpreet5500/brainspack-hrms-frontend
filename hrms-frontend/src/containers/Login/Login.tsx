@@ -49,7 +49,7 @@ export default function Login() {
     <main>
       <div className="w-full h-[100vh] overflow-hidden relative bg-black">
         <BackgroundImgSlider images={superadminimages} />
-        <div className="absolute top-0 left-0 w-full h-full ">
+        <div className=" absolute top-0 left-0 w-full h-full ">
           <div className="w-full h-full flex  bg-center bg-no-repeat bg-cover">
             <div className="w-[45%]  flex justify-center left-pare  nt items-center ">
               <div className="w-[70%]  h-[70%] text-white flex flex-col justify-between">

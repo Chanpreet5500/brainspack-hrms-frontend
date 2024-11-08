@@ -38,10 +38,9 @@ export const StringDateFormatConvertor = (
   separator = "/"
 ) => {
   const newDate = new Date(dateString);
-  const day = newDate.getDate();
+  const day = newDate.getDate() - 1;
   const month = newDate.getMonth();
   const year = newDate.getFullYear();
-
   const formattedDay = day >= 10 ? day : `0${day}`;
 
   const monthNames = [
