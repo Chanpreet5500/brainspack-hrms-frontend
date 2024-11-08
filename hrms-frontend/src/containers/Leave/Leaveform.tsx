@@ -132,7 +132,7 @@ const LeaveForm: React.FC<dataValue> = ({
   const employeeOptions =
     employeData?.users?.map((user: any) => ({
       value: user._id,
-      label: user.fname,
+      label: user.fname + " " + user.lname,
     })) || [];
 
   return (

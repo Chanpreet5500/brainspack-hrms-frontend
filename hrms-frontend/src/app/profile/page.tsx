@@ -2,6 +2,7 @@
 import { useSelector } from "react-redux";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
 import { IconPencil, IconUserCircle } from "@tabler/icons-react";
+import Image from "next/image";
 
 const Profile = () => {
   const { authUser } = useSelector(manageAuthUserSelector);
@@ -50,7 +51,9 @@ const Profile = () => {
         <div className="flex justify-center h-[300px] items-center w-full md:w-2/5 md:justify-end relative">
           <div className="w-[200px] h-[200px] bg-gray-300 rounded-full flex items-center justify-center relative overflow-hidden">
             {authUser?.img ? (
-              <img
+              <Image
+                height={100}
+                width={100}
                 src={authUser.img}
                 className="object-cover w-full h-full"
                 alt="User Avatar"
