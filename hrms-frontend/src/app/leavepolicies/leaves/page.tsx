@@ -30,7 +30,7 @@ const initialState = {
 };
 
 export default function LeaveComponent() {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [createLeave, { isLoading, error, isSuccess: createSuccess }] =
     useCreateLeaveMutation();
   const [currentpage, setCurrentPage] = useState(1);
@@ -119,7 +119,9 @@ export default function LeaveComponent() {
     setSearch(searchValue);
     renderData(currentpage, tableDataLimit, searchValue);
   };
-
+  useEffect(() => {
+    setLoading(false);
+  }, [allLeaves.length > 0]);
   interface employeeData {
     fname: string;
     lname: string;
@@ -258,7 +260,9 @@ export default function LeaveComponent() {
         </div>
       </div>
       {loading ? (
-        <Loader color="blue" size="xl" />
+        <Box className="flex justify-center items-center p-4">
+          <Loader color="blue" size="xl" />
+        </Box>
       ) : allLeaves.length > 0 ? (
         <DataTable
           height={300}
@@ -270,22 +274,11 @@ export default function LeaveComponent() {
           page={currentpage}
           onPageChange={handlePageChange}
           columns={columns}
-          emptyState={
-            totalleaves ? (
-              <></>
-            ) : (
-              <>
-                <Box p={4} mb={4}>
-                  <IconMoodSad size={36} strokeWidth={1.5} />
-                  No data
-                </Box>
-              </>
-            )
-          }
         />
       ) : (
-        <Box className="flex align-middle justify-center">
-          <Loader color="blue" />
+        <Box className="flex flex-col justify-center items-center p-4">
+          <IconMoodSad size={36} strokeWidth={1.5} color="grey" />
+          <span>No Data Available</span>
         </Box>
       )}
       <div className="editIcon">
@@ -294,6 +287,7 @@ export default function LeaveComponent() {
           open={editopen}
           size={"lg"}
           close={editclose}
+          showButton={false}
           modalTitle={"You Want to Approve the leave"}
           bgcolor={"transparent"}
           content={
