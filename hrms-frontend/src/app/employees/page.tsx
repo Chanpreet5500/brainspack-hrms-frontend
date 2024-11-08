@@ -36,7 +36,7 @@ export default function Employees() {
   const [editopened, { open: editopen, close: editclose }] =
     useDisclosure(false);
   const [employeeData, setEmployeeData] = useState<EmployeeData>({});
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [postData, { data: addData, isSuccess: createSuccess, isError }] =
     useCreateUserMutation();
   const [search, setSearch] = useState("");
@@ -99,7 +99,9 @@ export default function Employees() {
       throw error;
     }
   };
-
+  useEffect(() => {
+    setLoading(false);
+  }, [allUserData.length > 0]);
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
     const params = {
@@ -315,7 +317,9 @@ export default function Employees() {
         </div>
       </div>
       {loading ? (
-        <Loader color="blue" size="xl" />
+        <Box className="flex justify-center items-center p-4">
+          <Loader color="blue" size="xl" />
+        </Box>
       ) : allUserData.length > 0 ? (
         <DataTable
           height={300}
@@ -326,25 +330,27 @@ export default function Employees() {
           recordsPerPage={tableDataLimit}
           page={currentpage}
           onPageChange={(p) => handlePageChange(p)}
-          emptyState={
-            allUserDataLength ? (
-              <></>
-            ) : (
-              <>
-                <Box p={4} mb={4}>
-                  <IconMoodSad size={36} strokeWidth={1.5} />
-                  No data
-                </Box>
-              </>
-            )
-          }
+          // emptyState={
+          //   allUserDataLength ? (
+          //     <></>
+          //   ) : (
+          //     <>
+          //       <Box p={4} mb={4}>
+          //         <IconMoodSad size={36} strokeWidth={1.5} />
+          //         No data
+          //       </Box>
+          //     </>
+          //   )
+          // }
           columns={columns}
         />
       ) : (
-        <Box className="flex align-middle justify-center">
-          <Loader color="blue" />
+        <Box className="flex flex-col justify-center items-center p-4">
+          <IconMoodSad size={36} strokeWidth={1.5} color="grey" />
+          <span>No Data Available</span>
         </Box>
       )}
+
       <CustomModal
         opened={editopened}
         open={editopen}
