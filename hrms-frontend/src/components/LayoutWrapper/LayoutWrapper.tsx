@@ -40,7 +40,7 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
         <AppShell
           header={{ height: { base: 60, md: 60, lg: 80 } }}
           navbar={{
-            width: { base: 100, md: 200, lg: 220 },
+            width: { base: 100, md: 200, lg: 320 },
             breakpoint: "md",
             collapsed: { mobile: !opened },
           }}
