@@ -1,5 +1,4 @@
 "use client";
-import "./sidebar.css";
 import { useState } from "react";
 import {
   Group,
@@ -18,8 +17,8 @@ import {
   IconChevronRight,
   IconUsersGroup,
 } from "@tabler/icons-react";
-import classes from "./Navbar.module.css";
 import { usePathname, useRouter } from "next/navigation";
+import classes from "./Navbar.module.css";
 
 interface LinkItem {
   label: string;
@@ -32,6 +31,7 @@ interface LinkItem {
 
 interface NavbarProps {
   linksData: LinkItem[];
+  toggleSidebar: () => void;
 }
 
 export function LinksGroup({
@@ -41,7 +41,8 @@ export function LinksGroup({
   links,
   data,
   link,
-}: LinkItem) {
+  toggleSidebar,
+}: LinkItem & { toggleSidebar: () => void }) {
   const pathname = usePathname();
   const hasLinks = Array.isArray(links);
   const [opened, setOpened] = useState(initiallyOpened || false);
@@ -50,6 +51,7 @@ export function LinksGroup({
   const handleNavigation = (itemLink: string | undefined) => {
     if (itemLink) {
       router.push(itemLink);
+      toggleSidebar();
     }
   };
 
@@ -88,29 +90,26 @@ export function LinksGroup({
             <Box ml="md">{label}</Box>
           </Box>
           {hasLinks && (
-            <Box className="flex">
-              <IconChevronRight
-                className={classes.chevron}
-                stroke={1.5}
-                style={{
-                  width: rem(16),
-                  height: rem(16),
-                  transform: opened ? "rotate(-90deg)" : "none",
-                }}
-              />
-            </Box>
+            <IconChevronRight
+              className={classes.chevron}
+              stroke={1.5}
+              style={{
+                width: rem(16),
+                height: rem(16),
+                transform: opened ? "rotate(-90deg)" : "none",
+              }}
+            />
           )}
         </Group>
       </UnstyledButton>
-
       {hasLinks && <Collapse in={opened}>{items}</Collapse>}
     </>
   );
 }
 
-export function Navbar({ linksData }: NavbarProps) {
+export function Navbar({ linksData, toggleSidebar }: NavbarProps) {
   const links = linksData.map((item) => (
-    <LinksGroup {...item} key={item.label} />
+    <LinksGroup {...item} key={item.label} toggleSidebar={toggleSidebar} />
   ));
 
   return (
@@ -124,12 +123,7 @@ export function Navbar({ linksData }: NavbarProps) {
 
 const mockdata = [
   { label: "Dashboard", icon: IconAlignBoxLeftStretch, link: "/dashboard" },
-  {
-    label: "Employees",
-    icon: IconUsersGroup,
-    link: "/employees",
-  },
-
+  { label: "Employees", icon: IconUsersGroup, link: "/employees" },
   {
     label: "Leaves Management",
     icon: IconCalendarStats,
@@ -139,13 +133,13 @@ const mockdata = [
       { label: "Policies", link: "/leavepolicies/leavespolicies" },
     ],
   },
-  {
-    label: "Holiday Calendar",
-    icon: IconCalendarMonth,
-    link: "/holidays",
-  },
+  { label: "Holiday Calendar", icon: IconCalendarMonth, link: "/holidays" },
 ];
 
-export default function Sidebar() {
-  return <Navbar linksData={mockdata} />;
+export default function Sidebar({
+  toggleSidebar,
+}: {
+  toggleSidebar: () => void;
+}) {
+  return <Navbar linksData={mockdata} toggleSidebar={toggleSidebar} />;
 }

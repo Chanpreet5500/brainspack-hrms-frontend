@@ -50,7 +50,7 @@ export default function Login() {
       <div className="w-full h-[100vh] overflow-hidden relative ">
         <BackgroundImgSlider images={superadminimages} />
         <div className="absolute top-0 left-0 w-full h-full  ">
-          <div className="w-full h-full flex bg-center bg-no-repeat bg-cover justify-between">
+          <div className="w-full h-full flex bg-center bg-no-repeat bg-cover justify-between loginParent">
             <div
               className="  flex justify-center left-parent items-center"
               style={{ width: "45%" }}

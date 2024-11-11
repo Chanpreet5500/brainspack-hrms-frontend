@@ -6,7 +6,6 @@ import Image from "next/image";
 
 const Profile = () => {
   const { authUser } = useSelector(manageAuthUserSelector);
-
   const handleEditClick = () => {
     console.log("Edit profile picture clicked");
   };
@@ -50,11 +49,12 @@ const Profile = () => {
         </div>
         <div className="flex justify-center h-[300px] items-center w-full md:w-2/5 md:justify-end relative">
           <div className="w-[200px] h-[200px] bg-gray-300 rounded-full flex items-center justify-center relative overflow-hidden">
+            {console.log(authUser, "auth")}
             {authUser?.img ? (
               <Image
                 height={100}
                 width={100}
-                src={authUser.img}
+                src={authUser?.img}
                 className="object-cover w-full h-full"
                 alt="User Avatar"
               />

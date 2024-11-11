@@ -15,7 +15,6 @@ import { useSession } from "next-auth/react";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
 export function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const { data: session, status } = useSession();
-
   const [opened, { toggle }] = useDisclosure();
   const pathname = usePathname();
   const dispatch = useDispatch();
@@ -52,7 +51,7 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
           </AppShell.Header>
 
           <AppShell.Navbar style={{ backgroundColor: "white" }}>
-            <Sidebar />
+            <Sidebar toggleSidebar={toggle} />
           </AppShell.Navbar>
           <AppShell.Main style={{ backgroundColor: "white" }}>
             {children}

@@ -119,7 +119,7 @@ const Navbar: React.FC<NavbarProps> = ({ opened, toggle }) => {
       </div> */}
       <div className="flex gap-2 items-center brainsPacklogo">
         <Burger opened={opened} onClick={toggle} hiddenFrom="md" size="sm" />
-        <div className="text-2xl">
+        <div style={{ fontSize: "30px", paddingLeft: "0" }}>
           Brains<span style={{ color: "#55ad88" }}>p</span>ack
         </div>
       </div>
