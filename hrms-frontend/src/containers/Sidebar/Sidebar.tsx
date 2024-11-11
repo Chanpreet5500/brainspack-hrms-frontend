@@ -1,5 +1,4 @@
 "use client";
-import "./sidebar.css";
 import { useState } from "react";
 import {
   Group,
@@ -32,6 +31,7 @@ interface LinkItem {
 
 interface NavbarProps {
   linksData: LinkItem[];
+  toggltSidebar: () => void;
 }
 
 export function LinksGroup({
@@ -41,7 +41,8 @@ export function LinksGroup({
   links,
   data,
   link,
-}: LinkItem) {
+  toggltSidebar,
+}: LinkItem & { toggltSidebar: () => void }) {
   const pathname = usePathname();
   const hasLinks = Array.isArray(links);
   const [opened, setOpened] = useState(initiallyOpened || false);
@@ -50,6 +51,7 @@ export function LinksGroup({
   const handleNavigation = (itemLink: string | undefined) => {
     if (itemLink) {
       router.push(itemLink);
+      toggltSidebar();
     }
   };
 
@@ -108,9 +110,9 @@ export function LinksGroup({
   );
 }
 
-export function Navbar({ linksData }: NavbarProps) {
+export function Navbar({ linksData, toggltSidebar }: NavbarProps) {
   const links = linksData.map((item) => (
-    <LinksGroup {...item} key={item.label} />
+    <LinksGroup {...item} key={item.label} toggltSidebar={toggltSidebar} />
   ));
 
   return (
@@ -146,6 +148,10 @@ const mockdata = [
   },
 ];
 
-export default function Sidebar() {
-  return <Navbar linksData={mockdata} />;
+export default function Sidebar({
+  toggltSidebar,
+}: {
+  toggltSidebar: () => void;
+}) {
+  return <Navbar linksData={mockdata} toggltSidebar={toggltSidebar} />;
 }
