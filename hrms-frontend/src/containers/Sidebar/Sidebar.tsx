@@ -31,7 +31,7 @@ interface LinkItem {
 
 interface NavbarProps {
   linksData: LinkItem[];
-  toggltSidebar: () => void;
+  toggleSidebar: () => void;
 }
 
 export function LinksGroup({
@@ -41,8 +41,8 @@ export function LinksGroup({
   links,
   data,
   link,
-  toggltSidebar,
-}: LinkItem & { toggltSidebar: () => void }) {
+  toggleSidebar,
+}: LinkItem & { toggleSidebar: () => void }) {
   const pathname = usePathname();
   const hasLinks = Array.isArray(links);
   const [opened, setOpened] = useState(initiallyOpened || false);
@@ -51,7 +51,7 @@ export function LinksGroup({
   const handleNavigation = (itemLink: string | undefined) => {
     if (itemLink) {
       router.push(itemLink);
-      toggltSidebar();
+      toggleSidebar();
     }
   };
 
@@ -107,9 +107,9 @@ export function LinksGroup({
   );
 }
 
-export function Navbar({ linksData, toggltSidebar }: NavbarProps) {
+export function Navbar({ linksData, toggleSidebar }: NavbarProps) {
   const links = linksData.map((item) => (
-    <LinksGroup {...item} key={item.label} toggltSidebar={toggltSidebar} />
+    <LinksGroup {...item} key={item.label} toggleSidebar={toggleSidebar} />
   ));
 
   return (
@@ -137,9 +137,9 @@ const mockdata = [
 ];
 
 export default function Sidebar({
-  toggltSidebar,
+  toggleSidebar,
 }: {
-  toggltSidebar: () => void;
+  toggleSidebar: () => void;
 }) {
-  return <Navbar linksData={mockdata} toggltSidebar={toggltSidebar} />;
+  return <Navbar linksData={mockdata} toggleSidebar={toggleSidebar} />;
 }
