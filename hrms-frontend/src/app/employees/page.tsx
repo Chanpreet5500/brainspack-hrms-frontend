@@ -293,7 +293,18 @@ export default function Employees() {
           recordsPerPage={tableDataLimit}
           page={currentpage}
           onPageChange={(p) => handlePageChange(p)}
-          emptyState={allUserDataLength ? <></> : <></>}
+          emptyState={
+            allUserDataLength ? (
+              <></>
+            ) : (
+              <>
+                {/* <Box p={4} mb={4}>
+                  <IconMoodSad size={36} strokeWidth={1.5} />
+                  No data
+                </Box> */}
+              </>
+            )
+          }
           columns={columns}
         />
       ) : (
