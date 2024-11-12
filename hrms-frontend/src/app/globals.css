@@ -17,18 +17,121 @@
   }
 }
 
-body {
-  /* color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));  */
-}
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+@media screen and (max-width: 600px) {
+
+  .mantine-Button-label {
+    overflow: visible !important;
+  }
+
+}
+
+.mantine-datatable-pagination {
+  display: flex !important;
+  align-items: end !important;
+  flex-direction: column !important;
+
+}
+
+.mantine-datatable-pagination-text {
+  width: 100%;
+  display: flex;
+  justify-content: end !important;
+}
+
+.mantine-datatable-empty-state {
+  padding-bottom: 0 !important;
+  padding-top: 0 !important;
+}
+
+.mantine-datatable-scroll-area {
+  height: 450px !important;
+  overflow: hidden;
+}
+
+.mantine-datatable-loader {
+  padding-bottom: 0 !important;
+  padding-top: 0 !important;
+}
+
+.mantine-datatable-pagination-text {
+  width: 100%;
+  display: flex;
+  height: 35px;
+  justify-content: center;
+}
+
+.fc-h-event {
+  border: none;
+  background-color: #c9e4ca;
+  border-bottom: 1px solid grey;
+  border-radius: 10px;
+  padding-left: 10px;
+}
+
+.mantine-Group-root {
+  display: flex !important;
+  gap: 15px !important;
+  flex-wrap: nowrap !important;
+}
+
+.m_b242d975 {
+  background-color: rgb(231, 231, 231);
+
+}
+
+.m_4e7aa4fd:hover {
+  background-color: rgb(231, 231, 231);
+  cursor: pointer;
+}
+
+.m_e615b15f {
+  display: flex;
+  justify-content: flex-start;
+  gap: 22px;
+}
+
+.m_99ac2aa1 {
+  text-align: center !important;
+ 
+}
+
+.m_dc9b7c9f {
+  top: 260px !important;
+}
+
+.avatarDiv {
+  width: 12%;
+}
+
+.dropdown-enter {
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: max-height 0.5s ease, opacity 0.5s ease, transform 0.5s ease;
+}
+
+.dropdown-enter-active {
+  max-height: 200px;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.dropdown-exit {
+  max-height: 200px;
+  opacity: 1;
+  transform: translateY(0);
+  transition: max-height 0.5s ease, opacity 0.5s ease, transform 0.5s ease;
+}
+
+.dropdown-exit-active {
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-10px);
 }

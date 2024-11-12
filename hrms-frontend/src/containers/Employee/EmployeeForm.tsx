@@ -1,0 +1,135 @@
+import { useEffect } from "react";
+import { Button, Group, MantineProvider } from "@mantine/core";
+import { employeeDepartment, employeProfetion } from "@/constants/constants";
+import { variantColorResolver } from "@/utils/commonFunction";
+import { useDispatch } from "react-redux";
+import { notifications } from "@mantine/notifications";
+import { IconCheck, IconX } from "@tabler/icons-react";
+import TextInputField from "@/components/Inputs/textInput/Input";
+import SelectInputField from "@/components/Inputs/selectInput/Select";
+
+interface value {
+  onClose: any;
+  form: any;
+  onHandelUpdate: any;
+  createTrigger: any;
+  token: any;
+  createSuccess: boolean;
+}
+
+const EmployeeForm: React.FC<value> = (props) => {
+  const { onClose, form, onHandelUpdate, createTrigger, token, createSuccess } =
+    props;
+  const handleSubmit = async (data: any) => {
+    try {
+      if (data?._id) {
+        onHandelUpdate(data);
+        notifications.show({
+          title: "Update Successful",
+          message: "Employee data updated successfully",
+          color: "green",
+          icon: <IconCheck size={18} />,
+          autoClose: 1000,
+        });
+      } else {
+        await createTrigger({ data: data, token: token });
+
+        notifications.show({
+          title: "Creation Successful",
+          message: "Employee created successfully",
+          color: "green",
+          icon: <IconCheck size={18} />,
+          autoClose: 3000,
+        });
+      }
+    } catch (error) {
+      throw error;
+    }
+    onClose();
+    form.reset();
+  };
+  return (
+    <form
+      onSubmit={form.onSubmit((localUserDetails: any) => {
+        handleSubmit(localUserDetails);
+      })}
+    >
+      <div className="flex flex-col m-auto gap-3 ">
+        <div className="flex justify-between">
+          <TextInputField
+            withAsterisk={true}
+            name={"fname"}
+            label={"First Name"}
+            placeholder={"Enter your first name"}
+            validateKey={form.getInputProps("fname")}
+          />
+
+          <TextInputField
+            withAsterisk
+            name={"lname"}
+            label={"Last Name"}
+            placeholder={"Enter your last name"}
+            validateKey={form.getInputProps("lname")}
+          />
+        </div>
+
+        <TextInputField
+          withAsterisk
+          label={"Email"}
+          name={"email"}
+          placeholder={"Enter your email address"}
+          validateKey={form.getInputProps("email")}
+        />
+
+        <TextInputField
+          withAsterisk
+          label={"Phone Number"}
+          name={"phoneNumber"}
+          placeholder={"Enter your Phone Number"}
+          validateKey={form.getInputProps("phoneNumber")}
+        />
+
+        <SelectInputField
+          label={"Role"}
+          form={form}
+          name={"role"}
+          placeholder={"Select your role"}
+          data={employeProfetion}
+          validateKey={form.getInputProps("role")}
+        />
+
+        <SelectInputField
+          label={"Department"}
+          form={form}
+          name={"department"}
+          placeholder={"Select a department"}
+          data={employeeDepartment}
+          validateKey={form.getInputProps("department")}
+        />
+
+        <MantineProvider theme={{ variantColorResolver }}>
+          <Group className=" !flex !justify-end !w-full ">
+            <Button
+              variant="default"
+              className="!h-[32px] !w-[90px] !font-[500]"
+              radius="md"
+              onClick={onClose}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              variant="filled"
+              className="!h-[32px] !w-[90px] !font-[500]"
+              radius="md"
+            >
+              Submit
+            </Button>
+          </Group>
+        </MantineProvider>
+      </div>
+    </form>
+  );
+};
+
+export default EmployeeForm;
