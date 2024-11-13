@@ -1,20 +1,20 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
-import "@mantine/dates/styles.css";
-import "@mantine/core/styles.css";
-import { ColorSchemeScript, MantineProvider } from "@mantine/core";
-import { LayoutWrapper } from "@/components/LayoutWrapper/LayoutWrapper";
-import ReduxProvider from "@/services/reduxProvider";
-import { SessionProviderWrapper } from "@/components/session/SessionProviderWrapper";
-import { Notifications } from "@mantine/notifications";
-import "@mantine/notifications/styles.css";
-import { cookies } from "next/headers";
 import React from "react";
+import type { Metadata } from "next";
+import ReduxProvider from "@/services/reduxProvider";
+import { Notifications } from "@mantine/notifications";
+import { ColorSchemeScript, MantineProvider } from "@mantine/core";
+import { Inter } from "next/font/google";
+import { LayoutWrapper } from "@/components/LayoutWrapper/LayoutWrapper";
+import { SessionProviderWrapper } from "@/components/session/SessionProviderWrapper";
+import "@mantine/notifications/styles.css";
+import "@mantine/core/styles.css";
+import "@mantine/dates/styles.css";
+import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Brainspack | HRMS",
-  description: "A modern, web-based Human Resource Management System (HRMS) designed to streamline employee management, leave tracking, and attendance monitoring with seamless authentication and powerful reporting features.",
+  description:
+    "A modern, web-based Human Resource Management System (HRMS) designed to streamline employee management, leave tracking, and attendance monitoring with seamless authentication and powerful reporting features.",
 };
 
 export default async function RootLayout({
@@ -24,9 +24,6 @@ export default async function RootLayout({
   children: React.ReactNode;
   pageProps: { session?: any };
 }>) {
-  // const allCookies = cookies();
-  // const authUser = allCookies.get("authUser")?.value || null;
-  // const apiAccessToken = allCookies.get("apiAccessToken")?.value || null;
   return (
     <html lang="en">
       <head>
@@ -51,9 +48,7 @@ export default async function RootLayout({
           <MantineProvider>
             <SessionProviderWrapper session={pageProps?.session}>
               <Notifications />
-              <LayoutWrapper>
-                {children}
-              </LayoutWrapper>
+              <LayoutWrapper>{children}</LayoutWrapper>
             </SessionProviderWrapper>
           </MantineProvider>
         </ReduxProvider>

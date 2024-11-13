@@ -1,7 +1,7 @@
 "use client";
-import Image from "next/image";
 import React from "react";
 import Slider from "react-slick";
+import Image from "next/image";
 
 interface BackgroundImgProps {
   images: string[];
@@ -27,7 +27,7 @@ const BackgroundImgSlider: React.FC<BackgroundImgProps> = ({ images }) => {
     <Slider {...settings}>
       {images?.map((ele, index) => {
         return (
-          <div className="relative w-full h-[100vh]">
+          <div key={index} className="relative w-full h-[100vh]">
             <div className="absolute w-full h-full top-0 left-0 bg-black bg-opacity-50">
               <Image
                 src={ele}

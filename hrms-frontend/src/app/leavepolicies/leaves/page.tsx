@@ -1,18 +1,19 @@
 "use client";
-import { useEffect, useState } from "react";
-import Searchbar from "@/components/Searchbar/Searchbar";
-import { tableDataLimit } from "@/constants/constants";
-import { CustomModal } from "@/components/reusableComponents/CustomModal/CustomModal";
-import { manageLeaveSelector } from "@/redux/leave/leaveSelector";
 import { useDispatch, useSelector } from "react-redux";
+import { manageLeaveSelector } from "@/redux/leave/leaveSelector";
+import { useEffect, useState } from "react";
 import {
   resetLeaves,
   setallLeaves,
   settotalleaves,
 } from "@/redux/leave/leaves";
 import { useDisclosure } from "@mantine/hooks";
+import Searchbar from "@/components/Searchbar/Searchbar";
+import { tableDataLimit } from "@/constants/constants";
+import { CustomModal } from "@/components/reusableComponents/CustomModal/CustomModal";
 import { IconEdit, IconMoodSad } from "@tabler/icons-react";
 import { Box, Button, Group, Loader } from "@mantine/core";
+import { notifications } from "@mantine/notifications";
 import {
   useCreateLeaveMutation,
   useLazyGetAllLeaveDataApiByNameQuery,
@@ -20,7 +21,6 @@ import {
 } from "@/services/leave/getLeaves";
 import { DataTable } from "mantine-datatable";
 import { StringDateFormatConvertor } from "@/utils/commonFunction";
-import { notifications } from "@mantine/notifications";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
 import LeaveForm from "@/containers/Leave/Leaveform";
 
@@ -230,7 +230,7 @@ export default function LeaveComponent() {
 
   return (
     <>
-      <div className="flex justify-between p-2 max-sm:flex-col-reverse">
+      <div className="flex justify-between p-2 max-sm:flex-col-reverse h-[90px]">
         <div>Total Leaves ({totalleaves})</div>
         <div className="flex flex-grow gap-2 justify-end items-center w-[32%]  max-sm:w-full">
           <Searchbar

@@ -1,19 +1,13 @@
 "use client";
-import { superadminimages } from "@/constants/constants";
+import { useDispatch, useSelector } from "react-redux";
+import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import jwt from "jsonwebtoken";
-import { useDispatch, useSelector } from "react-redux";
-import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
-import { notifications } from "@mantine/notifications";
-import {
-  setAuthToken,
-  setAuthUser,
-} from "@/redux/authorizedUser/authorizedUser";
-import BackgroundImgSlider from "@/components/reusableComponents/BackgroundImgSlider/BackgroundImgSlider";
 import { IconAccessible, IconBrandGoogleFilled } from "@tabler/icons-react";
-import Cookies from "js-cookie";
+import { notifications } from "@mantine/notifications";
+import { superadminimages } from "@/constants/constants";
+import BackgroundImgSlider from "@/components/reusableComponents/BackgroundImgSlider/BackgroundImgSlider";
 
 export default function Login() {
   const { data: session, status } = useSession();
@@ -23,11 +17,6 @@ export default function Login() {
   useEffect(() => {
     if (session) {
       if (status == "authenticated" && session.apiAccessToken) {
-        // dispatch(setAuthToken(session?.apiAccessToken));
-        // const decodedToken = jwt.decode(session.apiAccessToken);
-        // dispatch(setAuthUser(decodedToken));
-        // Cookies.set("authUser", JSON.stringify(decodedToken), { expires: 7 });
-        // Cookies.set("apiAccessToken", JSON.stringify(session?.apiAccessToken), { expires: 7 });
         router.push("/dashboard");
       } else {
         if (status === "authenticated" && session && !session?.apiAccessToken) {
@@ -52,13 +41,13 @@ export default function Login() {
         <div className="absolute top-0 left-0 w-full h-full  ">
           <div className="w-full h-full flex bg-center bg-no-repeat bg-cover justify-between loginParent">
             <div
-              className="  flex justify-center left-parent items-center"
+              className="flex justify-center left-parent items-center logoDiv"
               style={{ width: "45%" }}
             >
               <div className="w-[70%]  h-[70%] text-white flex flex-col justify-between">
                 <div className=" w-full h-[60%] flex flex-col justify-between ">
                   <div
-                    className="flex items-center h-auto justify-center"
+                    className="flex items-center h-auto justify-center brainsLogo"
                     style={{ width: "70%" }}
                   >
                     <div
@@ -72,7 +61,7 @@ export default function Login() {
                     </div>
                   </div>
                   <div className="flex gap-3 flex-col justify-center">
-                    <div className="flex flex-col gap-1">
+                    <div className="flex flex-col gap-1 lg:bg-red-500 ">
                       <p style={{ fontSize: "30px", textAlign: "center" }}>
                         Were so glad to have You on board!
                       </p>
@@ -85,7 +74,10 @@ export default function Login() {
                         justifyContent: "center",
                       }}
                     >
-                      <div style={{ width: "60%", fontSize: "20px" }}>
+                      <div
+                        className="infoPara"
+                        style={{ width: "60%", fontSize: "20px" }}
+                      >
                         Lorem ipsum dolor sit amet consectetur adipisicing elit.
                         Ab veritatis velit rerum ducimus ipsa eius iste,
                         eligendi laboriosam tenetur adipisci sunt inventore quam

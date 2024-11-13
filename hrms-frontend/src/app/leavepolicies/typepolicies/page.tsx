@@ -1,10 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { manageTypePoliciesSelector } from "@/redux/typePolicies/typeSelector";
+import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
 import Searchbar from "@/components/Searchbar/Searchbar";
 import { CustomModal } from "@/components/reusableComponents/CustomModal/CustomModal";
-import { useDispatch, useSelector } from "react-redux";
 import { useDisclosure } from "@mantine/hooks";
-import { useForm } from "@mantine/form";
+import { useForm, yupResolver } from "@mantine/form";
 import {
   useCreateTypePoliciesApiMutation,
   useLazyGetAllLeaveTypePoliciesApiByNameQuery,
@@ -14,11 +16,9 @@ import {
   setallTypesPolicies,
   settotalTypePolicies,
 } from "@/redux/typePolicies/type";
-import { manageTypePoliciesSelector } from "@/redux/typePolicies/typeSelector";
 import TypeForm from "@/components/policiesSection/TypePoliciesForm";
 import { CustumCard } from "@/components/policiesSection/Card";
-import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
-
+import { leavePolicySchema } from "./typePoliciesSchema";
 const initialState = {
   allTypesPolicies: [],
   totalTypePolicies: 0,
@@ -78,16 +78,12 @@ export default function TypePolicies() {
       name: "",
       description: "",
     },
-    validate: {
-      name: (value) => (value ? null : "Please select the leave type name."),
-      description: (value) =>
-        value ? null : "Please select the type of description.",
-    },
+    validate: yupResolver(leavePolicySchema),
   });
   return (
     <>
-      <div className="flex justify-between p-2 max-sm:flex-col-reverse">
-        <div>Leave Type({totalTypePolicies})</div>
+      <div className="flex h-[90px] justify-between p-2 max-sm:flex-col-reverse">
+        <div className="flex items-center">Leave Type({totalTypePolicies})</div>
         <div className="flex flex-grow gap-2 justify-end items-center w-[32%]  max-sm:w-full">
           <Searchbar
             value={search}
@@ -116,7 +112,10 @@ export default function TypePolicies() {
           />
         </div>
       </div>
-      <div className="flex flex-wrap  align-middle gap-8">
+      <div
+        className="flex flex-wrap  align-middle gap-8"
+        style={{ paddingLeft: "30px" }}
+      >
         <CustumCard
           module={"leaveType"}
           form={form}

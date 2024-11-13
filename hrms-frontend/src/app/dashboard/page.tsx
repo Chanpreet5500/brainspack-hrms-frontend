@@ -1,18 +1,18 @@
 "use client";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllUserData, setUserDataLength } from "@/redux/user/user";
+import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
+import { manageUserSelector } from "@/redux/user/userSelector";
+import { useEffect, useState } from "react";
 import { countAllData } from "@/constants/constants";
 import { IconChevronDown, IconCircleArrowRight } from "@tabler/icons-react";
 import {
-  getGreetingBasedOnTime,
   StringDateFormatConvertor,
+  getGreetingBasedOnTime,
 } from "@/utils/commonFunction";
 import { useLazyGetAllDataApiByNameQuery } from "@/services/user/usersApi";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useLazyGetAllLeaveDataApiByNameQuery } from "@/services/leave/getLeaves";
-import { getAllUserData, setUserDataLength } from "@/redux/user/user";
 import { useLazyGetAllHolidayDataApiByNameQuery } from "@/services/holiday/holidayApi";
-import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
-import { manageUserSelector } from "@/redux/user/userSelector";
 import Link from "next/link";
 import Image from "next/image";
 const todayDate = StringDateFormatConvertor(
@@ -22,8 +22,10 @@ const todayDate = StringDateFormatConvertor(
 );
 
 const Dashboard = () => {
+  const dispatch = useDispatch();
+  const { allUserDataLength, allUserData } = useSelector(manageUserSelector);
+  const { authUser, authToken } = useSelector(manageAuthUserSelector);
   const [dummyData, setDummyData] = useState(countAllData);
-
   const [getLeaves, { data: leavesData, isSuccess: getLeavesSuccess }] =
     useLazyGetAllLeaveDataApiByNameQuery();
   const [getHolidays, { data: holidaysData, isSuccess: getHolidaySuccess }] =
@@ -35,9 +37,6 @@ const Dashboard = () => {
     getEmployees,
     { data: employeeData, error, isLoading, isSuccess: getEmployeeSuccess },
   ] = useLazyGetAllDataApiByNameQuery();
-  const dispatch = useDispatch();
-  const { allUserDataLength, allUserData } = useSelector(manageUserSelector);
-  const { authUser, authToken } = useSelector(manageAuthUserSelector);
   const fetchUserData = async (
     currPage: number,
     limit: number,
@@ -116,7 +115,6 @@ const Dashboard = () => {
   }, [currentPage, limit, search, authToken]);
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading data</div>;
-
   return (
     <div className="flex flex-col gap-8 max-sm:gap-6 p-4">
       <div className="flex flex-col gap-2">
@@ -125,7 +123,7 @@ const Dashboard = () => {
           <span className="text-xl font-medium">
             {getGreetingBasedOnTime()}
           </span>
-          <span className="text-xl font-medium ">Latest Member's</span>
+          <span className="text-xl font-medium ">Latest Members</span>
         </div>
       </div>
       <div className="flex w-full justify-between flex-wrap sm:gap-5 md:gap-5 lg:gap-0 max-sm:gap-6">

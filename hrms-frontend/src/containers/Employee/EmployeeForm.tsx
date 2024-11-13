@@ -1,10 +1,8 @@
-import { useEffect } from "react";
 import { Button, Group, MantineProvider } from "@mantine/core";
-import { employeeDepartment, employeProfetion } from "@/constants/constants";
-import { variantColorResolver } from "@/utils/commonFunction";
-import { useDispatch } from "react-redux";
 import { notifications } from "@mantine/notifications";
-import { IconCheck, IconX } from "@tabler/icons-react";
+import { variantColorResolver } from "@/utils/commonFunction";
+import { employeeDepartment, employeProfetion } from "@/constants/constants";
+import { IconCheck } from "@tabler/icons-react";
 import TextInputField from "@/components/Inputs/textInput/Input";
 import SelectInputField from "@/components/Inputs/selectInput/Select";
 

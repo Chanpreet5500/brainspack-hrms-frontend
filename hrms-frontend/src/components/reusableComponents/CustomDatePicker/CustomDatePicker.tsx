@@ -1,17 +1,22 @@
-import { useState } from "react";
-import { DatePickerInput } from '@mantine/dates';
+import { DatePickerInput } from "@mantine/dates";
 
 interface DatePickerProps {
-  datePickerLabel: string
-  value: any
-  onChange: any
-  minDate: any
-  defaultvalue: any
+  datePickerLabel: string;
+  value: any;
+  onChange: any;
+  minDate: any;
+  defaultvalue: any;
   isEndDate?: boolean;
 }
 
-export const DatePickerComponent = ({ datePickerLabel, value, onChange, minDate, defaultvalue, isEndDate, }: DatePickerProps) => {
-  // const [value, setValue] = useState<Date | null>(new Date());
+export const DatePickerComponent = ({
+  datePickerLabel,
+  value,
+  onChange,
+  minDate,
+  defaultvalue,
+  isEndDate,
+}: DatePickerProps) => {
   return (
     <DatePickerInput
       clearable
@@ -26,4 +31,4 @@ export const DatePickerComponent = ({ datePickerLabel, value, onChange, minDate,
       excludeDate={(date) => date.getDay() == 6 || date.getDay() == 0}
     />
   );
-}
+};

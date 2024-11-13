@@ -185,5 +185,91 @@
   color: white;
   transition: background-color 0.4s ease, color 0.4s ease;
 }
-.loginParent {
+.fc-toolbar-chunk {
+  display: flex;
+}
+.m_3b16f56b {
+  display: flex;
+  align-items: center;
+}
+
+.m_615af6c9 {
+  font-weight: bold;
+  font-size: 18px;
+  font-family: sans-serif;
+}
+
+@media (max-width: 1366px) {
+  .loginParent {
+    flex-direction: column;
+    align-items: center;
+  }
+  .infoPara {
+    width: 100%;
+  }
+  .signUpBtnDiv {
+    background: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .loginParent {
+    flex-direction: column;
+  }
+
+  .signUpBtnDiv {
+    background: none;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    height: 400px;
+  }
+
+  .brainsLogo {
+    width: 100%;
+    text-align: center;
+  }
+
+  .boardDiv {
+    font-size: 20px;
+  }
+
+  .infoPara {
+    font-size: 14px;
+    width: 100%;
+  }
+}
+
+@media (max-width: 460px) {
+  .loginParent {
+    flex-direction: column;
+    background: none;
+  }
+
+  .signUpBtnDiv {
+    background: none;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    height: 400px;
+  }
+
+  .logoDiv {
+    text-align: center;
+    width: 100%;
+  }
+
+  .brainsLogo {
+    width: 100%;
+    text-align: center;
+  }
+
+  .boardDiv {
+    font-size: 20px;
+  }
+
+  .infoPara {
+    font-size: 14px;
+    width: 100%;
+  }
 }

@@ -1,10 +1,16 @@
 "use client";
+import { manageUserSelector } from "@/redux/user/userSelector";
+import { getAllUserData, setUserDataLength } from "@/redux/user/user";
+import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import { notifications } from "@mantine/notifications";
+import { useDisclosure } from "@mantine/hooks";
+import { useForm, yupResolver } from "@mantine/form";
+import { DataTable } from "mantine-datatable";
+import { Box, Button, Group, Loader } from "@mantine/core";
 import { tableDataLimit } from "@/constants/constants";
 import Searchbar from "@/components/Searchbar/Searchbar";
-import { useDisclosure } from "@mantine/hooks";
-import { useForm } from "@mantine/form";
-import { useDispatch, useSelector } from "react-redux";
 import {
   IconEdit,
   IconLock,
@@ -13,20 +19,15 @@ import {
   IconTrash,
 } from "@tabler/icons-react";
 
-import { DataTable } from "mantine-datatable";
 import {
   useCreateUserMutation,
   useDeleteDataApiByNameMutation,
   useLazyGetAllDataApiByNameQuery,
   useUpdateDataApiByNameMutation,
 } from "@/services/user/usersApi";
-import { manageUserSelector } from "@/redux/user/userSelector";
 import { CustomModal } from "@/components/reusableComponents/CustomModal/CustomModal";
-import { getAllUserData, setUserDataLength } from "@/redux/user/user";
-import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
-import { notifications } from "@mantine/notifications";
 import EmployeeForm from "@/containers/Employee/EmployeeForm";
-import { Box, Button, Group, Loader } from "@mantine/core";
+import { employeeValidationSchema } from "./validationSchema";
 
 interface EmployeeData {
   fname?: string;
@@ -48,6 +49,7 @@ export default function Employees() {
     updateUserData,
     { data: userUpdatedData, isSuccess: updateUserSuccess },
   ] = useUpdateDataApiByNameMutation();
+  console.log(userUpdatedData, "userUpdatedData");
   const [deleteUserData, { data: userDeletedData, isSuccess: deleteSuccess }] =
     useDeleteDataApiByNameMutation();
   const { allUserDataLength, allUserData } = useSelector(manageUserSelector);
@@ -81,12 +83,12 @@ export default function Employees() {
   };
   const onHandelUpdate = async (row: any) => {
     const mydata = {
-      department: row.department,
-      role: row.role,
-      fname: row.fname,
-      lname: row.lname,
-      email: row.email,
-      phoneNumber: row.phoneNumber,
+      fname: row?.fname,
+      lname: row?.lname,
+      email: row?.email,
+      phoneNumber: row?.phoneNumber,
+      role: row?.role,
+      department: row?.department,
     };
     try {
       const result = await updateUserData({
@@ -165,47 +167,8 @@ export default function Employees() {
       department: "",
       phoneNumber: "",
     },
-    validate: {
-      fname: (value) => {
-        if (!value) {
-          return "Field is required";
-        }
-        if (value.length < 3) {
-          return "Name should be at least 3 letters";
-        } else {
-          return value.length > 50 ? "Name should not exceed 50 letters" : null;
-        }
-      },
 
-      lname: (value) => {
-        if (!value) {
-          return "Field is required";
-        }
-        if (value.length < 3) {
-          return "Name should be at least 3 letters";
-        } else {
-          return value.length > 50 ? "Name should not exceed 50 letters" : null;
-        }
-      },
-      email: (value) => {
-        if (!value) {
-          return "Field is required";
-        } else {
-          return /^\S+@\S+$/.test(value) ? null : "Invalid email";
-        }
-      },
-      role: (value) => (value ? null : "Select field is required"),
-      department: (value) => (value ? null : "Select field is required"),
-      phoneNumber: (value) => {
-        if (!value) {
-          return "Field is required";
-        } else {
-          return /^\d{10}$/.test(value)
-            ? null
-            : "Phone number must contain 10 digits";
-        }
-      },
-    },
+    validate: yupResolver(employeeValidationSchema),
   });
 
   type TableRow = {
@@ -330,18 +293,7 @@ export default function Employees() {
           recordsPerPage={tableDataLimit}
           page={currentpage}
           onPageChange={(p) => handlePageChange(p)}
-          emptyState={
-            allUserDataLength ? (
-              <></>
-            ) : (
-              <>
-                {/* <Box p={4} mb={4}>
-                  <IconMoodSad size={36} strokeWidth={1.5} />
-                  No data
-                </Box> */}
-              </>
-            )
-          }
+          emptyState={allUserDataLength ? <></> : <></>}
           columns={columns}
         />
       ) : (
@@ -357,7 +309,14 @@ export default function Employees() {
         size={"lg"}
         showButton={false}
         close={editclose}
-        modalTitle={`Are you sure you want to delete employee: ${employeeData?.fname}`}
+        modalTitle={
+          <>
+            Are you sure you want to delete employee:
+            <span className="font-medium text-[20px]">
+              {employeeData?.fname}
+            </span>
+          </>
+        }
         bgcolor={"transparent"}
         content={
           <div className="flex gap-3 flex-col">

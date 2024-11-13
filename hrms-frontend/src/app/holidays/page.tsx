@@ -1,26 +1,22 @@
 "use client";
 import { getAllholidayData, trackChange } from "@/redux/holiday/holiday";
 import { manageHolidaySelector } from "@/redux/holiday/holidaySelector";
-import {
-  useCreateHolidayMutation,
-  useDeleteHolidayDataApiByNameMutation,
-  useLazyGetAllHolidayDataApiByNameQuery,
-  useUpdateHolidayDataApiByNameMutation,
-} from "@/services/holiday/holidayApi";
+import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
+import { useDispatch, useSelector } from "react-redux";
+import { useLazyGetAllHolidayDataApiByNameQuery } from "@/services/holiday/holidayApi";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import FullCalendar from "@fullcalendar/react";
 import { Tooltip } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useForm } from "@mantine/form";
+import { useForm, yupResolver } from "@mantine/form";
 import { CustomModal } from "@/components/reusableComponents/CustomModal/CustomModal";
-import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
 import "./holiday.css";
 import { HolidayFormData } from "@/utils/interfaces/interfaces";
 import { DateSelectArg, EventClickArg } from "@fullcalendar/core/index.js";
 import HolidayForm from "@/containers/Holiday/HolidayForm";
+import { holidaySchema } from "./holidaySchema";
 const Calendar = () => {
   const [allDataApi, { data, error, isLoading, isSuccess }] =
     useLazyGetAllHolidayDataApiByNameQuery();
@@ -56,34 +52,7 @@ const Calendar = () => {
       description: "",
       date: "",
     },
-    validate: {
-      title: (value) => {
-        if (!value) {
-          return "Field is required";
-        }
-        if (value.length < 5) {
-          return "title should be at least 5 letters";
-        } else {
-          return value.length > 20
-            ? "title should not exceed 20 letters"
-            : null;
-        }
-      },
-
-      description: (value) => {
-        if (!value) {
-          return "Field is required";
-        }
-        if (value.length < 5) {
-          return "description should be at least 5 letters";
-        } else {
-          return value.length > 50
-            ? "Decription should not exceed 50 letters"
-            : null;
-        }
-      },
-      type: (value) => (value ? null : "Select field is required"),
-    },
+    validate: yupResolver(holidaySchema),
   });
   const handleEventClick = (eventInfo: any) => {
     const data = {

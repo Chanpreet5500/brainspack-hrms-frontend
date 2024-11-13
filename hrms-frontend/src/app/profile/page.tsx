@@ -49,7 +49,6 @@ const Profile = () => {
         </div>
         <div className="flex justify-center h-[300px] items-center w-full md:w-2/5 md:justify-end relative">
           <div className="w-[200px] h-[200px] bg-gray-300 rounded-full flex items-center justify-center relative overflow-hidden">
-            {console.log(authUser, "auth")}
             {authUser?.img ? (
               <Image
                 height={100}

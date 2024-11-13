@@ -1,10 +1,8 @@
 "use client";
-import { appdroperdata, dangerdroperdata } from "@/constants/constants";
 import {
   IconChevronCompactDown,
   IconChevronCompactUp,
 } from "@tabler/icons-react";
-import { useState } from "react";
 
 interface DroperProps {
   open: boolean;

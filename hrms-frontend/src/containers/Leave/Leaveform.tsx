@@ -1,20 +1,18 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useForm } from "@mantine/form";
-import { Button, Group, MantineProvider, Textarea } from "@mantine/core";
-import { holidayData, whichHalfData } from "@/constants/constants";
-import { useLazyGetAllLeaveDataApiByNameQuery } from "@/services/leave/getLeaves";
-import {
-  DateFormatConvertor,
-  variantColorResolver,
-} from "@/utils/commonFunction";
-import SelectSearch from "@/components/reusableComponents/SearchSelect";
+import { useForm, yupResolver } from "@mantine/form";
+import { Button, Group, MantineProvider, Textarea, Text } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { IconCheck } from "@tabler/icons-react";
+import { holidayData, whichHalfData } from "@/constants/constants";
+import { DateFormatConvertor } from "@/utils/commonFunction";
+
+import SelectSearch from "@/components/reusableComponents/SearchSelect";
 import { useLazyGetAllDataApiByNameQuery } from "@/services/user/usersApi";
 import { useLazyGetAllLeaveTypePoliciesApiByNameQuery } from "@/services/typePolicies/typeApi";
 import { DatePickerComponent } from "@/components/reusableComponents/CustomDatePicker/CustomDatePicker";
 import SelectInputField from "@/components/Inputs/selectInput/Select";
+import { leaveValidationSchema } from "./leaveValidationSchema";
 
 interface dataValue {
   onClose: any;
@@ -33,6 +31,8 @@ const LeaveForm: React.FC<dataValue> = ({
 }) => {
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date | null>(startDate);
+  const [reasonError, setReasonError] = useState<string>(""); // State to track reason error
+
   const [allDataApi, { data: employeData }] = useLazyGetAllDataApiByNameQuery();
   const [allleaveTypeDataApi, { data: leaveTypeData }] =
     useLazyGetAllLeaveTypePoliciesApiByNameQuery();
@@ -52,7 +52,15 @@ const LeaveForm: React.FC<dataValue> = ({
 
   const handleSubmit = async (data: any) => {
     try {
-      const { employee, ...rest } = data;
+      const { employee, reason, ...rest } = data; // Get reason from form data
+
+      // Check if reason is empty and set error if so
+      if (!reason || reason.trim() === "") {
+        setReasonError("Please provide a reason for the leave.");
+        return;
+      }
+
+      setReasonError(""); // Reset error if reason is valid
 
       let adjustedEndDate = endDate;
       let adjustedEndDay = data?.end_day;
@@ -101,20 +109,16 @@ const LeaveForm: React.FC<dataValue> = ({
     validateInputOnChange: true,
     initialValues: {
       employee: "",
+      leave_type: "",
       start_date: startDate,
       end_date: endDate,
       start_day: "",
       start_half_day_time: "",
       end_day: "",
       end_half_day_time: "",
+      reason: "", // Add reason to the form state
     },
-    validate: {
-      employee: (value) => (value ? null : "Please select an employee."),
-      start_date: (value) =>
-        DateFormatConvertor(value) ? null : "Please select the start date.",
-      end_date: (value) =>
-        DateFormatConvertor(value) ? null : "Please select the end date.",
-    },
+    validate: yupResolver(leaveValidationSchema),
   });
 
   useEffect(() => {
@@ -141,7 +145,7 @@ const LeaveForm: React.FC<dataValue> = ({
         handleSubmit(localUserDetails);
       })}
     >
-      <div className="flex flex-col m-auto gap-3 ">
+      <div className="flex flex-col m-auto gap-3">
         <SelectSearch
           label={"Employee"}
           form={form}
@@ -232,12 +236,15 @@ const LeaveForm: React.FC<dataValue> = ({
             validateKey={form.getInputProps("end_half_day_time")}
           />
         </div>
+
         <Textarea
           label="Reason"
           resize="vertical"
           placeholder="Leave Reason*"
+          error={reasonError ? reasonError : undefined}
+          {...form.getInputProps("reason")}
         />
-        <MantineProvider theme={{ variantColorResolver }}>
+        <MantineProvider>
           <Group className="!flex !justify-end !w-full">
             <Button
               variant="default"

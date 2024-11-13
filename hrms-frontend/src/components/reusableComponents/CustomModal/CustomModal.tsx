@@ -1,5 +1,5 @@
-import { Button, Modal } from "@mantine/core";
 import React, { ReactElement } from "react";
+import { Button, Modal } from "@mantine/core";
 
 interface ModalProps {
   opened: any;
@@ -7,7 +7,7 @@ interface ModalProps {
   open: any;
   close: any;
   buttonlabel?: any;
-  modalTitle: string;
+  modalTitle: any;
   content: ReactElement;
   overlayProps?: any;
   styles?: any;

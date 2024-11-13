@@ -1,7 +1,7 @@
 "use client";
+import { useDispatch } from "react-redux";
 import { Button, Group, MantineProvider, Textarea } from "@mantine/core";
 import { variantColorResolver } from "@/utils/commonFunction";
-import { useDispatch } from "react-redux";
 import { notifications } from "@mantine/notifications";
 import { IconCheck } from "@tabler/icons-react";
 import TextInputField from "../Inputs/textInput/Input";
