@@ -55,7 +55,6 @@ const ProjectDetail = (props: any) => {
       </Box>
     );
   }
-
   const viewIdData = projectData?.find(
     (value: any) => value._id === paramsProjectId
   );

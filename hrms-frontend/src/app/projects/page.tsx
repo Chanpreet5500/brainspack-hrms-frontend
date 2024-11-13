@@ -57,7 +57,6 @@ export default function Projects() {
     allProject,
     { data: allProjectData, error, isLoading, isSuccess: projectSuccess },
   ] = useLazyGetAllProjectByNameQuery();
-  console.log(allProjectData, "helloo");
   const [
     updateUserData,
     { data: userUpdatedData, isSuccess: updateUserSuccess },
