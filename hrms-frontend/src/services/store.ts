@@ -10,16 +10,20 @@ import typePoliciesReducer from "../redux/typePolicies/type";
 import typePoliciesApi from "./typePolicies/typeApi";
 import holidaySliceReducer from "../redux/holiday/holiday";
 import holidayApi from "./holiday/holidayApi";
+import projectApi from "./project/projectApi";
+import projectSliceReducer from "../redux/project/project";
 
 export const makeStore = configureStore({
   reducer: {
     [leavesGetApi.reducerPath]: leavesGetApi.reducer,
     [usersApi.reducerPath]: usersApi.reducer,
     [leavePoliciesApi.reducerPath]: leavePoliciesApi.reducer,
+    [projectApi.reducerPath]: projectApi.reducer,
     [typePoliciesApi.reducerPath]: typePoliciesApi.reducer,
     [holidayApi.reducerPath]: holidayApi.reducer,
     userSlice: userSliceReducer,
     leaveSlice: leaveSliceReducer,
+    projectSlice: projectSliceReducer,
     leavePoliciesSlice: leavePoliciesSliceReducer,
     typePoliciesSlice: typePoliciesReducer,
     authUserSlice: authUserSliceReducer,
@@ -30,6 +34,7 @@ export const makeStore = configureStore({
       leavesGetApi.middleware,
       usersApi.middleware,
       leavePoliciesApi.middleware,
+      projectApi.middleware,
       typePoliciesApi.middleware,
       holidayApi.middleware
     ),

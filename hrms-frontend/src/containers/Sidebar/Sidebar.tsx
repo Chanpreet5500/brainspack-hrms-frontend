@@ -141,6 +141,12 @@ const mockdata = [
       { label: "Policies", link: "/leavepolicies/leavespolicies" },
     ],
   },
+
+  {
+    label: "Project Dashboard",
+    icon: IconCalendarMonth,
+    link: "/projects",
+  },
   {
     label: "Holiday Calendar",
     icon: IconCalendarMonth,
