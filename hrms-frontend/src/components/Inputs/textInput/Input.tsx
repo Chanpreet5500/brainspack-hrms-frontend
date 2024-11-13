@@ -1,6 +1,5 @@
 // import { manageUserSelector } from "@/redux/user/userSelector";
 import { TextInput } from "@mantine/core";
-import { useSelector } from "react-redux";
 
 interface Value {
   withAsterisk: boolean;

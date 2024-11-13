@@ -4,4 +4,4 @@ declare module "next-auth" {
     interface Session {
         apiAccessToken: any
     }
-}
+}  

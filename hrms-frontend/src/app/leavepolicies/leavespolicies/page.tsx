@@ -16,10 +16,10 @@ import {
   settotalleavesPolicies,
 } from "@/redux/leavePolicies/leave";
 import { CustumCard } from "@/components/policiesSection/Card";
-import { useForm } from "@mantine/form";
+import { useForm, yupResolver } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
-
+import { numberOfLeavesSchema } from "./leavesSchema";
 const initialState = {
   allLeavesPolicies: [],
   totalleavesPolicies: 0,
@@ -103,21 +103,15 @@ export default function TypeComponent() {
       leave_type_id: "",
       max_leaves_per_year: "",
     },
-    validate: {
-      leave_type_id: (value) =>
-        value ? null : "Please select the type of leave.",
-      max_leaves_per_year: (value) => {
-        const parsed = Number(value);
-        return value && !isNaN(parsed)
-          ? null
-          : "Please enter a valid number for max leaves per year.";
-      },
-    },
+
+    validate: yupResolver(numberOfLeavesSchema),
   });
   return (
     <>
-      <div className="flex justify-between p-2 max-sm:flex-col-reverse">
-        <div>Leave Policies ({totalleavesPolicies})</div>
+      <div className="flex h-[90px] justify-between p-2 max-sm:flex-col-reverse ">
+        <div className="flex items-center">
+          Leave Policies ({totalleavesPolicies})
+        </div>
         <div className="flex flex-grow gap-2 justify-end items-center w-[32%]  max-sm:w-full">
           <Searchbar
             value={search}
@@ -145,7 +139,10 @@ export default function TypeComponent() {
           />
         </div>
       </div>
-      <div className="flex flex-wrap  align-middle gap-8">
+      <div
+        className="flex flex-wrap  align-middle gap-8"
+        style={{ paddingLeft: "30px" }}
+      >
         <CustumCard
           module={"leavePolicies"}
           form={form}

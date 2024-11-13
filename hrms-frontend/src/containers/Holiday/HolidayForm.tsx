@@ -1,44 +1,56 @@
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { trackChange } from "@/redux/holiday/holiday";
+import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
+import { Button, Group, MantineProvider } from "@mantine/core";
 import { holidayType } from "@/constants/constants";
 import SelectInputField from "../../components/Inputs/selectInput/Select";
 import TextInputField from "../../components/Inputs/textInput/Input";
-import { Button, Group, MantineProvider } from "@mantine/core";
-import { useCreateHolidayMutation, useDeleteHolidayDataApiByNameMutation, useUpdateHolidayDataApiByNameMutation } from "@/services/holiday/holidayApi";
+import {
+  useCreateHolidayMutation,
+  useDeleteHolidayDataApiByNameMutation,
+  useUpdateHolidayDataApiByNameMutation,
+} from "@/services/holiday/holidayApi";
 import { DateFormatConvertor } from "@/utils/commonFunction";
-import { useDispatch, useSelector } from "react-redux";
-import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
-import { HolidayFormData, HolidayFormProps } from "@/utils/interfaces/interfaces";
-import { useEffect } from "react";
-import { trackChange } from "@/redux/holiday/holiday";
+import {
+  HolidayFormData,
+  HolidayFormProps,
+} from "@/utils/interfaces/interfaces";
 
-
-const HolidayForm: React.FC<HolidayFormProps> = ({
-  form,
-  modalClose,
-}) => {
-
-  const [updateHolidayData, { isSuccess: updateSuccess }] = useUpdateHolidayDataApiByNameMutation();
-  const [deleteHolidayData, { isSuccess: deleteSuccess }] = useDeleteHolidayDataApiByNameMutation();
+const HolidayForm: React.FC<HolidayFormProps> = ({ form, modalClose }) => {
+  const [updateHolidayData, { isSuccess: updateSuccess }] =
+    useUpdateHolidayDataApiByNameMutation();
+  const [deleteHolidayData, { isSuccess: deleteSuccess }] =
+    useDeleteHolidayDataApiByNameMutation();
   const [postData, { isSuccess: createSuccess }] = useCreateHolidayMutation();
   const { authToken, authUser } = useSelector(manageAuthUserSelector);
   const dispatch = useDispatch();
   const handleSubmit = async (data: HolidayFormData) => {
-    const formattedDate = DateFormatConvertor(data.date)
+    const formattedDate = DateFormatConvertor(data.date);
     data.date = formattedDate;
     if (data?.holiday_id) {
-      await updateHolidayData({ data: data, owner_id: authUser?.userId, token: authToken });
+      await updateHolidayData({
+        data: data,
+        owner_id: authUser?.userId,
+        token: authToken,
+      });
     } else {
-      await postData({ data: data, owner_id: authUser?.userId, token: authToken });
+      await postData({
+        data: data,
+        owner_id: authUser?.userId,
+        token: authToken,
+      });
     }
     modalClose();
     form?.reset();
   };
   const onRemove = async (holidayId: string) => {
-    await deleteHolidayData({ data: holidayId, token: authToken })
+    await deleteHolidayData({ data: holidayId, token: authToken });
     modalClose();
-  }
+  };
   useEffect(() => {
-    dispatch(trackChange(true))
-  }, [updateSuccess, deleteSuccess, createSuccess])
+    dispatch(trackChange(true));
+  }, [updateSuccess, deleteSuccess, createSuccess]);
   return (
     <form
       onSubmit={form.onSubmit((localUserDetails) => {

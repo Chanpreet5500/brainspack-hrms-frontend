@@ -17,8 +17,8 @@ import {
   IconChevronRight,
   IconUsersGroup,
 } from "@tabler/icons-react";
-import classes from "./Navbar.module.css";
 import { usePathname, useRouter } from "next/navigation";
+import classes from "./Navbar.module.css";
 
 interface LinkItem {
   label: string;
@@ -90,21 +90,18 @@ export function LinksGroup({
             <Box ml="md">{label}</Box>
           </Box>
           {hasLinks && (
-            <Box className="flex">
-              <IconChevronRight
-                className={classes.chevron}
-                stroke={1.5}
-                style={{
-                  width: rem(16),
-                  height: rem(16),
-                  transform: opened ? "rotate(-90deg)" : "none",
-                }}
-              />
-            </Box>
+            <IconChevronRight
+              className={classes.chevron}
+              stroke={1.5}
+              style={{
+                width: rem(16),
+                height: rem(16),
+                transform: opened ? "rotate(-90deg)" : "none",
+              }}
+            />
           )}
         </Group>
       </UnstyledButton>
-
       {hasLinks && <Collapse in={opened}>{items}</Collapse>}
     </>
   );
@@ -126,12 +123,7 @@ export function Navbar({ linksData, toggltSidebar }: NavbarProps) {
 
 const mockdata = [
   { label: "Dashboard", icon: IconAlignBoxLeftStretch, link: "/dashboard" },
-  {
-    label: "Employees",
-    icon: IconUsersGroup,
-    link: "/employees",
-  },
-
+  { label: "Employees", icon: IconUsersGroup, link: "/employees" },
   {
     label: "Leaves Management",
     icon: IconCalendarStats,
