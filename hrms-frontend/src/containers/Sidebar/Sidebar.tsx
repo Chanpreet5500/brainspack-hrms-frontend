@@ -135,7 +135,7 @@ const mockdata = [
   },
 
   {
-    label: "Project",
+    label: "Project Dashboard",
     icon: IconCalendarMonth,
     link: "/projects",
   },
