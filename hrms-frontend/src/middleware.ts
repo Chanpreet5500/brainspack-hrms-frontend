@@ -25,6 +25,7 @@ export const config = {
     "/leavepolicies/leaves",
     "/leavepolicies/typepolicies",
     "/leavepolicies/leavespolicies",
+    "/projects",
     "/holidays",
   ],
 };

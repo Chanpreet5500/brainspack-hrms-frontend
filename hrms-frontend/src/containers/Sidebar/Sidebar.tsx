@@ -133,7 +133,17 @@ const mockdata = [
       { label: "Policies", link: "/leavepolicies/leavespolicies" },
     ],
   },
-  { label: "Holiday Calendar", icon: IconCalendarMonth, link: "/holidays" },
+
+  {
+    label: "Project Dashboard",
+    icon: IconCalendarMonth,
+    link: "/projects",
+  },
+  {
+    label: "Holiday Calendar",
+    icon: IconCalendarMonth,
+    link: "/holidays",
+  },
 ];
 
 export default function Sidebar({
