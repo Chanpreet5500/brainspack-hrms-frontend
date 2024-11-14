@@ -88,7 +88,7 @@ export default function Projects() {
     if (authToken) {
       allProject(params);
     }
-  }, [authToken, updateUserSuccess, projectDeleteSuccess]);
+  }, [authToken, updateUserSuccess, isSuccess, projectDeleteSuccess]);
   useEffect(() => {
     setLoading(false);
   }, [allProjects?.length > 0]);
@@ -108,7 +108,6 @@ export default function Projects() {
     setSearch(updatedSearch);
   };
   const viewProjectData = (row: any) => {
-    console.log(row);
     return (
       <>
         <Link href={`/projects/${row}`} />
@@ -120,7 +119,6 @@ export default function Projects() {
     setProjectData(row);
   };
   const deleteModal = async (row: any) => {
-    console.log(row, "deleteROW");
     const mydata = {
       isDeleted: true,
     };
@@ -156,10 +154,12 @@ export default function Projects() {
   });
 
   const triggerUpdate = async (row: any) => {
-    console.log(row, "ROW");
+    const assignedToId = row?.assigned_to?.map((finalId: string) => {
+      return finalId;
+    });
     const updateProjectData = {
       project_id: row?._id,
-      assigned_to: [row?.assigned_to?.[0]?._id],
+      assigned_to: assignedToId,
       start_date: DateFormatConvertor(row.start_date),
       end_date: DateFormatConvertor(row.end_date),
       description: row.description,
@@ -182,7 +182,7 @@ export default function Projects() {
   type TableRow = {
     _id: string;
     name?: string;
-    assigned_to?: AssignedTo[];
+    assigned_to?: AssignedTo[] | string;
     assigned_by?: AssignedTo[];
     description?: string;
     start_date?: any;
@@ -280,14 +280,18 @@ export default function Projects() {
       width: "20%",
       render: (data: TableRow) => {
         const editModal = (row: TableRow) => {
-          console.log(data, row, "DATA");
+          const assignedToData = row?.assigned_to?.map((finalData: any) => {
+            return finalData._id;
+          });
+
           open();
           form.setValues({
+            _id: row?._id,
             name: row?.name,
             description: row?.description,
             start_date: row?.start_date,
             end_date: row?.end_date,
-            assigned_to: row?.assigned_to?.[0]?._id ?? "",
+            assigned_to: assignedToData ?? "",
           });
         };
         return (

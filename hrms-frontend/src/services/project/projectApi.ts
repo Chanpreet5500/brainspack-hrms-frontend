@@ -33,7 +33,6 @@ const projectApi = createApi({
     }),
     updateProjectApi: builder.mutation({
       query: ({ data, updatedById, token }) => {
-        console.log(data, token, updatedById, "updatedById");
         return {
           url: `/projects/update/${updatedById}`,
           method: "PATCH",

@@ -11,7 +11,8 @@ import { useLazyGetAllDataApiByNameQuery } from "@/services/user/usersApi";
 import { DatePickerComponent } from "@/components/reusableComponents/CustomDatePicker/CustomDatePicker";
 import TextInputField from "@/components/Inputs/textInput/Input";
 import TextAreaField from "@/components/Inputs/textArea/TextArea";
-import SelectSearch from "@/components/reusableComponents/SearchSelect";
+import SelectSearch from "@/components/reusableComponents/MultiSearchSelect";
+import MultiSearchSelect from "@/components/reusableComponents/MultiSearchSelect";
 
 interface AuthUser {
   userId: string;
@@ -44,7 +45,6 @@ const ProjectForm: React.FC<dataValue> = ({
   authUser,
   form,
   createSuccess,
-  // editBy,
 }) => {
   const [allDataApi, { data: employeData }] = useLazyGetAllDataApiByNameQuery();
   useEffect(() => {
@@ -68,7 +68,6 @@ const ProjectForm: React.FC<dataValue> = ({
         start_date: DateFormatConvertor(startDate),
         end_date: DateFormatConvertor(adjustedEndDate),
       };
-
       if (data._id) {
         triggerUpdate(data);
         notifications.show({
@@ -108,7 +107,6 @@ const ProjectForm: React.FC<dataValue> = ({
   return (
     <form
       onSubmit={form.onSubmit((localProjectDetails: any) => {
-        console.log(localProjectDetails, "localProjectDetails");
         handleSubmit(localProjectDetails);
       })}
     >
@@ -120,7 +118,7 @@ const ProjectForm: React.FC<dataValue> = ({
           placeholder={"Enter your project name"}
           validateKey={form.getInputProps("name")}
         />
-        <SelectSearch
+        <MultiSearchSelect
           label={"Assigned To"}
           form={form}
           name={"assigned_to"}
