@@ -39,7 +39,6 @@ const SelectInputField: React.FC<SelectValue> = ({
   useEffect(() => {
     form.getValues();
   }, []);
-
   return (
     <div className="relative mb-2">
       <Select
@@ -47,7 +46,7 @@ const SelectInputField: React.FC<SelectValue> = ({
         label={label}
         placeholder={placeholder}
         className={className || "flex flex-col gap-1"}
-        data={data}
+        data={data || []}
         name={name}
         value={value || null}
         error={false}

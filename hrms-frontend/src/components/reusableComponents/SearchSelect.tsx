@@ -1,24 +1,16 @@
-import { MultiSelect } from "@mantine/core";
 import { useEffect, useState } from "react";
-
-type FormType = {
-  values: Record<string, any>;
-  errors: Record<string, any>;
-  setFieldValue: (name: string, value: any) => void;
-  key: (name: string) => string;
-};
+import { Select } from "@mantine/core";
 
 type SelectSearchProps = {
   data: any;
   placeholder?: string;
   label?: string;
-  name: keyof FormType["values"]; // Ensure `name` is a key in `values`
-  form: FormType;
+  name?: string;
+  form: any;
   validateKey?: any;
   value?: string | null;
 };
-
-const SelectSearch: React.FC<SelectSearchProps> = ({
+const SearchSelect: React.FC<SelectSearchProps> = ({
   data,
   placeholder,
   label,
@@ -27,50 +19,31 @@ const SelectSearch: React.FC<SelectSearchProps> = ({
   validateKey,
   value,
 }) => {
-  const [options, setOptions] = useState([]);
-
+  const [searchValue, setSearchValue] = useState<string | null>(null);
   useEffect(() => {
-    if (data) {
-      const employeeOptions = data?.users?.map((user: any) => ({
-        value: user._id,
-        label: user.fname + " " + user.lname,
-      }));
-      setOptions(employeeOptions);
-    }
-  }, [data]);
-
-  const handleSelectChange = (value: any) => {
-    form.setFieldValue(name, value);
-  };
-
-  const error = form.errors[name]; // Now `name` is guaranteed to be a valid key
-
+    form.getValues();
+  }, []);
   return (
-    <div className="w-full mx-auto">
+    <div className="w-full  mx-auto">
       {label && (
         <label className="block text-sm font-medium mb-2">{label}</label>
       )}
-      <MultiSelect
+      <Select
         classNames={{
           input: "border-gray-300 rounded-md",
         }}
-        maxDropdownHeight={300}
-        checkIconPosition="right"
-        placeholder={placeholder || "Select an option"}
-        data={options}
-        value={form.values[name] || []} // Same here, `name` is a valid key
-        onChange={handleSelectChange}
-        error={error}
-        clearable={true}
-        hidePickedOptions
-        key={form.key(name)}
-        withScrollArea={false}
-        styles={{ dropdown: { maxHeight: 200, overflowY: "auto" } }}
         searchable
-        nothingFoundMessage="Nothing found..."
+        placeholder={placeholder || "Select an option"}
+        data={data || []}
+        value={searchValue || null}
+        onChange={(value) => setSearchValue(value)}
+        error={false}
+        key={form.key(name)}
+        {...validateKey}
+        clearable={true}
       />
     </div>
   );
 };
 
-export default SelectSearch;
+export default SearchSelect;

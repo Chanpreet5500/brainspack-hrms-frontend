@@ -49,7 +49,6 @@ export default function Employees() {
     updateUserData,
     { data: userUpdatedData, isSuccess: updateUserSuccess },
   ] = useUpdateDataApiByNameMutation();
-  console.log(userUpdatedData, "userUpdatedData");
   const [deleteUserData, { data: userDeletedData, isSuccess: deleteSuccess }] =
     useDeleteDataApiByNameMutation();
   const { allUserDataLength, allUserData } = useSelector(manageUserSelector);
@@ -293,18 +292,7 @@ export default function Employees() {
           recordsPerPage={tableDataLimit}
           page={currentpage}
           onPageChange={(p) => handlePageChange(p)}
-          emptyState={
-            allUserDataLength ? (
-              <></>
-            ) : (
-              <>
-                {/* <Box p={4} mb={4}>
-                  <IconMoodSad size={36} strokeWidth={1.5} />
-                  No data
-                </Box> */}
-              </>
-            )
-          }
+          emptyState={allUserDataLength ? <></> : <></>}
           columns={columns}
         />
       ) : (

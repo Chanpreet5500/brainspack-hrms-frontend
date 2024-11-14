@@ -7,12 +7,12 @@ import { IconCheck } from "@tabler/icons-react";
 import { holidayData, whichHalfData } from "@/constants/constants";
 import { DateFormatConvertor } from "@/utils/commonFunction";
 
-import SelectSearch from "@/components/reusableComponents/SearchSelect";
 import { useLazyGetAllDataApiByNameQuery } from "@/services/user/usersApi";
 import { useLazyGetAllLeaveTypePoliciesApiByNameQuery } from "@/services/typePolicies/typeApi";
 import { DatePickerComponent } from "@/components/reusableComponents/CustomDatePicker/CustomDatePicker";
 import SelectInputField from "@/components/Inputs/selectInput/Select";
 import { leaveValidationSchema } from "./leaveValidationSchema";
+import SearchSelect from "@/components/reusableComponents/SearchSelect";
 
 interface dataValue {
   onClose: any;
@@ -36,14 +36,17 @@ const LeaveForm: React.FC<dataValue> = ({
   const [allDataApi, { data: employeData }] = useLazyGetAllDataApiByNameQuery();
   const [allleaveTypeDataApi, { data: leaveTypeData }] =
     useLazyGetAllLeaveTypePoliciesApiByNameQuery();
-
   useEffect(() => {
     if (token) {
       allleaveTypeDataApi({ token: token });
       allDataApi({ token: token });
     }
   }, [token]);
-
+  const employeeOptions =
+    employeData?.users?.map((user: any) => ({
+      value: user?._id,
+      label: user?.fname + " " + user?.lname,
+    })) || [];
   const leaveOptions =
     leaveTypeData?.map((leave: any) => ({
       value: leave?._id,
@@ -52,16 +55,12 @@ const LeaveForm: React.FC<dataValue> = ({
 
   const handleSubmit = async (data: any) => {
     try {
-      const { employee, reason, ...rest } = data; // Get reason from form data
-
-      // Check if reason is empty and set error if so
+      const { employee, reason, ...rest } = data;
       if (!reason || reason.trim() === "") {
         setReasonError("Please provide a reason for the leave.");
         return;
       }
-
-      setReasonError(""); // Reset error if reason is valid
-
+      setReasonError("");
       let adjustedEndDate = endDate;
       let adjustedEndDay = data?.end_day;
       if (
@@ -72,7 +71,6 @@ const LeaveForm: React.FC<dataValue> = ({
         adjustedEndDate.setDate(adjustedEndDate.getDate() + 1);
         adjustedEndDay = "full";
       }
-
       const myleavedata = {
         ...rest,
         employee_id: data?.employee,
@@ -82,13 +80,11 @@ const LeaveForm: React.FC<dataValue> = ({
         end_date: DateFormatConvertor(adjustedEndDate),
         end_day: adjustedEndDay,
       };
-
       const response = await triggerCreate({
         createdById: editBy,
         leavedata: myleavedata,
         token: token,
       });
-
       notifications.show({
         title: "Leave Successful",
         message: "Leave data created successfully",
@@ -96,57 +92,47 @@ const LeaveForm: React.FC<dataValue> = ({
         icon: <IconCheck size={18} />,
         autoClose: 1000,
       });
-
       onClose();
       form.reset();
     } catch (err) {
       console.error("Error creating leave:", err);
     }
   };
-
   const form = useForm({
     mode: "controlled",
     validateInputOnChange: true,
     initialValues: {
       employee: "",
-      leave_type: "",
+      // leave_type: "",
       start_date: startDate,
       end_date: endDate,
       start_day: "",
       start_half_day_time: "",
       end_day: "",
       end_half_day_time: "",
-      reason: "", // Add reason to the form state
+      reason: "",
     },
     validate: yupResolver(leaveValidationSchema),
   });
-
   useEffect(() => {
     if (startDate && (!endDate || endDate < startDate)) {
       setEndDate(startDate);
       form.setFieldValue("end_date", startDate);
     }
   }, [startDate]);
-
   useEffect(() => {
     form.setFieldValue("end_day", form.values.start_day);
     form.setFieldValue("end_half_day_time", form.values.start_half_day_time);
   }, [form.values.start_day, form.values.start_half_day_time]);
-
-  const employeeOptions =
-    employeData?.users?.map((user: any) => ({
-      value: user._id,
-      label: user.fname + " " + user.lname,
-    })) || [];
-
   return (
     <form
       onSubmit={form.onSubmit((localUserDetails: any) => {
         handleSubmit(localUserDetails);
       })}
     >
+      {}
       <div className="flex flex-col m-auto gap-3">
-        <SelectSearch
+        <SearchSelect
           label={"Employee"}
           form={form}
           name={"employee"}

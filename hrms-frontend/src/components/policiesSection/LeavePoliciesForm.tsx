@@ -16,7 +16,7 @@ interface dataValue {
   token: any;
 }
 
-const LeaveForm: React.FC<dataValue> = ({
+const LeavePolicieForm: React.FC<dataValue> = ({
   onClose,
   triggerCreate,
   onHandelUpdate,
@@ -38,9 +38,13 @@ const LeaveForm: React.FC<dataValue> = ({
   const getTypedata = async () => {
     const response = await allleaveTypeDataApi("v");
   };
+  const onCancel = () => {
+    onClose();
+    form.reset();
+  };
   const handleSubmit = async (formData: any) => {
     try {
-      if (formData?.leave_type_id) {
+      if (formData?._id) {
         onHandelUpdate(formData, token);
       } else {
         const formattedData = {
@@ -96,7 +100,7 @@ const LeaveForm: React.FC<dataValue> = ({
               variant="default"
               className="!h-[32px] !w-[90px] !font-[500]"
               radius="md"
-              onClick={onClose}
+              onClick={() => onCancel()}
             >
               Cancel
             </Button>
@@ -114,4 +118,4 @@ const LeaveForm: React.FC<dataValue> = ({
     </form>
   );
 };
-export default LeaveForm;
+export default LeavePolicieForm;

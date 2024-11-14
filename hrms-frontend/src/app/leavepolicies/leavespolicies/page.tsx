@@ -10,7 +10,7 @@ import {
   useLazyGetAllLeavePoliciesApiApiByNameQuery,
   useUpdateLeavePoliciesApiByNameMutation,
 } from "@/services/leavePolicies/leavesApi";
-import LeaveForm from "@/components/policiesSection/LeavePoliciesForm";
+import LeavePolicieForm from "@/components/policiesSection/LeavePoliciesForm";
 import {
   setallLeavesPolicies,
   settotalleavesPolicies,
@@ -94,6 +94,8 @@ export default function TypeComponent() {
         color: "red",
       });
     }
+    close();
+    form.reset();
   };
 
   const form = useForm({
@@ -128,7 +130,7 @@ export default function TypeComponent() {
             buttonlabel={"Add Leave Policies"}
             modalTitle={"Add Leave Policies"}
             content={
-              <LeaveForm
+              <LeavePolicieForm
                 onHandelUpdate={onHandelUpdate}
                 form={form}
                 onClose={close}
