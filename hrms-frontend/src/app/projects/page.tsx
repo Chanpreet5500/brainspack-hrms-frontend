@@ -57,6 +57,7 @@ export default function Projects() {
     allProject,
     { data: allProjectData, error, isLoading, isSuccess: projectSuccess },
   ] = useLazyGetAllProjectByNameQuery();
+  console.log(allProjectData, "helloo");
   const [
     updateUserData,
     { data: userUpdatedData, isSuccess: updateUserSuccess },
@@ -281,7 +282,6 @@ export default function Projects() {
           console.log(data, row, "DATA");
           open();
           form.setValues({
-            // _id: row?._id,
             name: row?.name,
             description: row?.description,
             start_date: row?.start_date,

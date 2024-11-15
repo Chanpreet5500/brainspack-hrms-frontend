@@ -79,6 +79,7 @@ const ProjectDetail = ({ params, searchParams }: ProjectDetailProps) => {
       </Box>
     );
   }
+
   const viewIdData = projectData?.find(
     (value: any) => value._id === paramsProjectId
   );
