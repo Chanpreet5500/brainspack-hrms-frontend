@@ -8,15 +8,24 @@ import { IconCheck } from "@tabler/icons-react";
 import TextInputField from "../Inputs/textInput/Input";
 import DynamicSelectBox from "../Inputs/selectInput/comonSelect";
 import { useLazyGetAllLeaveTypePoliciesApiByNameQuery } from "@/services/typePolicies/typeApi";
-interface dataValue {
-  onClose: any;
-  triggerCreate: any;
-  onHandelUpdate: any;
-  form: any;
-  token: any;
+import { UseFormReturnType } from "@mantine/form";
+
+interface FormValues {
+  _id?: string;
+  leave_type_id?: string;
+  max_leaves_per_year?: string | number;
+  [key: string]: any;
 }
 
-const LeavePolicieForm: React.FC<dataValue> = ({
+interface DataValue {
+  onClose: () => void;
+  triggerCreate: (data: FormValues) => Promise<void>;
+  onHandelUpdate: (data: FormValues, token: string) => void;
+  form: UseFormReturnType<FormValues>;
+  token: string;
+}
+
+const LeavePolicieForm: React.FC<DataValue> = ({
   onClose,
   triggerCreate,
   onHandelUpdate,
@@ -24,27 +33,31 @@ const LeavePolicieForm: React.FC<dataValue> = ({
   token,
 }) => {
   const dispatch = useDispatch();
-  let data = form.getValues();
-  useEffect(() => {
-    if (token) {
-      allleaveTypeDataApi({ token: token });
-    }
-  }, [token]);
+  const data = form.getValues();
+
   const [
     allleaveTypeDataApi,
     { data: leaveTypeData, error, isLoading, isSuccess },
   ] = useLazyGetAllLeaveTypePoliciesApiByNameQuery();
 
+  useEffect(() => {
+    if (token) {
+      allleaveTypeDataApi({ token });
+    }
+  }, [token]);
+
   const getTypedata = async () => {
     const response = await allleaveTypeDataApi("v");
   };
+
   const onCancel = () => {
     onClose();
     form.reset();
   };
-  const handleSubmit = async (formData: any) => {
+
+  const handleSubmit = async (formData: FormValues) => {
     try {
-      if (formData?._id) {
+      if (formData._id) {
         onHandelUpdate(formData, token);
       } else {
         const formattedData = {
@@ -53,16 +66,14 @@ const LeavePolicieForm: React.FC<dataValue> = ({
           token,
         };
         await triggerCreate(formattedData);
-        {
-          formattedData.leave_type_id !== formattedData.leave_type_id
-            ? notifications.show({
-                title: "Leave Successful",
-                message: "Leave data created successfully",
-                color: "green",
-                icon: <IconCheck size={18} />,
-                autoClose: 1000,
-              })
-            : "";
+        if (formattedData.leave_type_id) {
+          notifications.show({
+            title: "Leave Successful",
+            message: "Leave data created successfully",
+            color: "green",
+            icon: <IconCheck size={18} />,
+            autoClose: 1000,
+          });
         }
         onClose();
         form.reset();
@@ -73,34 +84,30 @@ const LeavePolicieForm: React.FC<dataValue> = ({
   };
 
   return (
-    <form
-      onSubmit={form.onSubmit((values: any) => {
-        handleSubmit(values);
-      })}
-    >
-      <div className="flex flex-col m-auto gap-3 ">
+    <form onSubmit={form.onSubmit(handleSubmit)}>
+      <div className="flex flex-col m-auto gap-3">
         <DynamicSelectBox
-          label={"Select an Option"}
+          label="Select an Option"
           form={form}
-          name={"leave_type_id"}
-          placeholder={"Select the leaveType"}
+          name="leave_type_id"
+          placeholder="Select the leaveType"
           data={leaveTypeData}
           validateKey={form.getInputProps("leave_type_id")}
         />
         <TextInputField
-          withAsterisk={true}
-          label={"max leaves/year"}
-          name={"max_leaves_per_year"}
-          placeholder={"Select the leave max leaves / year"}
+          withAsterisk
+          label="Max leaves/year"
+          name="max_leaves_per_year"
+          placeholder="Select the leave max leaves/year"
           validateKey={form.getInputProps("max_leaves_per_year")}
         />
         <MantineProvider theme={{ variantColorResolver }}>
-          <Group className=" !flex !justify-end !w-full ">
+          <Group className="!flex !justify-end !w-full">
             <Button
               variant="default"
               className="!h-[32px] !w-[90px] !font-[500]"
               radius="md"
-              onClick={() => onCancel()}
+              onClick={onCancel}
             >
               Cancel
             </Button>
@@ -118,4 +125,5 @@ const LeavePolicieForm: React.FC<dataValue> = ({
     </form>
   );
 };
+
 export default LeavePolicieForm;

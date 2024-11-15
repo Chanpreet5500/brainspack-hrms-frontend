@@ -24,32 +24,64 @@ import { StringDateFormatConvertor } from "@/utils/commonFunction";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
 import LeaveForm from "@/containers/Leave/Leaveform";
 
+// Define TypeScript interfaces for the leave data and related structures
+interface EmployeeData {
+  fname: string;
+  lname: string;
+}
+
+interface LeaveData {
+  _id: string;
+  leave_type_id: {
+    description: string;
+  };
+  start_date: string;
+  start_day: string;
+  start_half_day_time?: string;
+  end_date: string;
+  end_day: string;
+  end_half_day_time?: string;
+  status: string;
+  employee_id: EmployeeData;
+  isActive: boolean;
+}
+
+interface TableRow {
+  id: string;
+  leave_type: string;
+  start_date: string;
+  end_date: string;
+  status: string;
+  actions?: JSX.Element;
+}
+
 const initialState = {
-  allLeaves: [],
+  allLeaves: [] as LeaveData[],
   totalleaves: 0,
 };
 
 export default function LeaveComponent() {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
   const [createLeave, { isLoading, error, isSuccess: createSuccess }] =
     useCreateLeaveMutation();
-  const [currentpage, setCurrentPage] = useState(1);
-  const [userData, setUserData] = useState({});
+  const [currentpage, setCurrentPage] = useState<number>(1);
+  const [userData, setUserData] = useState<LeaveData | null>(null);
   const [trigger] = useLazyGetAllLeaveDataApiByNameQuery();
   const [updateLeave] = useUpdateLeaveDataApiByNameMutation();
   const { allLeaves, totalleaves } = useSelector(manageLeaveSelector);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState<string>("");
   const dispatch = useDispatch();
   const [opened, { open, close }] = useDisclosure(false);
   const { authUser, authToken } = useSelector(manageAuthUserSelector);
   const [editopened, { open: editopen, close: editclose }] =
     useDisclosure(false);
+
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
     renderData(page, tableDataLimit, search);
   };
 
-  const handleUpdate = async (data: any, status: string) => {
+  const handleUpdate = async (data: LeaveData, status: string) => {
     try {
       const response = await updateLeave({
         leaveId: data._id,
@@ -64,21 +96,15 @@ export default function LeaveComponent() {
         console.log("Leave updated successfully:", response.data);
         renderData(currentpage, tableDataLimit, search);
       }
-      {
-        status == "rejected"
-          ? notifications.show({
-              color: "red",
-              title: "Rejected",
-              message: "Leave request rejected",
-              position: "bottom-left",
-            })
-          : notifications.show({
-              color: "green",
-              title: "Approved",
-              message: "Leave request approved",
-              position: "bottom-left",
-            });
-      }
+
+      notifications.show({
+        color: status === "rejected" ? "red" : "green",
+        title: status === "rejected" ? "Rejected" : "Approved",
+        message: `Leave request ${
+          status === "rejected" ? "rejected" : "approved"
+        }`,
+        position: "bottom-left",
+      });
     } catch (err) {
       console.error("Error updating leave:", err);
     }
@@ -105,9 +131,10 @@ export default function LeaveComponent() {
         console.error("Failed to fetch leaves.");
       }
     } catch (error) {
-      throw error;
+      console.error("Error fetching leaves:", error);
     }
   };
+
   useEffect(() => {
     if (authToken) {
       renderData(currentpage, tableDataLimit, search);
@@ -119,42 +146,23 @@ export default function LeaveComponent() {
     setSearch(searchValue);
     renderData(currentpage, tableDataLimit, searchValue);
   };
+
   useEffect(() => {
     setLoading(false);
   }, [allLeaves.length > 0]);
-  interface employeeData {
-    fname: string;
-    lname: string;
-  }
-
-  type TableRow = {
-    employee_id: employeeData;
-    id: number;
-    email: string;
-    role: string;
-    department: string;
-    status: string;
-    isActive: boolean;
-    columns?: [];
-  };
-
-  const records: any[] = allLeaves.slice(
-    (currentpage - 1) * tableDataLimit,
-    currentpage * tableDataLimit
-  );
 
   const columns = [
     {
       accessor: "id",
       title: "S.No.",
       width: "5%",
-      render: (record: any, index: number) =>
+      render: (record: LeaveData, index: number) =>
         (currentpage - 1) * tableDataLimit + index + 1,
     },
     {
       accessor: "Employee Name",
       width: "16%",
-      render: (data: TableRow) => {
+      render: (data: LeaveData) => {
         return (
           <>
             {data?.employee_id.fname} {data?.employee_id.lname}
@@ -163,57 +171,55 @@ export default function LeaveComponent() {
       },
     },
     {
-      accessor: "leave_type ",
+      accessor: "leave_type",
       width: "16%",
-      render: (data: any) => {
+      render: (data: LeaveData) => {
         return <>{data?.leave_type_id?.description}</>;
       },
     },
     {
-      accessor: "start date for half",
+      accessor: "start_date",
       width: "20%",
-      render: (data: any) => {
+      render: (data: LeaveData) => {
         const formattedDate = StringDateFormatConvertor(
           data.start_date,
           "DD/MM/YYYY"
         );
         return (
           <>
-            {formattedDate} /
-            {data?.start_day == "half"
-              ? " " + data.start_half_day_time
-              : " " + "full"}
+            {formattedDate} /{" "}
+            {data?.start_day === "half"
+              ? ` ${data.start_half_day_time}`
+              : " full"}
           </>
         );
       },
     },
-
     {
-      accessor: "end_date for half ",
+      accessor: "end_date",
       width: "20%",
-      render: (data: any) => {
+      render: (data: LeaveData) => {
         const formattedDate = StringDateFormatConvertor(
           data.end_date,
           "DD/MM/YYYY"
         );
         return (
           <>
-            {formattedDate} /
-            {data?.end_day == "half"
-              ? " " + data.end_half_day_time
-              : " " + "full"}
+            {formattedDate} /{" "}
+            {data?.end_day === "half" ? ` ${data.end_half_day_time}` : " full"}
           </>
         );
       },
     },
-
-    { accessor: "status", width: "10%" },
+    {
+      accessor: "status",
+      width: "10%",
+    },
     {
       accessor: "Action",
       width: "8%",
-
-      render: (data: TableRow) => {
-        const editModal = (row: TableRow) => {
+      render: (data: LeaveData) => {
+        const editModal = (row: LeaveData) => {
           setUserData(row);
           editopen();
         };
@@ -236,17 +242,17 @@ export default function LeaveComponent() {
           <Searchbar
             value={search}
             handleSearch={handleSearchChange}
-            placeholder="Search "
+            placeholder="Search"
             iconcolor="#9ca3af"
           />
           <CustomModal
             opened={opened}
             onClose={close}
             open={open}
-            size={"lg"}
+            size="lg"
             close={close}
-            buttonlabel={"Add Leave"}
-            modalTitle={"Apply for Leave"}
+            buttonlabel="Add Leave"
+            modalTitle="Apply for Leave"
             content={
               <LeaveForm
                 onClose={close}
@@ -259,6 +265,7 @@ export default function LeaveComponent() {
           />
         </div>
       </div>
+
       {loading ? (
         <Box className="flex justify-center items-center p-4">
           <Loader color="blue" size="xl" />
@@ -281,15 +288,16 @@ export default function LeaveComponent() {
           <span>No Data Available</span>
         </Box>
       )}
+
       <div className="editIcon">
         <CustomModal
           opened={editopened}
           open={editopen}
-          size={"lg"}
+          size="lg"
           close={editclose}
           showButton={false}
-          modalTitle={"You Want to Approve the leave"}
-          bgcolor={"transparent"}
+          modalTitle="You Want to Approve the leave"
+          bgcolor="transparent"
           content={
             <div className="flex gap-3 flex-col">
               <h3>Please approve or reject the leave</h3>
@@ -298,7 +306,7 @@ export default function LeaveComponent() {
                   variant="filled"
                   color="red"
                   onClick={() => {
-                    handleUpdate(userData, "rejected");
+                    handleUpdate(userData!, "rejected");
                     editclose();
                   }}
                 >
@@ -309,7 +317,7 @@ export default function LeaveComponent() {
                   variant="filled"
                   color="green"
                   onClick={() => {
-                    handleUpdate(userData, "approved");
+                    handleUpdate(userData!, "approved");
                     editclose();
                   }}
                 >

@@ -20,8 +20,21 @@ import { useForm, yupResolver } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
 import { numberOfLeavesSchema } from "./leavesSchema";
+
+// Define types for leave policies
+interface LeavePolicy {
+  _id: string;
+  leave_type_id: string;
+  max_leaves_per_year: number;
+}
+
+interface LeavePoliciesResponse {
+  data: LeavePolicy[];
+  totalLeaves: number;
+}
+
 const initialState = {
-  allLeavesPolicies: [],
+  allLeavesPolicies: [] as LeavePolicy[],
   totalleavesPolicies: 0,
 };
 
@@ -34,25 +47,31 @@ export default function TypeComponent() {
     manageLeavePoliciesSelector
   );
   const { authUser, authToken } = useSelector(manageAuthUserSelector);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState<string>("");
   const dispatch = useDispatch();
   const [opened, { open, close }] = useDisclosure(false);
   const [triggerLeavePolicies, { data, isSuccess, isError }] =
     useLazyGetAllLeavePoliciesApiApiByNameQuery();
+
+  // Fetch leave policies
   useEffect(() => {
     if (authToken) {
       triggerLeavePolicies({ token: authToken });
     }
     if (data) {
       dispatch(setallLeavesPolicies(data));
-      dispatch(settotalleavesPolicies(data?.length));
+      dispatch(settotalleavesPolicies(data.length));
     }
-  }, [data, createSuccess, updateSuccess, authToken]);
+  }, [data, createSuccess, updateSuccess, authToken, dispatch]);
+
+  // Handle search input change
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const searchValue = event.target.value;
     setSearch(searchValue);
   };
-  const onHandelUpdate = async (leavePolicies: any) => {
+
+  // Handle update for leave policies
+  const onHandelUpdate = async (leavePolicies: LeavePolicy) => {
     try {
       const { leave_type_id, max_leaves_per_year, _id } = leavePolicies;
       if (isNaN(Number(max_leaves_per_year))) {
@@ -98,6 +117,7 @@ export default function TypeComponent() {
     form.reset();
   };
 
+  // Mantine form for managing leave policy creation/update
   const form = useForm({
     mode: "controlled",
     validateInputOnChange: true,
@@ -108,6 +128,7 @@ export default function TypeComponent() {
 
     validate: yupResolver(numberOfLeavesSchema),
   });
+
   return (
     <>
       <div className="flex h-[90px] justify-between p-2 max-sm:flex-col-reverse ">

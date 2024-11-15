@@ -15,6 +15,37 @@ import { useLazyGetAllLeaveDataApiByNameQuery } from "@/services/leave/getLeaves
 import { useLazyGetAllHolidayDataApiByNameQuery } from "@/services/holiday/holidayApi";
 import Link from "next/link";
 import Image from "next/image";
+
+// Define the types for employee, leave, and holiday data
+type User = {
+  fname: string;
+  lname: string;
+  role: string;
+  id: string;
+};
+
+type EmployeeData = {
+  users: User[];
+  totalusers: number;
+};
+
+type LeaveData = {
+  leaves: { id: string; type: string; startDate: string; endDate: string }[]; // Assuming the leave object structure
+};
+
+type HolidayData = {
+  count: number;
+};
+
+type DummyDataItem = {
+  title: string;
+  count: number;
+  color: string;
+  icon: JSX.Element;
+  iconBgColor: string;
+  link?: string;
+};
+
 const todayDate = StringDateFormatConvertor(
   new Date().toISOString(),
   "DD/MMM/YYYY",
@@ -22,21 +53,25 @@ const todayDate = StringDateFormatConvertor(
 );
 
 const Dashboard = () => {
-  const dispatch = useDispatch();
-  const { allUserDataLength, allUserData } = useSelector(manageUserSelector);
-  const { authUser, authToken } = useSelector(manageAuthUserSelector);
-  const [dummyData, setDummyData] = useState(countAllData);
+  const [dummyData, setDummyData] = useState<DummyDataItem[]>(countAllData);
+
   const [getLeaves, { data: leavesData, isSuccess: getLeavesSuccess }] =
     useLazyGetAllLeaveDataApiByNameQuery();
   const [getHolidays, { data: holidaysData, isSuccess: getHolidaySuccess }] =
     useLazyGetAllHolidayDataApiByNameQuery();
-  const [currentPage, setCurrentPage] = useState(1);
-  const [limit, setLimit] = useState(10);
-  const [search, setSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [limit, setLimit] = useState<number>(10);
+  const [search, setSearch] = useState<string>("");
+
   const [
     getEmployees,
     { data: employeeData, error, isLoading, isSuccess: getEmployeeSuccess },
   ] = useLazyGetAllDataApiByNameQuery();
+
+  const dispatch = useDispatch();
+  const { allUserDataLength, allUserData } = useSelector(manageUserSelector);
+  const { authUser, authToken } = useSelector(manageAuthUserSelector);
+
   const fetchUserData = async (
     currPage: number,
     limit: number,
@@ -49,6 +84,7 @@ const Dashboard = () => {
       token: authToken,
     });
   };
+
   const fetchLeaveData = async (
     currPage: number,
     limit: number,
@@ -61,6 +97,7 @@ const Dashboard = () => {
       token: authToken,
     });
   };
+
   const fetchHolidayData = async (
     currPage: number,
     limit: number,
@@ -80,10 +117,11 @@ const Dashboard = () => {
       dispatch(setUserDataLength(employeeData.totalusers));
     }
   }, [employeeData, getEmployeeSuccess]);
+
   useEffect(() => {
     if ((authToken && employeeData) || leavesData || holidaysData) {
-      setDummyData((prevDummy: any) =>
-        prevDummy.map((item: any) => {
+      setDummyData((prevDummy: DummyDataItem[]) =>
+        prevDummy.map((item) => {
           switch (item.title) {
             case "Number of Employee":
               return { ...item, count: employeeData?.users?.length || 0 };
@@ -98,7 +136,9 @@ const Dashboard = () => {
       );
     }
   }, [employeeData, leavesData, authToken]);
+
   useEffect(() => {}, [authToken]);
+
   useEffect(() => {
     if (employeeData?.users.length > 0 && getEmployeeSuccess) {
       dispatch(getAllUserData(employeeData?.users));
@@ -113,6 +153,7 @@ const Dashboard = () => {
       fetchHolidayData(currentPage, limit, search);
     }
   }, [currentPage, limit, search, authToken]);
+
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading data</div>;
   return (
@@ -123,7 +164,7 @@ const Dashboard = () => {
           <span className="text-xl font-medium">
             {getGreetingBasedOnTime()}
           </span>
-          <span className="text-xl font-medium ">Latest Members</span>
+          <span className="text-xl font-medium">Latest Member's</span>
         </div>
       </div>
       <div className="flex w-full justify-between flex-wrap sm:gap-5 md:gap-5 lg:gap-0 max-sm:gap-6">
@@ -174,7 +215,6 @@ const Dashboard = () => {
                 <label htmlFor="project" className="text-sm">
                   Project
                 </label>
-
                 <input
                   name="project"
                   className="border black h-full rounded pl-[10px]"
@@ -220,37 +260,35 @@ const Dashboard = () => {
             <div className="w-full flex flex-col justify-center items-center">
               {employeeData?.users
                 ?.slice(0, 4)
-                .map((value: any, index: number) => {
-                  return (
-                    <div
-                      className="flex w-full lg:h-[88px] max-lg:h-[8.7vh] max-md:h-[88px] h-[12vh] max-sm:h-[88px] sm:h-[91px] items-center justify-center gap-2 border-b-[1px] border-[#dedede] last:border-none"
-                      key={index}
-                    >
-                      <div className="w-[90%] flex gap-2 items-center">
-                        <div className="h-[60px] w-[60px] bg-[green] rounded-full overflow-hidden">
-                          <Image
-                            height={100}
-                            width={100}
-                            src={"/default_profile.jpg"}
-                            alt="demo"
-                            className="object-cover w-full h-full"
-                          />
+                .map((value: any, index: number) => (
+                  <div
+                    className="flex w-full lg:h-[88px] max-lg:h-[8.7vh] max-md:h-[88px] h-[12vh] max-sm:h-[88px] sm:h-[91px] items-center justify-center gap-2 border-b-[1px] border-[#dedede] last:border-none"
+                    key={index}
+                  >
+                    <div className="w-[90%] flex gap-2 items-center">
+                      <div className="h-[60px] w-[60px] bg-[green] rounded-full overflow-hidden">
+                        <Image
+                          height={100}
+                          width={100}
+                          src={"/default_profile.jpg"}
+                          alt="demo"
+                          className="object-cover w-full h-full"
+                        />
+                      </div>
+                      <div className="flex flex-col">
+                        <div className="flex gap-1">
+                          <span className="text-lg font-bold">
+                            {value?.fname}
+                          </span>
+                          <span className="text-lg font-bold">
+                            {value?.lname}
+                          </span>
                         </div>
-                        <div className="flex flex-col">
-                          <div className="flex gap-1">
-                            <span className="text-lg font-bold">
-                              {value?.fname}
-                            </span>
-                            <span className="text-lg font-bold">
-                              {value?.lname}
-                            </span>
-                          </div>
-                          <span className="text-sm">{value?.role}</span>
-                        </div>
+                        <span className="text-sm">{value?.role}</span>
                       </div>
                     </div>
-                  );
-                })}
+                  </div>
+                ))}
             </div>
           </div>
         </div>

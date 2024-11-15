@@ -1,5 +1,4 @@
-// import { manageUserSelector } from "@/redux/user/userSelector";
-import { Textarea, TextInput } from "@mantine/core";
+import { Textarea } from "@mantine/core";
 
 interface Value {
   withAsterisk: boolean;
@@ -8,11 +7,16 @@ interface Value {
   className?: string;
   placeholder: string;
   key?: string;
-  validateKey?: any;
-  value?: any;
-  resize?: string;
+  validateKey?: ValidateKey;
+  value?: string | number;
+  resize?: "none" | "both" | "horizontal" | "vertical";
 }
 
+type ValidateKey = {
+  error?: string;
+  onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  value?: string;
+};
 const TextAreaField: React.FC<Value> = (props) => {
   const {
     name,
@@ -34,9 +38,9 @@ const TextAreaField: React.FC<Value> = (props) => {
         withAsterisk={withAsterisk}
         value={value}
         resize={resize}
-        className={className || "flex flex-col gap-1 "}
+        className={className || "flex flex-col gap-1"}
         {...validateKey}
-        error={false}
+        error={validateKey?.error}
       />
       {validateKey?.error && (
         <div className="absolute text-red-500 text-[12px] bottom-[-20px]">
