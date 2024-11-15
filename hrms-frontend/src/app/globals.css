@@ -77,7 +77,9 @@
   gap: 15px !important;
   flex-wrap: nowrap !important;
 }
-
+.fc-dayGridMonth-view {
+  padding-left: 20px;
+}
 .m_b242d975 {
   background-color: rgb(231, 231, 231);
 }
@@ -170,14 +172,14 @@
   background-color: white;
 }
 .signUpBtnDiv {
-  width: 50%;
+  width: 70%;
   border-top-left-radius: 550px;
   border-bottom-left-radius: 350px;
   background-color: #00000085;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 100%;
+  height: auto;
 }
 .signBtn:hover {
   cursor: pointer;
@@ -198,11 +200,19 @@
   font-size: 18px;
   font-family: sans-serif;
 }
+.m_8bffd616 {
+  display: flex;
+  justify-content: center !important;
+}
+.m_4e7aa4fd {
+  text-align: center;
+}
 
 @media (max-width: 1366px) {
   .loginParent {
     flex-direction: column;
     align-items: center;
+    height: 500px;
   }
   .infoPara {
     width: 100%;
@@ -210,11 +220,18 @@
   .signUpBtnDiv {
     background: none;
   }
+
+  .overallParent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 @media (max-width: 768px) {
   .loginParent {
     flex-direction: column;
+    height: 500px;
   }
 
   .signUpBtnDiv {
@@ -238,12 +255,19 @@
     font-size: 14px;
     width: 100%;
   }
+
+  .overallParent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 @media (max-width: 460px) {
   .loginParent {
     flex-direction: column;
     background: none;
+    height: 500px;
   }
 
   .signUpBtnDiv {
@@ -271,5 +295,11 @@
   .infoPara {
     font-size: 14px;
     width: 100%;
+  }
+
+  .overallParent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }

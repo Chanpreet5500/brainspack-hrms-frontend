@@ -1,7 +1,6 @@
 "use client";
-import { useEffect, useState } from "react";
-import { useForm } from "@mantine/form";
-import { Button, Group, MantineProvider, Textarea } from "@mantine/core";
+import { useEffect } from "react";
+import { Button, Group, MantineProvider } from "@mantine/core";
 import {
   DateFormatConvertor,
   variantColorResolver,

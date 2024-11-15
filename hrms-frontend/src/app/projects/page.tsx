@@ -11,7 +11,7 @@ import { DataTable } from "mantine-datatable";
 
 import { CustomModal } from "@/components/reusableComponents/CustomModal/CustomModal";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
-import { Box, Button, Group, Loader } from "@mantine/core";
+import { Box, Button, Group, Loader, Tooltip } from "@mantine/core";
 import ProjectForm from "@/containers/Project/ProjectForm";
 import {
   useCreateProjectApiMutation,
@@ -19,7 +19,6 @@ import {
   useLazyGetAllProjectByNameQuery,
   useUpdateProjectApiMutation,
 } from "@/services/project/projectApi";
-import { setAllproject, settotalProjects } from "@/redux/project/project";
 import { manageProjectSelector } from "@/redux/project/projectSelector";
 import {
   DateFormatConvertor,
@@ -27,6 +26,7 @@ import {
 } from "@/utils/commonFunction";
 import { notifications } from "@mantine/notifications";
 import Link from "next/link";
+import { setAllproject, settotalProjects } from "@/redux/project/project";
 interface ProjectData {
   _id?: string;
   name?: string;
@@ -57,6 +57,7 @@ export default function Projects() {
     allProject,
     { data: allProjectData, error, isLoading, isSuccess: projectSuccess },
   ] = useLazyGetAllProjectByNameQuery();
+  console.log(allProjectData, "helloo");
   const [
     updateUserData,
     { data: userUpdatedData, isSuccess: updateUserSuccess },
@@ -106,7 +107,6 @@ export default function Projects() {
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const updatedSearch = event.target.value;
     setSearch(updatedSearch);
-    // renderData(currentpage, tableDataLimit, updatedSearch);
   };
   const viewProjectData = (row: any) => {
     console.log(row);
@@ -215,10 +215,40 @@ export default function Projects() {
       accessor: "assigned_to ",
       width: "12%",
       render: (data: any) => {
-        const newData = data?.assigned_to.map((finalData: any) => {
-          return <>{finalData?.fname ?? "N/A"}</>;
-        });
-        return <>{newData ?? "N/A"}</>;
+        if (data?.assigned_to && data.assigned_to.length > 0) {
+          const firstTwoNames = data.assigned_to
+            .slice(0, 2)
+            .map((finalData: any) => finalData?.fname ?? "N/A");
+          const remainingCount = data.assigned_to.length - 2;
+          const remainingNames = data.assigned_to.slice(
+            2,
+            data.assigned_to.length
+          );
+
+          let overallLength = remainingNames[remainingNames.length - 1];
+          let stringForNames = "";
+          remainingNames.map((ele: any) => {
+            if (ele.fname === overallLength) {
+              stringForNames += ele.fname;
+            } else {
+              stringForNames += ele.fname + " , ";
+            }
+          });
+
+          return (
+            <>
+              {firstTwoNames.join(", ")}
+              {remainingCount > 0 && (
+                <Tooltip label={stringForNames}>
+                  <span className="more-info" style={{ color: "gray" }}>
+                    (+{remainingCount} more)
+                  </span>
+                </Tooltip>
+              )}
+            </>
+          );
+        }
+        return "N/A";
       },
     },
 
@@ -254,7 +284,6 @@ export default function Projects() {
           console.log(data, row, "DATA");
           open();
           form.setValues({
-            // _id: row?._id,
             name: row?.name,
             description: row?.description,
             start_date: row?.start_date,
@@ -335,7 +364,7 @@ export default function Projects() {
       ) : allProjectData?.length > 0 ? (
         <DataTable
           height={300}
-          records={[...allProjectData]}
+          records={allProjectData}
           withTableBorder
           highlightOnHover
           totalRecords={totalProjects}

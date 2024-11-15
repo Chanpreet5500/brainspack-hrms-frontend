@@ -38,14 +38,17 @@ export default function Login() {
     <main>
       <div className="w-full h-[100vh] overflow-hidden relative ">
         <BackgroundImgSlider images={superadminimages} />
-        <div className="absolute top-0 left-0 w-full h-full  ">
+        <div className="absolute top-0 left-0 w-full h-full overallParent ">
           <div className="w-full h-full flex bg-center bg-no-repeat bg-cover justify-between loginParent">
             <div
-              className="flex justify-center left-parent items-center logoDiv"
-              style={{ width: "45%" }}
+              className="flex justify-center items-center sm:!w-full"
+              // style={{ width: "45%" }}
             >
-              <div className="w-[70%]  h-[70%] text-white flex flex-col justify-between">
-                <div className=" w-full h-[60%] flex flex-col justify-between ">
+              <div
+                className="flex flex-col h-auto text-white gap-[10px]"
+                style={{ width: "70%" }}
+              >
+                {/* <div className=" w-full h-[60%] flex flex-col justify-between ">
                   <div
                     className="flex items-center h-auto justify-center brainsLogo"
                     style={{ width: "70%" }}
@@ -68,15 +71,17 @@ export default function Login() {
                     </div>
 
                     <div
-                      style={{
-                        width: "100%",
-                        display: "flex",
-                        justifyContent: "center",
-                      }}
+                      className="w-1/2 bg-red"
+                      // style={{
+                      //   width: "100%",
+                      //   display: "flex",
+                      //   justifyContent: "center",
+                      // }}
                     >
                       <div
-                        className="infoPara"
-                        style={{ width: "60%", fontSize: "20px" }}
+                        className="text-lg "
+                        // className="infoPara"
+                        // style={{ width: "60%", fontSize: "20px" }}
                       >
                         Lorem ipsum dolor sit amet consectetur adipisicing elit.
                         Ab veritatis velit rerum ducimus ipsa eius iste,
@@ -85,11 +90,34 @@ export default function Login() {
                       </div>
                     </div>
                   </div>
+                </div> */}
+
+                <div className="flex gap-3">
+                  <div>
+                    <IconAccessible size={40} />
+                  </div>
+                  <div className="text-4xl">
+                    BRAINS<span style={{ color: "#55AD88" }}>P</span>ACK
+                  </div>
+                </div>
+
+                <div
+                // className="flex flex-col gap-1 lg:bg-red-500 "
+                // className
+                >
+                  <p className="text-lg">Were so glad to have You on board!</p>
+                </div>
+
+                <div className="text-lg">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab
+                  veritatis velit rerum ducimus ipsa eius iste, eligendi
+                  laboriosam tenetur adipisci sunt inventore quam numquam neque
+                  ipsam beatae ad et amet.
                 </div>
               </div>
             </div>
-            <div className=" signUpBtnDiv ">
-              <div className="  h-[60%] w-full items-center justify-center flex text-white">
+            <div className="signUpBtnDiv ">
+              <div className="   w-full items-center justify-center flex text-white">
                 <div className="signBtn flex gap-2 p-2 border border-white rounded-full text-white hover:bg-[#00000030] hover:cursor hover:text-black hover:bg-[#FFFFFF]">
                   <IconBrandGoogleFilled style={{ fontSize: "50px" }} />
                   <button className="signBtn" onClick={handleSignIn}>
