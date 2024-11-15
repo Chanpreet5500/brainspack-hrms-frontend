@@ -29,20 +29,42 @@ import { CustomModal } from "@/components/reusableComponents/CustomModal/CustomM
 import EmployeeForm from "@/containers/Employee/EmployeeForm";
 import { employeeValidationSchema } from "./validationSchema";
 
-interface EmployeeData {
-  fname?: string;
+// Define Types for Employee Data and API Responses
+interface Employee {
+  _id: string;
+  fname: string;
+  lname: string;
+  email: string;
+  role: string;
+  department: string;
+  phoneNumber: string;
+  isActive: boolean;
+}
+
+interface UserDataResponse {
+  users: Employee[];
+  totalusers: number;
+}
+
+interface FormValues {
+  fname: string;
+  lname: string;
+  email: string;
+  role: string;
+  department: string;
+  phoneNumber: string;
 }
 
 export default function Employees() {
   const [editopened, { open: editopen, close: editclose }] =
     useDisclosure(false);
-  const [employeeData, setEmployeeData] = useState<EmployeeData>({});
-  const [loading, setLoading] = useState(true);
+  const [employeeData, setEmployeeData] = useState<Employee | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
   const [postData, { data: addData, isSuccess: createSuccess, isError }] =
     useCreateUserMutation();
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState<string>("");
 
-  const [currentpage, setCurrentPage] = useState(1);
+  const [currentpage, setCurrentPage] = useState<number>(1);
   const [allDataApi, { data, error, isLoading, isSuccess }] =
     useLazyGetAllDataApiByNameQuery();
   const [
@@ -55,17 +77,19 @@ export default function Employees() {
   const [opened, { open, close }] = useDisclosure(false);
   const dispatch = useDispatch();
   const { authUser, authToken } = useSelector(manageAuthUserSelector);
+
   const handleOnClose = () => {
     close();
     form.reset();
   };
+
   useEffect(() => {
     if (data?.users.length > 0 && isSuccess) {
       dispatch(getAllUserData(data?.users));
       dispatch(setUserDataLength(data.totalusers));
     }
   }, [data, isSuccess, authToken, authUser]);
-  useEffect(() => {}, [authToken]);
+
   const renderData = async (
     currpage: number,
     limit: number,
@@ -80,7 +104,9 @@ export default function Employees() {
       });
     }
   };
-  const onHandelUpdate = async (row: any) => {
+
+  // Update User Data
+  const onHandelUpdate = async (row: Employee) => {
     const mydata = {
       fname: row?.fname,
       lname: row?.lname,
@@ -100,9 +126,11 @@ export default function Employees() {
       throw error;
     }
   };
+
   useEffect(() => {
     setLoading(false);
   }, [allUserData.length > 0]);
+
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
     const params = {
@@ -114,6 +142,7 @@ export default function Employees() {
     allDataApi(params);
     renderData(page, tableDataLimit, search);
   };
+
   useEffect(() => {
     renderData(currentpage, tableDataLimit, search);
   }, [currentpage, updateUserSuccess, deleteSuccess, createSuccess, authToken]);
@@ -123,11 +152,13 @@ export default function Employees() {
     setSearch(updatedSearch);
     renderData(currentpage, tableDataLimit, updatedSearch);
   };
-  const openModal = async (row: any) => {
+
+  const openModal = async (row: Employee) => {
     editopen();
     setEmployeeData(row);
   };
-  const deleteModal = async (row: any) => {
+
+  const deleteModal = async (row: Employee) => {
     const mydata = {
       isDeleted: true,
     };
@@ -142,7 +173,8 @@ export default function Employees() {
       message: "Employee data deleted successfully",
     });
   };
-  const updateStatus = async (row: any) => {
+
+  const updateStatus = async (row: Employee) => {
     const mydata = {
       isActive: !row.isActive,
     };
@@ -155,7 +187,7 @@ export default function Employees() {
     });
   };
 
-  const form = useForm({
+  const form = useForm<FormValues>({
     mode: "controlled",
     validateInputOnChange: true,
     initialValues: {
@@ -170,29 +202,17 @@ export default function Employees() {
     validate: yupResolver(employeeValidationSchema),
   });
 
-  type TableRow = {
-    id: number;
-    fname: string;
-    lname: string;
-    email: string;
-    role: string;
-    department: string;
-    status: string;
-    isActive: boolean;
-    columns?: [];
-    phoneNumber: string;
-  };
-
-  const records: any[] = allUserData?.slice(
+  const records: Employee[] = allUserData?.slice(
     (currentpage - 1) * tableDataLimit,
     currentpage * tableDataLimit
   );
+
   const columns = [
     {
       accessor: "id",
       title: "S.No.",
       width: "5%",
-      render: (record: any, index: number) =>
+      render: (record: Employee, index: number) =>
         (currentpage - 1) * tableDataLimit + index + 1,
     },
 
@@ -205,15 +225,15 @@ export default function Employees() {
     {
       accessor: "status",
       width: "12%",
-      render: (data: TableRow) => {
+      render: (data: Employee) => {
         return <div>{data.isActive ? "Active" : "Inactive"}</div>;
       },
     },
     {
       accessor: "Action",
       width: "20%",
-      render: (data: TableRow) => {
-        const editModal = (row: TableRow) => {
+      render: (data: Employee) => {
+        const editModal = (row: Employee) => {
           open();
           form.setValues(row);
         };
@@ -263,16 +283,14 @@ export default function Employees() {
               modalTitle={"Apply for add user"}
               showButton={true}
               content={
-                <>
-                  <EmployeeForm
-                    onClose={handleOnClose}
-                    form={form}
-                    onHandelUpdate={onHandelUpdate}
-                    createTrigger={postData}
-                    token={authToken}
-                    createSuccess={createSuccess}
-                  />
-                </>
+                <EmployeeForm
+                  onClose={handleOnClose}
+                  form={form}
+                  onHandelUpdate={onHandelUpdate}
+                  createTrigger={postData}
+                  token={authToken}
+                  createSuccess={createSuccess}
+                />
               }
             />
           </div>
@@ -301,7 +319,6 @@ export default function Employees() {
           <span>No Data Available</span>
         </Box>
       )}
-
       <CustomModal
         opened={editopened}
         open={editopen}
@@ -333,7 +350,7 @@ export default function Employees() {
                 variant="filled"
                 color="red"
                 onClick={() => {
-                  deleteModal(employeeData);
+                  deleteModal(employeeData!);
                   editclose();
                 }}
               >

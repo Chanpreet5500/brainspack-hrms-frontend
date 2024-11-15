@@ -8,12 +8,36 @@ import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSel
 import { useSelector } from "react-redux";
 import { useLazyGetAllProjectByNameQuery } from "@/services/project/projectApi";
 
-const ProjectDetail = (props: any) => {
+interface AssignedUser {
+  _id: string;
+  fname: string;
+}
+
+interface Project {
+  _id: string;
+  name: string;
+  assigned_by: AssignedUser;
+  assigned_to: AssignedUser[];
+  description: string;
+  start_date: string;
+  end_date: string;
+}
+
+interface ProjectDetailProps {
+  params: {
+    id: string;
+  };
+  searchParams: {
+    _id: string;
+  };
+}
+
+const ProjectDetail = ({ params, searchParams }: ProjectDetailProps) => {
   const router = useRouter();
-  const { id: paramsProjectId } = props.params;
+  const { id: paramsProjectId } = params;
   const { authUser, authToken } = useSelector(manageAuthUserSelector);
 
-  const [projectData, setProjectData] = useState<any>(null);
+  const [projectData, setProjectData] = useState<Project[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [getProjectById, { data, error, isLoading }] =
     useLazyGetAllProjectByNameQuery();
@@ -27,7 +51,7 @@ const ProjectDetail = (props: any) => {
 
   useEffect(() => {
     if (isClient) {
-      const id = props?.searchParams?._id;
+      const id = searchParams?._id;
       const params = {
         id: id as string,
         token: authToken,
@@ -35,7 +59,7 @@ const ProjectDetail = (props: any) => {
 
       getProjectById(params);
     }
-  }, [isClient, authToken]);
+  }, [isClient, authToken, searchParams]);
 
   useEffect(() => {
     if (data) {
@@ -55,8 +79,9 @@ const ProjectDetail = (props: any) => {
       </Box>
     );
   }
+
   const viewIdData = projectData?.find(
-    (value: any) => value._id === paramsProjectId
+    (value) => value._id === paramsProjectId
   );
 
   if (!viewIdData) {

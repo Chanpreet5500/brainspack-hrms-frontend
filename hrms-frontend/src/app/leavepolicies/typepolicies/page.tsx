@@ -19,8 +19,20 @@ import {
 import TypeForm from "@/components/policiesSection/TypePoliciesForm";
 import { CustumCard } from "@/components/policiesSection/Card";
 import { leavePolicySchema } from "./typePoliciesSchema";
+
+interface LeaveTypePolicy {
+  _id: string;
+  name: string;
+  description: string;
+}
+
+interface TypePolicyApiResponse {
+  data: LeaveTypePolicy[];
+  total: number;
+}
+
 const initialState = {
-  allTypesPolicies: [],
+  allTypesPolicies: [] as LeaveTypePolicy[],
   totalTypePolicies: 0,
 };
 
@@ -39,33 +51,38 @@ export default function TypePolicies() {
   const { allTypesPolicies, totalTypePolicies } = useSelector(
     manageTypePoliciesSelector
   );
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState<string>("");
   const dispatch = useDispatch();
   const [opened, { open, close }] = useDisclosure(false);
-  const onHandelUpdate = async (row: any) => {
+
+  const onHandelUpdate = async (row: LeaveTypePolicy) => {
     const mydata = {
       name: row.name,
       description: row.description,
     };
+
     try {
       const result = await updateTypePolicies({
         leaveTypeID: row._id,
         data: mydata,
-        token: authToken,
+        token: authToken!,
       });
     } catch (error) {
-      throw error;
+      console.error(error);
     }
   };
+
   useEffect(() => {
     if (authToken) {
       triggerLeaveTypePolicies({ token: authToken });
     }
+
     if (leaveTypeData) {
       dispatch(setallTypesPolicies(leaveTypeData));
-      dispatch(settotalTypePolicies(leaveTypeData?.length));
+      dispatch(settotalTypePolicies(leaveTypeData.length));
     }
   }, [leaveTypeData, createSuccess, authToken, updateData]);
+
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const searchValue = event.target.value;
     setSearch(searchValue);
@@ -79,7 +96,13 @@ export default function TypePolicies() {
       description: "",
     },
     validate: yupResolver(leavePolicySchema),
+    // validate: {
+    //   name: (value) => (value ? null : "Please enter the leave type name."),
+    //   description: (value) =>
+    //     value ? null : "Please enter a description for the leave type.",
+    // },
   });
+
   return (
     <>
       <div className="flex h-[90px] justify-between p-2 max-sm:flex-col-reverse">
@@ -105,17 +128,15 @@ export default function TypePolicies() {
                 onClose={close}
                 triggerCreate={createTypePolicies}
                 triggerUpdate={onHandelUpdate}
-                token={authToken}
-                createSuccess={isSuccess}
+                token={authToken!}
+                createSuccess={createSuccess}
               />
             }
           />
         </div>
       </div>
-      <div
-        className="flex flex-wrap  align-middle gap-8"
-        style={{ paddingLeft: "30px" }}
-      >
+
+      <div className="flex flex-wrap align-middle gap-8">
         <CustumCard
           module={"leaveType"}
           form={form}

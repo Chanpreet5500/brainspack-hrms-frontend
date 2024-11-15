@@ -14,9 +14,22 @@ import { useForm, yupResolver } from "@mantine/form";
 import { CustomModal } from "@/components/reusableComponents/CustomModal/CustomModal";
 import "./holiday.css";
 import { HolidayFormData } from "@/utils/interfaces/interfaces";
-import { DateSelectArg, EventClickArg } from "@fullcalendar/core/index.js";
+import {
+  DateSelectArg,
+  EventClickArg,
+  EventApi,
+} from "@fullcalendar/core/index.js";
 import HolidayForm from "@/containers/Holiday/HolidayForm";
-import { holidaySchema } from "./holidaySchema";
+
+// Type Definitions
+interface Holiday {
+  _id: string;
+  title: string;
+  description: string;
+  date: string;
+  type: string;
+}
+
 const Calendar = () => {
   const [allDataApi, { data, error, isLoading, isSuccess }] =
     useLazyGetAllHolidayDataApiByNameQuery();
@@ -33,7 +46,6 @@ const Calendar = () => {
 
   const onGetData = async () => {
     const response = await allDataApi({ token: authToken });
-
     dispatch(getAllholidayData(response.data));
     dispatch(trackChange(false));
   };
@@ -52,15 +64,42 @@ const Calendar = () => {
       description: "",
       date: "",
     },
-    validate: yupResolver(holidaySchema),
+    validate: {
+      title: (value) => {
+        if (!value) {
+          return "Field is required";
+        }
+        if (value.length < 5) {
+          return "Title should be at least 5 letters";
+        } else {
+          return value.length > 20
+            ? "Title should not exceed 20 letters"
+            : null;
+        }
+      },
+      description: (value) => {
+        if (!value) {
+          return "Field is required";
+        }
+        if (value.length < 5) {
+          return "Description should be at least 5 letters";
+        } else {
+          return value.length > 50
+            ? "Description should not exceed 50 letters"
+            : null;
+        }
+      },
+      type: (value) => (value ? null : "Select field is required"),
+    },
   });
-  const handleEventClick = (eventInfo: any) => {
+
+  // Event Click handler with proper types
+  const handleEventClick = (eventInfo: EventClickArg) => {
     const data = {
       holiday_id: eventInfo.event.id,
       title: eventInfo.event.title,
       description: eventInfo.event.extendedProps.description,
       type: eventInfo.event.extendedProps.type,
-
       date: eventInfo.event.start
         ? eventInfo.event.start.toISOString()
         : undefined,
@@ -69,12 +108,14 @@ const Calendar = () => {
     open();
   };
 
+  // Date Select handler with proper types
   const handleDateSelect = async (selectInfo: DateSelectArg) => {
     form.setValues({ date: selectInfo.start.toISOString() });
     open();
   };
 
-  const renderEventContent = (eventInfo: any) => {
+  // Event Content rendering with proper types
+  const renderEventContent = (eventInfo: { event: EventApi }) => {
     return (
       <Tooltip
         multiline
@@ -87,11 +128,12 @@ const Calendar = () => {
       </Tooltip>
     );
   };
+
   return (
     <>
       <div className="flex justify-end items-center p-2 max-sm:flex-col-reverse max-sm:items-start">
         <div className="flex items-center gap-3 max-sm:w-full 2xl:w-[40%]">
-          <div className="flex  lg:justify-end max-sm:w-[30%] max-sm:justify-between ">
+          <div className="flex lg:justify-end max-sm:w-[30%] max-sm:justify-between">
             <CustomModal
               opened={opened}
               open={open}
@@ -104,10 +146,11 @@ const Calendar = () => {
           </div>
         </div>
       </div>
+
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
-        events={allData?.map((holiday: any) => ({
+        events={allData?.map((holiday: Holiday) => ({
           id: holiday._id,
           title: holiday.title,
           start: new Date(holiday.date).toISOString().split("T")[0],
@@ -124,4 +167,5 @@ const Calendar = () => {
     </>
   );
 };
+
 export default Calendar;

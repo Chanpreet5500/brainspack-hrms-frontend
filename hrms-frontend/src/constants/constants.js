@@ -209,59 +209,59 @@ export const holidayType = [
   { id: 1, label: "Event", value: "event" },
 ];
 
-export const leavedata = [
-  {
-    name: "Athena Weissnat",
-    leavetype: "Casual Leave",
-    startdate: "12/43/2022",
-    enddate: "13/67/7809",
-    status: "Pending",
-  },
-  {
-    name: "Asif Ali",
-    leavetype: "Sick Leave",
-    startdate: "12/43/2022",
-    enddate: "13/67/7809",
-    status: "Pending",
-  },
-  {
-    name: "Shubham Kaushal",
-    leavetype: "Casual Leave",
-    startdate: "12/43/2022",
-    enddate: "13/67/7809",
-    status: "Pending",
-  },
-  {
-    name: "Sagar Rana",
-    leavetype: "Sick Leave",
-    startdate: "12/43/2022",
-    enddate: "13/67/7809",
-    status: "Approved",
-  },
-  {
-    name: "Gourav Kashyap",
-    leavetype: "Sick Leave",
-    startdate: "12/43/2022",
-    enddate: "13/67/7809",
-    status: "Approved",
-  },
-  {
-    name: "Nisha Arora",
-    leavetype: "Sick Leave",
-    startdate: "12/43/2022",
-    enddate: "13/67/7809",
-    status: "Approved",
-  },
-];
-export const leaveTypes = [
-  {
-    id: 1,
-    label: "Sick Leave",
-    value: "sick-leave",
-  },
-  { id: 2, label: "Casual Leave", value: "casual-leave" },
-  { id: 3, label: "Emergency Leave", value: "emergency-leave" },
-];
+// export const leavedata = [
+//   {
+//     name: "Athena Weissnat",
+//     leavetype: "Casual Leave",
+//     startdate: "12/43/2022",
+//     enddate: "13/67/7809",
+//     status: "Pending",
+//   },
+//   {
+//     name: "Asif Ali",
+//     leavetype: "Sick Leave",
+//     startdate: "12/43/2022",
+//     enddate: "13/67/7809",
+//     status: "Pending",
+//   },
+//   {
+//     name: "Shubham Kaushal",
+//     leavetype: "Casual Leave",
+//     startdate: "12/43/2022",
+//     enddate: "13/67/7809",
+//     status: "Pending",
+//   },
+//   {
+//     name: "Sagar Rana",
+//     leavetype: "Sick Leave",
+//     startdate: "12/43/2022",
+//     enddate: "13/67/7809",
+//     status: "Approved",
+//   },
+//   {
+//     name: "Gourav Kashyap",
+//     leavetype: "Sick Leave",
+//     startdate: "12/43/2022",
+//     enddate: "13/67/7809",
+//     status: "Approved",
+//   },
+//   {
+//     name: "Nisha Arora",
+//     leavetype: "Sick Leave",
+//     startdate: "12/43/2022",
+//     enddate: "13/67/7809",
+//     status: "Approved",
+//   },
+// ];
+// export const leaveTypes = [
+//   {
+//     id: 1,
+//     label: "Sick Leave",
+//     value: "sick-leave",
+//   },
+//   { id: 2, label: "Casual Leave", value: "casual-leave" },
+//   { id: 3, label: "Emergency Leave", value: "emergency-leave" },
+// ];
 export const holidayData = [
   { id: "1", label: "Half", value: "half" },
   { id: "2", label: "Full", value: "full" },

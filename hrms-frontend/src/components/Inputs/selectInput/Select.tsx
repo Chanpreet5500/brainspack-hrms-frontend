@@ -1,4 +1,5 @@
 import { Select } from "@mantine/core";
+import { UseFormReturnType } from "@mantine/form";
 import { useEffect } from "react";
 
 interface Role {
@@ -16,8 +17,8 @@ interface SelectValue {
   defaultValue?: string;
   data?: Role[];
   key?: string;
-  form: any;
-  rightSection?: any;
+  form: UseFormReturnType<any>;
+  rightSection?: React.ReactNode;
   disabled?: boolean;
   start_day?: string;
   end_day?: string;

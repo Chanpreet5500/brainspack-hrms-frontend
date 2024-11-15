@@ -1,4 +1,3 @@
-// import { manageUserSelector } from "@/redux/user/userSelector";
 import { TextInput } from "@mantine/core";
 
 interface Value {
@@ -7,22 +6,23 @@ interface Value {
   name: string;
   className?: string;
   placeholder: string;
-  key?: string;
-  validateKey?: any;
-  value?: any;
+  validateKey?: ValidateKey;
+  value?: string;
 }
-
-const TextInputField: React.FC<Value> = (props) => {
-  const {
-    name,
-    className,
-    withAsterisk,
-    label,
-    placeholder,
-    validateKey,
-    value,
-  } = props;
-
+type ValidateKey = {
+  error?: string;
+  onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  value?: string;
+};
+const TextInputField: React.FC<Value> = ({
+  name,
+  className,
+  withAsterisk,
+  label,
+  placeholder,
+  validateKey,
+  value,
+}) => {
   return (
     <div className="relative mb-2">
       <TextInput
@@ -33,7 +33,7 @@ const TextInputField: React.FC<Value> = (props) => {
         value={value}
         className={className || "flex flex-col gap-1 "}
         {...validateKey}
-        error={false}
+        error={validateKey?.error}
       />
       {validateKey?.error && (
         <div className="absolute text-red-500 text-[12px] bottom-[-20px]">

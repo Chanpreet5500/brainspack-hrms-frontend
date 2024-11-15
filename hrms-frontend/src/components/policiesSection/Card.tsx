@@ -1,8 +1,20 @@
 import { Card, Text, Group, Menu } from "@mantine/core";
+import { UseFormReturnType } from "@mantine/form";
+
+interface Policy {
+  _id: string;
+  leave_type_id?: {
+    _id: string;
+    description: string;
+  };
+  name?: string;
+  description: string;
+  max_leaves_per_year?: number;
+}
 interface allValue {
-  allPolicies: [];
-  open: any;
-  form: any;
+  allPolicies: Policy[];
+  open: () => void;
+  form: UseFormReturnType<Policy>;
   module: string;
 }
 export const CustumCard: React.FC<allValue> = ({
@@ -11,7 +23,7 @@ export const CustumCard: React.FC<allValue> = ({
   form,
   module,
 }) => {
-  const updateData = (row: any) => {
+  const updateData = (row: Policy) => {
     open();
     form.setValues({
       _id: row?._id,
@@ -24,7 +36,7 @@ export const CustumCard: React.FC<allValue> = ({
 
   return (
     <>
-      {allPolicies?.map((curr: any, indx: Number) => (
+      {allPolicies?.map((curr: Policy, indx: Number) => (
         <>
           <div className="w-full md:w-[22%] rounded-2xl p-5 flex h-[200px] bg-gray-200 justify-center items-center shadow-lg transition-transform transform hover:scale-105">
             <Card

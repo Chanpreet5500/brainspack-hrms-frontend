@@ -22,6 +22,7 @@ export const config = {
   matcher: [
     "/dashboard",
     "/employees",
+    "/profile",
     "/leavepolicies/leaves",
     "/leavepolicies/typepolicies",
     "/leavepolicies/leavespolicies",
