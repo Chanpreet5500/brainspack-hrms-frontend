@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { tableDataLimit } from "@/constants/constants";
 import Searchbar from "@/components/Searchbar/Searchbar";
 import { useDisclosure } from "@mantine/hooks";
-import { useForm } from "@mantine/form";
+import { useForm, yupResolver } from "@mantine/form";
 import { useDispatch, useSelector } from "react-redux";
 import { IconEdit, IconEye, IconMoodSad, IconTrash } from "@tabler/icons-react";
 
@@ -27,6 +27,7 @@ import {
 import { notifications } from "@mantine/notifications";
 import Link from "next/link";
 import { setAllproject, settotalProjects } from "@/redux/project/project";
+import { projectValidationSchema } from "./projectValidationSchema";
 interface ProjectData {
   _id?: string;
   name?: string;
@@ -144,14 +145,7 @@ export default function Projects() {
       start_date: startDate,
       end_date: endDate,
     },
-    validate: {
-      name: (value) => (value ? null : "Please select an employee."),
-      assigned_to: (value) => (value ? null : "Please select an employee."),
-      start_date: (value) =>
-        DateFormatConvertor(value) ? null : "Please select the start date.",
-      end_date: (value) =>
-        DateFormatConvertor(value) ? null : "Please select the end date.",
-    },
+    validate: yupResolver(projectValidationSchema),
   });
 
   const triggerUpdate = async (row: any) => {
@@ -291,20 +285,26 @@ export default function Projects() {
         };
         return (
           <div className="flex justify-center gap-2">
-            <button onClick={() => editModal(data)}>
-              <IconEdit className="h-[25px] w-[25px] text-blue-600 cursor-pointer" />
-            </button>
-            <button onClick={() => openModal(data)}>
-              <IconTrash className="h-[25px] w-[25px] text-red-500 cursor-pointer" />
-            </button>
-            <Link
-              href={{
-                pathname: `/projects/${data._id}`,
-              }}
-              passHref
-            >
-              <IconEye className="h-[25px] w-[25px] text-blue-600 cursor-pointer" />
-            </Link>
+            <Tooltip label="Edit">
+              <button onClick={() => editModal(data)}>
+                <IconEdit className="h-[25px] w-[25px] text-blue-600 cursor-pointer" />
+              </button>
+            </Tooltip>
+            <Tooltip label="Delete">
+              <button onClick={() => openModal(data)}>
+                <IconTrash className="h-[25px] w-[25px] text-red-500 cursor-pointer" />
+              </button>
+            </Tooltip>
+            <Tooltip label="View">
+              <Link
+                href={{
+                  pathname: `/projects/${data._id}`,
+                }}
+                passHref
+              >
+                <IconEye className="h-[25px] w-[25px] text-blue-600 cursor-pointer" />
+              </Link>
+            </Tooltip>
           </div>
         );
       },

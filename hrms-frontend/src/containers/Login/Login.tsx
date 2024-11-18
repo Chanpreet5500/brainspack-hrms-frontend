@@ -40,58 +40,11 @@ export default function Login() {
         <BackgroundImgSlider images={superadminimages} />
         <div className="absolute top-0 left-0 w-full h-full overallParent ">
           <div className="w-full h-full flex bg-center bg-no-repeat bg-cover justify-between loginParent">
-            <div
-              className="flex justify-center items-center sm:!w-full"
-              // style={{ width: "45%" }}
-            >
+            <div className=" w-[30%] flex justify-center items-center sm:!w-full">
               <div
                 className="flex flex-col h-auto text-white gap-[10px]"
-                style={{ width: "70%" }}
+                style={{ width: "60%" }}
               >
-                {/* <div className=" w-full h-[60%] flex flex-col justify-between ">
-                  <div
-                    className="flex items-center h-auto justify-center brainsLogo"
-                    style={{ width: "70%" }}
-                  >
-                    <div
-                      className=" h-full w-[10%] rounded-full items-center justify-center "
-                      style={{ fontSize: "30px" }}
-                    >
-                      <IconAccessible className="w-full h-full" />
-                    </div>
-                    <div style={{ fontSize: "40px" }}>
-                      BRAINS<span style={{ color: "#55AD88" }}>P</span>ACK
-                    </div>
-                  </div>
-                  <div className="flex gap-3 flex-col justify-center">
-                    <div className="flex flex-col gap-1 lg:bg-red-500 ">
-                      <p style={{ fontSize: "30px", textAlign: "center" }}>
-                        Were so glad to have You on board!
-                      </p>
-                    </div>
-
-                    <div
-                      className="w-1/2 bg-red"
-                      // style={{
-                      //   width: "100%",
-                      //   display: "flex",
-                      //   justifyContent: "center",
-                      // }}
-                    >
-                      <div
-                        className="text-lg "
-                        // className="infoPara"
-                        // style={{ width: "60%", fontSize: "20px" }}
-                      >
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Ab veritatis velit rerum ducimus ipsa eius iste,
-                        eligendi laboriosam tenetur adipisci sunt inventore quam
-                        numquam neque ipsam beatae ad et amet.
-                      </div>
-                    </div>
-                  </div>
-                </div> */}
-
                 <div className="flex gap-3">
                   <div>
                     <IconAccessible size={40} />
@@ -100,19 +53,8 @@ export default function Login() {
                     BRAINS<span style={{ color: "#55AD88" }}>P</span>ACK
                   </div>
                 </div>
-
-                <div
-                // className="flex flex-col gap-1 lg:bg-red-500 "
-                // className
-                >
+                <div>
                   <p className="text-lg">Were so glad to have You on board!</p>
-                </div>
-
-                <div className="text-lg">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab
-                  veritatis velit rerum ducimus ipsa eius iste, eligendi
-                  laboriosam tenetur adipisci sunt inventore quam numquam neque
-                  ipsam beatae ad et amet.
                 </div>
               </div>
             </div>

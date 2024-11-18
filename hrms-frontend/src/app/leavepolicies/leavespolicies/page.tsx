@@ -162,10 +162,7 @@ export default function TypeComponent() {
           />
         </div>
       </div>
-      <div
-        className="flex flex-wrap  align-middle gap-8"
-        style={{ paddingLeft: "30px" }}
-      >
+      <div className="flex flex-wrap justify-center align-middle gap-8">
         <CustumCard
           module={"leavePolicies"}
           form={form}

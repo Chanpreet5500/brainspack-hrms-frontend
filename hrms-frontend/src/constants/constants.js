@@ -284,3 +284,48 @@ export const superadminimages = [
 ];
 
 export const tableDataLimit = 10;
+
+export const numberError = "Please Enter 10 Digit Number";
+
+export const firstNameError = "First Name is Required";
+
+export const lastNameError = "Last Name is Required";
+
+export const emailError = "Email Is Required";
+
+export const numberRequiredError = "Phone Number Is Required";
+
+export const roleError = "Role Is Required";
+
+export const departmentError = "Department Is Required";
+
+export const leaveNameError = "Please Select The Leave  Type";
+
+export const descriptionError = "Please Add The Description";
+
+export const holidayTitleError = "Please Add Holiday Title";
+
+export const holidayTypeError = "Select The Holiday Type";
+
+export const projectNameError = "Please Add Project Name";
+
+export const assignedToError = "Please Select Employees";
+
+export const reasonError = "Reason is Required";
+
+export const validNumberError =
+  "Please Enter a Valid Number Of Leaves Per Year";
+
+export const postiveNumberError = "Leaves number should Be a positive Number";
+
+export const integerNumberError = "Max leaves per year must be an integer";
+
+export const maxLeavesError = "Max leaves per year is required";
+
+export const minfNameError = "First name must be at least 3 characters";
+
+export const minlNameletter = "Last name must be at least 3 characters";
+
+export const invalidEmailError = "Invalid email format";
+
+export const startDateError = "Please select the start date.";

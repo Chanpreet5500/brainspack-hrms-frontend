@@ -43,7 +43,7 @@ const TextAreaField: React.FC<Value> = (props) => {
         error={validateKey?.error}
       />
       {validateKey?.error && (
-        <div className="absolute text-red-500 text-[12px] bottom-[-20px]">
+        <div className="absolute text-red-500 text-[12px]">
           {validateKey.error}
         </div>
       )}

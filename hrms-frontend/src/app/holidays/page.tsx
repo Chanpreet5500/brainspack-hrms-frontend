@@ -21,7 +21,7 @@ import {
 } from "@fullcalendar/core/index.js";
 import HolidayForm from "@/containers/Holiday/HolidayForm";
 
-// Type Definitions
+import { holidaySchema } from "./holidaySchema";
 interface Holiday {
   _id: string;
   title: string;
@@ -64,36 +64,9 @@ const Calendar = () => {
       description: "",
       date: "",
     },
-    validate: {
-      title: (value) => {
-        if (!value) {
-          return "Field is required";
-        }
-        if (value.length < 5) {
-          return "Title should be at least 5 letters";
-        } else {
-          return value.length > 20
-            ? "Title should not exceed 20 letters"
-            : null;
-        }
-      },
-      description: (value) => {
-        if (!value) {
-          return "Field is required";
-        }
-        if (value.length < 5) {
-          return "Description should be at least 5 letters";
-        } else {
-          return value.length > 50
-            ? "Description should not exceed 50 letters"
-            : null;
-        }
-      },
-      type: (value) => (value ? null : "Select field is required"),
-    },
+    validate: yupResolver(holidaySchema),
   });
 
-  // Event Click handler with proper types
   const handleEventClick = (eventInfo: EventClickArg) => {
     const data = {
       holiday_id: eventInfo.event.id,
@@ -108,13 +81,11 @@ const Calendar = () => {
     open();
   };
 
-  // Date Select handler with proper types
   const handleDateSelect = async (selectInfo: DateSelectArg) => {
     form.setValues({ date: selectInfo.start.toISOString() });
     open();
   };
 
-  // Event Content rendering with proper types
   const renderEventContent = (eventInfo: { event: EventApi }) => {
     return (
       <Tooltip

@@ -96,11 +96,6 @@ export default function TypePolicies() {
       description: "",
     },
     validate: yupResolver(leavePolicySchema),
-    // validate: {
-    //   name: (value) => (value ? null : "Please enter the leave type name."),
-    //   description: (value) =>
-    //     value ? null : "Please enter a description for the leave type.",
-    // },
   });
 
   return (
@@ -136,7 +131,7 @@ export default function TypePolicies() {
         </div>
       </div>
 
-      <div className="flex flex-wrap align-middle gap-8">
+      <div className="flex flex-wrap align-middle gap-8 justify-center">
         <CustumCard
           module={"leaveType"}
           form={form}

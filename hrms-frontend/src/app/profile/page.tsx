@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
 import { IconPencil, IconUserCircle } from "@tabler/icons-react";
 import Image from "next/image";
+import { Tooltip } from "@mantine/core";
 
 const Profile = () => {
   const { authUser } = useSelector(manageAuthUserSelector);
@@ -60,11 +61,13 @@ const Profile = () => {
             ) : (
               <IconUserCircle className="text-gray-500" size={100} />
             )}
-            <IconPencil
-              onClick={handleEditClick}
-              className="text-white cursor-pointer absolute right-2 top-14 bg-blue-600 p-1 rounded-full"
-              size={24}
-            />
+            <Tooltip label="Edit Image">
+              <IconPencil
+                onClick={handleEditClick}
+                className="text-white cursor-pointer absolute right-2 top-14 bg-blue-600 p-1 rounded-full"
+                size={24}
+              />
+            </Tooltip>
           </div>
         </div>
       </div>

@@ -24,7 +24,7 @@ const TextInputField: React.FC<Value> = ({
   value,
 }) => {
   return (
-    <div className="relative mb-2">
+    <div className="relative h-[90px]">
       <TextInput
         label={label}
         placeholder={placeholder}
@@ -33,10 +33,10 @@ const TextInputField: React.FC<Value> = ({
         value={value}
         className={className || "flex flex-col gap-1 "}
         {...validateKey}
-        error={validateKey?.error}
+        error={false}
       />
       {validateKey?.error && (
-        <div className="absolute text-red-500 text-[12px] bottom-[-20px]">
+        <div className="absolute text-red-500 text-[12px] ">
           {validateKey.error}
         </div>
       )}

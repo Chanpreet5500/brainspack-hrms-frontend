@@ -1,23 +1,17 @@
 import * as Yup from "yup";
 
 export const employeeValidationSchema = Yup.object({
-  fname: Yup.string()
-    .required("First name is required")
-    .min(3, "field is required"),
+  fname: Yup.string().required(firstNameError).min(3, minfNameError),
 
-  lname: Yup.string()
-    .required("Last name is required")
-    .min(3, "field is required"),
+  lname: Yup.string().required(lastNameError).min(3, minlNameletter),
 
-  email: Yup.string()
-    .required("Email is required")
-    .email("Invalid email format"),
+  email: Yup.string().required(emailError).email(invalidEmailError),
 
-  role: Yup.string().required("Role is required"),
+  role: Yup.string().required(roleError),
 
-  department: Yup.string().required("Department is required"),
+  department: Yup.string().required(departmentError),
 
   phoneNumber: Yup.string()
-    .required("Phone number is required")
-    .matches(/^\d{10}$/, "Phone number must contain exactly 10 digits"),
+    .required(numberRequiredError)
+    .matches(/^\d{10}$/, numberError),
 });

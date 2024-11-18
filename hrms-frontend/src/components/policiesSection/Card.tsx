@@ -74,7 +74,7 @@ export const CustumCard: React.FC<allValue> = ({
                       className="w-full h-fit hover:bg-gray-200 transition-colors"
                       onClick={() => updateData(curr)}
                     >
-                      Update
+                      Edit
                     </Menu.Item>
                   </Menu.Dropdown>
                 </Menu>
