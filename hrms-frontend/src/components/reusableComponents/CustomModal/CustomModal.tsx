@@ -1,6 +1,5 @@
 import React, { ReactElement } from "react";
 import { Button, Modal } from "@mantine/core";
-
 interface ModalProps {
   opened: any;
   onClose?: any;

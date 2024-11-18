@@ -1,5 +1,4 @@
 import { Textarea } from "@mantine/core";
-
 interface Value {
   withAsterisk: boolean;
   label: string;
@@ -11,7 +10,6 @@ interface Value {
   value?: string | number;
   resize?: "none" | "both" | "horizontal" | "vertical";
 }
-
 type ValidateKey = {
   error?: string;
   onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
@@ -28,7 +26,6 @@ const TextAreaField: React.FC<Value> = (props) => {
     validateKey,
     value,
   } = props;
-
   return (
     <div className="relative mb-2">
       <Textarea
@@ -43,12 +40,11 @@ const TextAreaField: React.FC<Value> = (props) => {
         error={validateKey?.error}
       />
       {validateKey?.error && (
-        <div className="absolute text-red-500 text-[12px] bottom-[-20px]">
+        <div className="absolute text-red-500 text-[12px]">
           {validateKey.error}
         </div>
       )}
     </div>
   );
 };
-
 export default TextAreaField;

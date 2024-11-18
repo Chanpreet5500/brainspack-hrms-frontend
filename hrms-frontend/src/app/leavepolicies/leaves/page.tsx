@@ -23,13 +23,10 @@ import { DataTable } from "mantine-datatable";
 import { StringDateFormatConvertor } from "@/utils/commonFunction";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
 import LeaveForm from "@/containers/Leave/Leaveform";
-
-// Define TypeScript interfaces for the leave data and related structures
 interface EmployeeData {
   fname: string;
   lname: string;
 }
-
 interface LeaveData {
   _id: string;
   leave_type_id: {
@@ -45,7 +42,6 @@ interface LeaveData {
   employee_id: EmployeeData;
   isActive: boolean;
 }
-
 interface TableRow {
   id: string;
   leave_type: string;
@@ -54,12 +50,10 @@ interface TableRow {
   status: string;
   actions?: JSX.Element;
 }
-
 const initialState = {
   allLeaves: [] as LeaveData[],
   totalleaves: 0,
 };
-
 export default function LeaveComponent() {
   const [loading, setLoading] = useState<boolean>(true);
   const [createLeave, { isLoading, error, isSuccess: createSuccess }] =
@@ -80,7 +74,6 @@ export default function LeaveComponent() {
     setCurrentPage(page);
     renderData(page, tableDataLimit, search);
   };
-
   const handleUpdate = async (data: LeaveData, status: string) => {
     try {
       const response = await updateLeave({
@@ -109,7 +102,6 @@ export default function LeaveComponent() {
       console.error("Error updating leave:", err);
     }
   };
-
   const renderData = async (
     currpage: number,
     limit: number,
@@ -233,7 +225,6 @@ export default function LeaveComponent() {
       },
     },
   ];
-
   return (
     <>
       <div className="flex justify-between p-2 max-sm:flex-col-reverse h-[90px]">
@@ -258,14 +249,12 @@ export default function LeaveComponent() {
                 onClose={close}
                 triggerCreate={createLeave}
                 token={authToken}
-                createSuccess={createSuccess}
                 editBy={authUser?.userId}
               />
             }
           />
         </div>
       </div>
-
       {loading ? (
         <Box className="flex justify-center items-center p-4">
           <Loader color="blue" size="xl" />
@@ -288,7 +277,6 @@ export default function LeaveComponent() {
           <span>No Data Available</span>
         </Box>
       )}
-
       <div className="editIcon">
         <CustomModal
           opened={editopened}

@@ -54,9 +54,19 @@ export default function TypePolicies() {
   const [search, setSearch] = useState<string>("");
   const dispatch = useDispatch();
   const [opened, { open, close }] = useDisclosure(false);
+  interface FormValues {
+    _id?: string;
+    name: string;
+    description: string;
+  }
 
-  const onHandelUpdate = async (row: LeaveTypePolicy) => {
-    const mydata = {
+  interface LeaveTypePolicy {
+    name: string;
+    description: string;
+  }
+  const onHandelUpdate = async (row: FormValues): Promise<void> => {
+    const leaveTypePolicy: LeaveTypePolicy = {
+      ...data,
       name: row.name,
       description: row.description,
     };
@@ -64,7 +74,7 @@ export default function TypePolicies() {
     try {
       const result = await updateTypePolicies({
         leaveTypeID: row._id,
-        data: mydata,
+        data: leaveTypePolicy,
         token: authToken!,
       });
     } catch (error) {
@@ -96,11 +106,6 @@ export default function TypePolicies() {
       description: "",
     },
     validate: yupResolver(leavePolicySchema),
-    // validate: {
-    //   name: (value) => (value ? null : "Please enter the leave type name."),
-    //   description: (value) =>
-    //     value ? null : "Please enter a description for the leave type.",
-    // },
   });
 
   return (
@@ -136,7 +141,7 @@ export default function TypePolicies() {
         </div>
       </div>
 
-      <div className="flex flex-wrap align-middle gap-8">
+      <div className="flex flex-wrap align-middle gap-8 justify-center">
         <CustumCard
           module={"leaveType"}
           form={form}

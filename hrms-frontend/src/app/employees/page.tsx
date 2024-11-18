@@ -8,7 +8,7 @@ import { notifications } from "@mantine/notifications";
 import { useDisclosure } from "@mantine/hooks";
 import { useForm, yupResolver } from "@mantine/form";
 import { DataTable } from "mantine-datatable";
-import { Box, Button, Group, Loader } from "@mantine/core";
+import { Box, Button, Group, Loader, Tooltip } from "@mantine/core";
 import { tableDataLimit } from "@/constants/constants";
 import Searchbar from "@/components/Searchbar/Searchbar";
 import {
@@ -18,7 +18,6 @@ import {
   IconMoodSad,
   IconTrash,
 } from "@tabler/icons-react";
-
 import {
   useCreateUserMutation,
   useDeleteDataApiByNameMutation,
@@ -28,8 +27,6 @@ import {
 import { CustomModal } from "@/components/reusableComponents/CustomModal/CustomModal";
 import EmployeeForm from "@/containers/Employee/EmployeeForm";
 import { employeeValidationSchema } from "./validationSchema";
-
-// Define Types for Employee Data and API Responses
 interface Employee {
   _id: string;
   fname: string;
@@ -40,12 +37,10 @@ interface Employee {
   phoneNumber: string;
   isActive: boolean;
 }
-
 interface UserDataResponse {
   users: Employee[];
   totalusers: number;
 }
-
 interface FormValues {
   fname: string;
   lname: string;
@@ -54,7 +49,6 @@ interface FormValues {
   department: string;
   phoneNumber: string;
 }
-
 export default function Employees() {
   const [editopened, { open: editopen, close: editclose }] =
     useDisclosure(false);
@@ -63,7 +57,6 @@ export default function Employees() {
   const [postData, { data: addData, isSuccess: createSuccess, isError }] =
     useCreateUserMutation();
   const [search, setSearch] = useState<string>("");
-
   const [currentpage, setCurrentPage] = useState<number>(1);
   const [allDataApi, { data, error, isLoading, isSuccess }] =
     useLazyGetAllDataApiByNameQuery();
@@ -77,12 +70,10 @@ export default function Employees() {
   const [opened, { open, close }] = useDisclosure(false);
   const dispatch = useDispatch();
   const { authUser, authToken } = useSelector(manageAuthUserSelector);
-
   const handleOnClose = () => {
     close();
     form.reset();
   };
-
   useEffect(() => {
     if (data?.users.length > 0 && isSuccess) {
       dispatch(getAllUserData(data?.users));
@@ -104,8 +95,6 @@ export default function Employees() {
       });
     }
   };
-
-  // Update User Data
   const onHandelUpdate = async (row: Employee) => {
     const mydata = {
       fname: row?.fname,
@@ -126,11 +115,9 @@ export default function Employees() {
       throw error;
     }
   };
-
   useEffect(() => {
     setLoading(false);
   }, [allUserData.length > 0]);
-
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
     const params = {
@@ -138,11 +125,9 @@ export default function Employees() {
       limit: 10,
       token: authToken,
     };
-
     allDataApi(params);
     renderData(page, tableDataLimit, search);
   };
-
   useEffect(() => {
     renderData(currentpage, tableDataLimit, search);
   }, [currentpage, updateUserSuccess, deleteSuccess, createSuccess, authToken]);
@@ -152,12 +137,10 @@ export default function Employees() {
     setSearch(updatedSearch);
     renderData(currentpage, tableDataLimit, updatedSearch);
   };
-
   const openModal = async (row: Employee) => {
     editopen();
     setEmployeeData(row);
   };
-
   const deleteModal = async (row: Employee) => {
     const mydata = {
       isDeleted: true,
@@ -173,12 +156,10 @@ export default function Employees() {
       message: "Employee data deleted successfully",
     });
   };
-
   const updateStatus = async (row: Employee) => {
     const mydata = {
       isActive: !row.isActive,
     };
-
     const result = await updateUserData({
       user_id: row._id,
       data: mydata,
@@ -186,7 +167,6 @@ export default function Employees() {
       token: authToken,
     });
   };
-
   const form = useForm<FormValues>({
     mode: "controlled",
     validateInputOnChange: true,
@@ -201,12 +181,10 @@ export default function Employees() {
 
     validate: yupResolver(employeeValidationSchema),
   });
-
   const records: Employee[] = allUserData?.slice(
     (currentpage - 1) * tableDataLimit,
     currentpage * tableDataLimit
   );
-
   const columns = [
     {
       accessor: "id",
@@ -239,27 +217,34 @@ export default function Employees() {
         };
         return (
           <div className="flex gap-2">
-            <button onClick={() => editModal(data)}>
-              <IconEdit className="h-[25px] w-[25px] text-blue-600 cursor-pointer" />
-            </button>
-            <button onClick={() => openModal(data)}>
-              <IconTrash className="h-[25px] w-[25px] text-red-500 cursor-pointer" />
-            </button>
-            {data.isActive ? (
-              <button onClick={() => updateStatus(data)}>
-                <IconLockOpen className="h-[25px] w-[25px] text-blue-600 cursor-pointer" />
+            <Tooltip label="Edit">
+              <button onClick={() => editModal(data)}>
+                <IconEdit className="h-[25px] w-[25px] text-blue-600 cursor-pointer" />
               </button>
-            ) : (
-              <button onClick={() => updateStatus(data)}>
-                <IconLock className="h-[25px] w-[25px] text-red-500 cursor-pointer" />
+            </Tooltip>
+            <Tooltip label="Delete">
+              <button onClick={() => openModal(data)}>
+                <IconTrash className="h-[25px] w-[25px] text-red-500 cursor-pointer" />
               </button>
-            )}
+            </Tooltip>
+            <Tooltip
+              label={data.isActive ? "Active" : "InActive"}
+              position="top"
+              withArrow
+            >
+              <button onClick={() => updateStatus(data)}>
+                {data.isActive ? (
+                  <IconLockOpen className="h-[25px] w-[25px] text-blue-600 cursor-pointer" />
+                ) : (
+                  <IconLock className="h-[25px] w-[25px] text-red-500 cursor-pointer" />
+                )}
+              </button>
+            </Tooltip>
           </div>
         );
       },
     },
   ];
-
   return (
     <>
       <div className=" customDiv flex justify-between items-center p-2 max-sm:flex-col-reverse max-sm:items-start">
@@ -289,6 +274,7 @@ export default function Employees() {
                   onHandelUpdate={onHandelUpdate}
                   createTrigger={postData}
                   token={authToken}
+                  authUser={authUser}
                   createSuccess={createSuccess}
                 />
               }

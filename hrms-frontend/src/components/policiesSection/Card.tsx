@@ -1,23 +1,28 @@
+import { FormValuesLeavesPolicy } from "@/app/leavepolicies/leavespolicies/page";
 import { Card, Text, Group, Menu } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
-
 interface Policy {
   _id: string;
-  leave_type_id?: {
-    _id: string;
-    description: string;
-  };
+  leave_type_id?:
+    | {
+        _id: string;
+        description: string;
+      }
+    | any;
   name?: string;
   description: string;
   max_leaves_per_year?: number;
 }
-interface allValue {
+interface formProps {
   allPolicies: Policy[];
   open: () => void;
-  form: UseFormReturnType<Policy>;
+  form:
+    | UseFormReturnType<Policy>
+    | UseFormReturnType<FormValuesLeavesPolicy>
+    | any;
   module: string;
 }
-export const CustumCard: React.FC<allValue> = ({
+export const CustumCard: React.FC<formProps> = ({
   allPolicies,
   open,
   form,
@@ -74,7 +79,7 @@ export const CustumCard: React.FC<allValue> = ({
                       className="w-full h-fit hover:bg-gray-200 transition-colors"
                       onClick={() => updateData(curr)}
                     >
-                      Update
+                      Edit
                     </Menu.Item>
                   </Menu.Dropdown>
                 </Menu>

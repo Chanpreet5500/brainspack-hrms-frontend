@@ -20,9 +20,6 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ opened, toggle }) => {
   const [open, setOpen] = useState(false);
   const { authUser } = useSelector(manageAuthUserSelector);
-
-  useEffect(() => {}, [authUser]);
-
   const handleSignOut = () => {
     signOut();
   };
@@ -54,7 +51,6 @@ const Navbar: React.FC<NavbarProps> = ({ opened, toggle }) => {
                     layout="intrinsic"
                   />
                 </div>
-
                 <div className="userName">
                   <div>
                     <p className="text-xs">{authUser?.fname}</p>
@@ -88,16 +84,21 @@ const Navbar: React.FC<NavbarProps> = ({ opened, toggle }) => {
               }}
             >
               <div className=" Droper">
-                <div className="py-1 border-b border-gray-200">
+                <div
+                  className="py-1 border-b border-gray-200 "
+                  style={{ height: "60px" }}
+                >
                   <div className="flex justify-center items-center h-[30px] ">
-                    <p className="text-xs text-gray-400">Application</p>
+                    <p className="text-gray-400" style={{ fontSize: "14px" }}>
+                      Application
+                    </p>
                   </div>
                   <div>
                     {appdroperdata.map((ele) => (
                       <Link
                         href={ele.link || "#"}
                         key={ele.id}
-                        className="flex gap-2 text-sm items-center p-2 hover:bg-slate-200 rounded-full cursor-pointer"
+                        className="flex gap-2 text-cyan-600	 text-sm items-center justify-center p-2 hover:bg-slate-200 rounded-full cursor-pointer"
                         role="menuitem"
                       >
                         <ele.icon size={15} />
@@ -108,7 +109,7 @@ const Navbar: React.FC<NavbarProps> = ({ opened, toggle }) => {
                 </div>
                 <div>
                   <div className="p-1">
-                    <p className="text-xs text-gray-400 py-2">Danger Zone</p>
+                    <p className="text-xs text-red-200 py-2 ">Danger Zone</p>
                   </div>
                   <div>
                     <div

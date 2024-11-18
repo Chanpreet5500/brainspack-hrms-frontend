@@ -32,6 +32,7 @@ export const DateFormatConvertor = (date: any) => {
   const formatedYear = newDate.getFullYear();
   return `${formatedYear}/${formatedMonth}/${cformateddate}`;
 };
+
 export const StringDateFormatConvertor = (
   dateString: string,
   type: string,

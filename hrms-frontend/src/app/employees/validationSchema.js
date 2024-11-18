@@ -1,23 +1,44 @@
+import {
+  departmentError,
+  emailError,
+  firstNameError,
+  invalidEmailError,
+  lastNameError,
+  minfNameError,
+  minlNameletter,
+  numberError,
+  numberRequiredError,
+  roleError,
+} from "@/constants/constants";
+
 import * as Yup from "yup";
 
 export const employeeValidationSchema = Yup.object({
   fname: Yup.string()
-    .required("First name is required")
-    .min(3, "field is required"),
+    .required(firstNameError)
+    .test("min-length", minfNameError, (value) => {
+      if (value && value.length < 3) {
+        return false;
+      }
+      return true;
+    }),
 
   lname: Yup.string()
-    .required("Last name is required")
-    .min(3, "field is required"),
+    .required(lastNameError)
+    .test("min-length", minlNameletter, (value) => {
+      if (value && value.length < 3) {
+        return false;
+      }
+      return true;
+    }),
 
-  email: Yup.string()
-    .required("Email is required")
-    .email("Invalid email format"),
+  email: Yup.string().required(emailError).email(invalidEmailError),
 
-  role: Yup.string().required("Role is required"),
+  role: Yup.string().required(roleError),
 
-  department: Yup.string().required("Department is required"),
+  department: Yup.string().required(departmentError),
 
   phoneNumber: Yup.string()
-    .required("Phone number is required")
-    .matches(/^\d{10}$/, "Phone number must contain exactly 10 digits"),
+    .required(numberRequiredError)
+    .matches(/^\d{10}$/, numberError),
 });

@@ -1,21 +1,34 @@
 import { MultiSelect } from "@mantine/core";
 import { useEffect, useState } from "react";
 
+// Define a more specific type for form values
+type FormValues = Record<string, string[] | string | null>;
+
 type FormType = {
-  values: Record<string, any>;
-  errors: Record<string, any>;
-  setFieldValue: (name: string, value: any) => void;
+  values: FormValues;
+  errors: Record<string, string | undefined>;
+  setFieldValue: (name: string, value: string[]) => void;
   key: (name: string) => string;
 };
 
+type User = {
+  _id: string;
+  fname: string;
+  lname: string;
+};
+
 type SelectSearchProps = {
-  data: any;
+  data: { users: User[] };
   placeholder?: string;
   label?: string;
-  name: keyof FormType["values"]; // Ensure `name` is a key in `values`
+  name: keyof FormType["values"];
   form: FormType;
-  validateKey?: any;
+  validateKey?: string;
   value?: string | null;
+};
+type Option = {
+  value: string;
+  label: string;
 };
 
 const MultiSearchSelect: React.FC<SelectSearchProps> = ({
@@ -27,18 +40,26 @@ const MultiSearchSelect: React.FC<SelectSearchProps> = ({
   validateKey,
   value,
 }) => {
-  const [options, setOptions] = useState([]);
+  const [options, setOptions] = useState<Option[]>([]);
+
   useEffect(() => {
-    if (data) {
-      const employeeOptions = data?.users?.map((user: any) => ({
+    if (data?.users) {
+      const employeeOptions = data.users.map((user) => ({
         value: user._id,
-        label: user.fname + " " + user.lname,
+        label: `${user.fname} ${user.lname}`,
       }));
       setOptions(employeeOptions);
     }
+    ``;
   }, [data]);
 
-  const handleSelectChange = (value: any) => {
+  const selectedValue = Array.isArray(form.values[name])
+    ? form.values[name]
+    : form.values[name] != null
+    ? [form.values[name]]
+    : [];
+
+  const handleSelectChange = (value: string[]) => {
     form.setFieldValue(name, value);
   };
 
@@ -57,7 +78,7 @@ const MultiSearchSelect: React.FC<SelectSearchProps> = ({
         checkIconPosition="right"
         placeholder={placeholder || "Select an option"}
         data={options}
-        value={form.values[name] || []}
+        value={selectedValue}
         onChange={handleSelectChange}
         error={error}
         clearable={true}

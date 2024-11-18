@@ -9,10 +9,10 @@ const projectSlice = createSlice({
   name: "projectSlice",
   initialState,
   reducers: {
-    setAllproject(state, action) {
+    setAllProject(state, action) {
       state.allProjects = action.payload;
     },
-    settotalProjects(state, action) {
+    setTotalProjects(state, action) {
       state.totalProjects = action.payload;
     },
 
@@ -23,6 +23,6 @@ const projectSlice = createSlice({
   },
 });
 
-export const { setAllproject, settotalProjects, resetProjects } =
+export const { setAllProject, setTotalProjects, resetProjects } =
   projectSlice.actions;
 export default projectSlice.reducer;

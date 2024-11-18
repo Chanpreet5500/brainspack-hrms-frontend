@@ -1,23 +1,10 @@
-import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
-import {
-  createApi,
-  fetchBaseQuery,
-  RootState,
-} from "@reduxjs/toolkit/query/react";
-import { useSelector } from "react-redux";
+import { baseUrl } from "@/constants/constants";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const usersApi = createApi({
   reducerPath: "usersApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:3001/api",
-    prepareHeaders: (headers, { getState }) => {
-      // const { authToken } = getState().authUser;
-      // const authToken
-      // const state = getState() as RootState;
-      // const authToken = state.authUser.authToken;
-      // headers.set('Authorization', `Bearer ${authToken}`);
-      // return headers;
-    },
+    baseUrl: baseUrl,
   }),
   endpoints: (builder) => ({
     deleteDataApiByName: builder.mutation({
@@ -47,9 +34,9 @@ export const usersApi = createApi({
     }),
 
     createUser: builder.mutation({
-      query: ({ data, token }) => {
+      query: ({ data, token, authUser }) => {
         return {
-          url: `/users/create/66fa781382603080b4a64da3`,
+          url: `/users/create/${authUser.userId}`,
           method: "POST",
           body: data,
           headers: {

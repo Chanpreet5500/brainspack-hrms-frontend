@@ -1,5 +1,4 @@
 import { DatePickerInput } from "@mantine/dates";
-
 interface DatePickerProps {
   datePickerLabel: string;
   value: any;
@@ -8,7 +7,6 @@ interface DatePickerProps {
   defaultvalue: any;
   isEndDate?: boolean;
 }
-
 export const DatePickerComponent = ({
   datePickerLabel,
   value,

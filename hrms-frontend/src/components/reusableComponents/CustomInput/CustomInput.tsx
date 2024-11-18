@@ -3,7 +3,6 @@ interface CustomInputProps {
   classname?: string;
   placeholder: string;
 }
-
 const CustomInput: React.FC<CustomInputProps> = ({
   name,
   classname,
@@ -17,5 +16,4 @@ const CustomInput: React.FC<CustomInputProps> = ({
     />
   );
 };
-
 export default CustomInput;

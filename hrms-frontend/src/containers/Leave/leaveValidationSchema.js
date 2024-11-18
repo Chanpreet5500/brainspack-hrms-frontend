@@ -1,12 +1,18 @@
+import {
+  assignedToError,
+  leaveNameError,
+  reasonError,
+  startDateError,
+} from "@/constants/constants";
 import { DateFormatConvertor } from "@/utils/commonFunction";
 import * as Yup from "yup";
 
 export const leaveValidationSchema = Yup.object({
-  employee: Yup.string().required("Please select an employee."),
-  leave_type_id: Yup.string().required("Please select a leave type."),
+  employee: Yup.string().required(assignedToError),
+  leave_type_id: Yup.string().required(leaveNameError),
 
   start_date: Yup.string()
-    .required("Please select the start date.")
+    .required(startDateError)
     .test("valid-date", "Please provide a valid start date.", (value) => {
       return DateFormatConvertor(value) ? true : false;
     }),
@@ -16,5 +22,5 @@ export const leaveValidationSchema = Yup.object({
     .test("valid-date", "Please provide a valid end date.", (value) => {
       return DateFormatConvertor(value);
     }),
-  reason: Yup.string().required("reason is requirewd "),
+  reason: Yup.string().required(reasonError),
 });

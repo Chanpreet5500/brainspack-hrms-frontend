@@ -3,13 +3,13 @@ import { useSelector } from "react-redux";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
 import { IconPencil, IconUserCircle } from "@tabler/icons-react";
 import Image from "next/image";
+import { Tooltip } from "@mantine/core";
 
 const Profile = () => {
   const { authUser } = useSelector(manageAuthUserSelector);
   const handleEditClick = () => {
     console.log("Edit profile picture clicked");
   };
-
   return (
     <div className="h-[610px] flex items-center justify-center p-4">
       <div className="h-[500px] p-6 rounded-lg w-full max-w-4xl flex flex-col md:flex-row items-center md:items-start">
@@ -19,7 +19,6 @@ const Profile = () => {
               My Profile
             </div>
           </div>
-
           <div className="flex flex-col gap-[10px]">
             <div className="flex justify-between mb-2 h-[60px] border-l-2 border-gray-300 pl-1.5">
               <div className="flex justify-between flex-col">
@@ -42,7 +41,6 @@ const Profile = () => {
               <span>{authUser?.role || "N/A"}</span>
             </div>
           </div>
-
           <button className="w-[30%] bg-blue-600 text-white py-2 rounded-lg">
             Log Out
           </button>
@@ -60,16 +58,17 @@ const Profile = () => {
             ) : (
               <IconUserCircle className="text-gray-500" size={100} />
             )}
-            <IconPencil
-              onClick={handleEditClick}
-              className="text-white cursor-pointer absolute right-2 top-14 bg-blue-600 p-1 rounded-full"
-              size={24}
-            />
+            <Tooltip label="Edit Image">
+              <IconPencil
+                onClick={handleEditClick}
+                className="text-white cursor-pointer absolute right-2 top-14 bg-blue-600 p-1 rounded-full"
+                size={24}
+              />
+            </Tooltip>
           </div>
         </div>
       </div>
     </div>
   );
 };
-
 export default Profile;

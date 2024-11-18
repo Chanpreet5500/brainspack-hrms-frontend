@@ -6,12 +6,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useDisclosure } from "@mantine/hooks";
 import { manageLeavePoliciesSelector } from "@/redux/leavePolicies/leaveSelector";
 import {
-  useCreateLeavePoliciesApiMutation,
   useLazyGetAllLeavePoliciesApiApiByNameQuery,
   useUpdateLeavePoliciesApiByNameMutation,
 } from "@/services/leavePolicies/leavesApi";
 import LeavePolicieForm from "@/components/policiesSection/LeavePoliciesForm";
 import {
+  resetIsCall,
   setallLeavesPolicies,
   settotalleavesPolicies,
 } from "@/redux/leavePolicies/leave";
@@ -20,30 +20,27 @@ import { useForm, yupResolver } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
 import { numberOfLeavesSchema } from "./leavesSchema";
-
-// Define types for leave policies
-interface LeavePolicy {
+export interface LeavePolicy {
   _id: string;
   leave_type_id: string;
   max_leaves_per_year: number;
 }
-
 interface LeavePoliciesResponse {
   data: LeavePolicy[];
   totalLeaves: number;
 }
-
 const initialState = {
   allLeavesPolicies: [] as LeavePolicy[],
   totalleavesPolicies: 0,
 };
-
+export interface FormValuesLeavesPolicy {
+  leave_type_id: string;
+  max_leaves_per_year: string;
+}
 export default function TypeComponent() {
-  const [createLeavePolicies, { isLoading, error, isSuccess: createSuccess }] =
-    useCreateLeavePoliciesApiMutation();
   const [updateData, { data: updateLeaveData, isSuccess: updateSuccess }] =
     useUpdateLeavePoliciesApiByNameMutation();
-  const { allLeavesPolicies, totalleavesPolicies } = useSelector(
+  const { allLeavesPolicies, totalleavesPolicies, isCall } = useSelector(
     manageLeavePoliciesSelector
   );
   const { authUser, authToken } = useSelector(manageAuthUserSelector);
@@ -52,8 +49,6 @@ export default function TypeComponent() {
   const [opened, { open, close }] = useDisclosure(false);
   const [triggerLeavePolicies, { data, isSuccess, isError }] =
     useLazyGetAllLeavePoliciesApiApiByNameQuery();
-
-  // Fetch leave policies
   useEffect(() => {
     if (authToken) {
       triggerLeavePolicies({ token: authToken });
@@ -61,17 +56,16 @@ export default function TypeComponent() {
     if (data) {
       dispatch(setallLeavesPolicies(data));
       dispatch(settotalleavesPolicies(data.length));
+      dispatch(resetIsCall(false));
     }
-  }, [data, createSuccess, updateSuccess, authToken, dispatch]);
-
-  // Handle search input change
+  }, [data, isCall, updateSuccess, authToken]);
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const searchValue = event.target.value;
     setSearch(searchValue);
   };
-
-  // Handle update for leave policies
-  const onHandelUpdate = async (leavePolicies: LeavePolicy) => {
+  const onHandelUpdate: (leavePolicies: LeavePolicy) => Promise<void> = async (
+    leavePolicies
+  ) => {
     try {
       const { leave_type_id, max_leaves_per_year, _id } = leavePolicies;
       if (isNaN(Number(max_leaves_per_year))) {
@@ -116,9 +110,7 @@ export default function TypeComponent() {
     close();
     form.reset();
   };
-
-  // Mantine form for managing leave policy creation/update
-  const form = useForm({
+  const form = useForm<FormValuesLeavesPolicy>({
     mode: "controlled",
     validateInputOnChange: true,
     initialValues: {
@@ -128,7 +120,6 @@ export default function TypeComponent() {
 
     validate: yupResolver(numberOfLeavesSchema),
   });
-
   return (
     <>
       <div className="flex h-[90px] justify-between p-2 max-sm:flex-col-reverse ">
@@ -156,16 +147,12 @@ export default function TypeComponent() {
                 form={form}
                 onClose={close}
                 token={authToken}
-                triggerCreate={createLeavePolicies}
               />
             }
           />
         </div>
       </div>
-      <div
-        className="flex flex-wrap  align-middle gap-8"
-        style={{ paddingLeft: "30px" }}
-      >
+      <div className="flex flex-wrap justify-center align-middle gap-8">
         <CustumCard
           module={"leavePolicies"}
           form={form}

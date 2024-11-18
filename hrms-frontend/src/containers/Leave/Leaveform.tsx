@@ -6,32 +6,27 @@ import { notifications } from "@mantine/notifications";
 import { IconCheck } from "@tabler/icons-react";
 import { holidayData, whichHalfData } from "@/constants/constants";
 import { DateFormatConvertor } from "@/utils/commonFunction";
-
 import { useLazyGetAllDataApiByNameQuery } from "@/services/user/usersApi";
 import { useLazyGetAllLeaveTypePoliciesApiByNameQuery } from "@/services/typePolicies/typeApi";
 import { DatePickerComponent } from "@/components/reusableComponents/CustomDatePicker/CustomDatePicker";
 import SelectInputField from "@/components/Inputs/selectInput/Select";
 import { leaveValidationSchema } from "./leaveValidationSchema";
 import SearchSelect from "@/components/reusableComponents/SearchSelect";
-
 interface dataValue {
   onClose: any;
   triggerCreate: any;
   token: any;
-  createSuccess: any;
   editBy: string;
 }
-
 const LeaveForm: React.FC<dataValue> = ({
   onClose,
   triggerCreate,
   token,
-  createSuccess,
   editBy,
 }) => {
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date | null>(startDate);
-  const [reasonError, setReasonError] = useState<string>(""); // State to track reason error
+  const [reasonError, setReasonError] = useState<string>("");
 
   const [allDataApi, { data: employeData }] = useLazyGetAllDataApiByNameQuery();
   const [allleaveTypeDataApi, { data: leaveTypeData }] =
@@ -52,7 +47,6 @@ const LeaveForm: React.FC<dataValue> = ({
       value: leave?._id,
       label: leave?.description,
     })) || [];
-
   const handleSubmit = async (data: any) => {
     try {
       const { employee, reason, ...rest } = data;
@@ -103,7 +97,6 @@ const LeaveForm: React.FC<dataValue> = ({
     validateInputOnChange: true,
     initialValues: {
       employee: "",
-      // leave_type: "",
       start_date: startDate,
       end_date: endDate,
       start_day: "",
@@ -222,7 +215,6 @@ const LeaveForm: React.FC<dataValue> = ({
             validateKey={form.getInputProps("end_half_day_time")}
           />
         </div>
-
         <Textarea
           label="Reason"
           resize="vertical"
@@ -254,5 +246,4 @@ const LeaveForm: React.FC<dataValue> = ({
     </form>
   );
 };
-
 export default LeaveForm;

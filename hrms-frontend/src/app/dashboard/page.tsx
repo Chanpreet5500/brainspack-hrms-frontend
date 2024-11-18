@@ -15,8 +15,6 @@ import { useLazyGetAllLeaveDataApiByNameQuery } from "@/services/leave/getLeaves
 import { useLazyGetAllHolidayDataApiByNameQuery } from "@/services/holiday/holidayApi";
 import Link from "next/link";
 import Image from "next/image";
-
-// Define the types for employee, leave, and holiday data
 type User = {
   fname: string;
   lname: string;
@@ -32,11 +30,9 @@ type EmployeeData = {
 type LeaveData = {
   leaves: { id: string; type: string; startDate: string; endDate: string }[]; // Assuming the leave object structure
 };
-
 type HolidayData = {
   count: number;
 };
-
 type DummyDataItem = {
   title: string;
   count: number;
@@ -45,13 +41,11 @@ type DummyDataItem = {
   iconBgColor: string;
   link?: string;
 };
-
 const todayDate = StringDateFormatConvertor(
   new Date().toISOString(),
   "DD/MMM/YYYY",
   "-"
 );
-
 const Dashboard = () => {
   const [dummyData, setDummyData] = useState<DummyDataItem[]>(countAllData);
 
@@ -62,16 +56,13 @@ const Dashboard = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(10);
   const [search, setSearch] = useState<string>("");
-
   const [
     getEmployees,
     { data: employeeData, error, isLoading, isSuccess: getEmployeeSuccess },
   ] = useLazyGetAllDataApiByNameQuery();
-
   const dispatch = useDispatch();
   const { allUserDataLength, allUserData } = useSelector(manageUserSelector);
   const { authUser, authToken } = useSelector(manageAuthUserSelector);
-
   const fetchUserData = async (
     currPage: number,
     limit: number,
@@ -84,7 +75,6 @@ const Dashboard = () => {
       token: authToken,
     });
   };
-
   const fetchLeaveData = async (
     currPage: number,
     limit: number,
@@ -97,7 +87,6 @@ const Dashboard = () => {
       token: authToken,
     });
   };
-
   const fetchHolidayData = async (
     currPage: number,
     limit: number,
@@ -110,14 +99,12 @@ const Dashboard = () => {
       token: authToken,
     });
   };
-
   useEffect(() => {
     if (employeeData?.users.length > 0 && getEmployeeSuccess) {
       dispatch(getAllUserData(employeeData?.users));
       dispatch(setUserDataLength(employeeData.totalusers));
     }
   }, [employeeData, getEmployeeSuccess]);
-
   useEffect(() => {
     if ((authToken && employeeData) || leavesData || holidaysData) {
       setDummyData((prevDummy: DummyDataItem[]) =>
@@ -136,16 +123,13 @@ const Dashboard = () => {
       );
     }
   }, [employeeData, leavesData, authToken]);
-
   useEffect(() => {}, [authToken]);
-
   useEffect(() => {
     if (employeeData?.users.length > 0 && getEmployeeSuccess) {
       dispatch(getAllUserData(employeeData?.users));
       dispatch(setUserDataLength(employeeData.totalusers));
     }
   }, [employeeData, getEmployeeSuccess, authToken, authUser]);
-
   useEffect(() => {
     if (authToken) {
       fetchUserData(currentPage, limit, search);
@@ -153,7 +137,6 @@ const Dashboard = () => {
       fetchHolidayData(currentPage, limit, search);
     }
   }, [currentPage, limit, search, authToken]);
-
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading data</div>;
   return (
@@ -296,5 +279,4 @@ const Dashboard = () => {
     </div>
   );
 };
-
 export default Dashboard;

@@ -10,7 +10,7 @@ import FullCalendar from "@fullcalendar/react";
 import { Tooltip } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useEffect } from "react";
-import { useForm, yupResolver } from "@mantine/form";
+import { useForm } from "@mantine/form";
 import { CustomModal } from "@/components/reusableComponents/CustomModal/CustomModal";
 import "./holiday.css";
 import { HolidayFormData } from "@/utils/interfaces/interfaces";
@@ -20,8 +20,6 @@ import {
   EventApi,
 } from "@fullcalendar/core/index.js";
 import HolidayForm from "@/containers/Holiday/HolidayForm";
-
-// Type Definitions
 interface Holiday {
   _id: string;
   title: string;
@@ -29,7 +27,6 @@ interface Holiday {
   date: string;
   type: string;
 }
-
 const Calendar = () => {
   const [allDataApi, { data, error, isLoading, isSuccess }] =
     useLazyGetAllHolidayDataApiByNameQuery();
@@ -37,24 +34,20 @@ const Calendar = () => {
   const { allData, change } = useSelector(manageHolidaySelector);
   const [opened, { open, close }] = useDisclosure(false);
   const { authToken } = useSelector(manageAuthUserSelector);
-
   useEffect(() => {
     if (authToken) {
       onGetData();
     }
   }, [authToken, change]);
-
   const onGetData = async () => {
     const response = await allDataApi({ token: authToken });
     dispatch(getAllholidayData(response.data));
     dispatch(trackChange(false));
   };
-
   const handleOnClose = () => {
     close();
     form.reset();
   };
-
   const form = useForm<HolidayFormData>({
     mode: "controlled",
     validateInputOnChange: true,
@@ -92,8 +85,6 @@ const Calendar = () => {
       type: (value) => (value ? null : "Select field is required"),
     },
   });
-
-  // Event Click handler with proper types
   const handleEventClick = (eventInfo: EventClickArg) => {
     const data = {
       holiday_id: eventInfo.event.id,
@@ -107,14 +98,10 @@ const Calendar = () => {
     form.setValues(data);
     open();
   };
-
-  // Date Select handler with proper types
   const handleDateSelect = async (selectInfo: DateSelectArg) => {
     form.setValues({ date: selectInfo.start.toISOString() });
     open();
   };
-
-  // Event Content rendering with proper types
   const renderEventContent = (eventInfo: { event: EventApi }) => {
     return (
       <Tooltip
@@ -128,7 +115,6 @@ const Calendar = () => {
       </Tooltip>
     );
   };
-
   return (
     <>
       <div className="flex justify-end items-center p-2 max-sm:flex-col-reverse max-sm:items-start">
@@ -146,7 +132,6 @@ const Calendar = () => {
           </div>
         </div>
       </div>
-
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
@@ -167,5 +152,4 @@ const Calendar = () => {
     </>
   );
 };
-
 export default Calendar;

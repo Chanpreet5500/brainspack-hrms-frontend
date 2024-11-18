@@ -1,16 +1,17 @@
+import { baseUrl } from "@/constants/constants";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const holidayApi = createApi({
   reducerPath: "holidayApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:3001/api/holidays",
+    baseUrl: baseUrl,
   }),
 
   endpoints: (builder) => ({
     deleteHolidayDataApiByName: builder.mutation({
       query: ({ data, token }) => {
         return {
-          url: `/delete/${data}`,
+          url: `/holidays/delete/${data}`,
           method: "Delete",
           body: {},
           headers: {
@@ -23,7 +24,7 @@ export const holidayApi = createApi({
     getAllHolidayDataApiByName: builder.query({
       query: ({ token }) => {
         return {
-          url: `/`,
+          url: `/holidays/`,
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -35,7 +36,7 @@ export const holidayApi = createApi({
     createHoliday: builder.mutation({
       query: ({ data, owner_id, token }) => {
         return {
-          url: `/create/${owner_id}`,
+          url: `/holidays/create/${owner_id}`,
           method: "POST",
           body: data,
           headers: {
@@ -48,7 +49,7 @@ export const holidayApi = createApi({
     updateHolidayDataApiByName: builder.mutation({
       query: ({ data, owner_id, token }) => {
         return {
-          url: `/update/${owner_id}`,
+          url: `/holidays/update/${owner_id}`,
           method: "PATCH",
           body: data,
           headers: {

@@ -19,7 +19,6 @@ import {
 } from "@tabler/icons-react";
 import { usePathname, useRouter } from "next/navigation";
 import classes from "./Navbar.module.css";
-
 interface LinkItem {
   label: string;
   link?: string;
@@ -28,12 +27,10 @@ interface LinkItem {
   initiallyOpened?: boolean;
   data?: any;
 }
-
 interface NavbarProps {
   linksData: LinkItem[];
   toggltSidebar: () => void;
 }
-
 export function LinksGroup({
   icon: Icon,
   label,
@@ -54,7 +51,6 @@ export function LinksGroup({
       toggltSidebar();
     }
   };
-
   const items = (hasLinks ? links : []).map((subLink) => (
     <Text<"a">
       component="a"
@@ -69,7 +65,6 @@ export function LinksGroup({
       {subLink.label}
     </Text>
   ));
-
   return (
     <>
       <UnstyledButton
@@ -106,12 +101,10 @@ export function LinksGroup({
     </>
   );
 }
-
 export function Navbar({ linksData, toggltSidebar }: NavbarProps) {
   const links = linksData.map((item) => (
     <LinksGroup {...item} key={item.label} toggltSidebar={toggltSidebar} />
   ));
-
   return (
     <div className={classes.navbar}>
       <ScrollArea className={classes.links}>
@@ -120,7 +113,6 @@ export function Navbar({ linksData, toggltSidebar }: NavbarProps) {
     </div>
   );
 }
-
 const mockdata = [
   { label: "Dashboard", icon: IconAlignBoxLeftStretch, link: "/dashboard" },
   { label: "Employees", icon: IconUsersGroup, link: "/employees" },
@@ -133,7 +125,6 @@ const mockdata = [
       { label: "Policies", link: "/leavepolicies/leavespolicies" },
     ],
   },
-
   {
     label: "Project",
     icon: IconCalendarMonth,
@@ -145,7 +136,6 @@ const mockdata = [
     link: "/holidays",
   },
 ];
-
 export default function Sidebar({
   toggltSidebar,
 }: {

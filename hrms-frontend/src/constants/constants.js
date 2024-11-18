@@ -14,7 +14,6 @@ import {
   IconUserPlus,
   IconUsers,
 } from "@tabler/icons-react";
-
 export const appdroperdata = [
   { id: 1, icon: IconSettings, name: "Profile", link: "/profile" },
 ];
@@ -24,7 +23,6 @@ export const employeeData = [
   { id: "2", label: "HR", value: "hr" },
   { id: "3", label: "Employee", value: "employee" },
 ];
-
 export const dangerdroperdata = [
   { id: 0, icon: IconTransfer, name: "Transfer my data" },
   { id: 1, icon: IconTrash, name: "Delete my Account" },
@@ -62,7 +60,6 @@ export const countAllData = [
     iconBgColor: "#afccdd",
   },
 ];
-
 export const memberData = [
   {
     name: "A",
@@ -81,7 +78,6 @@ export const memberData = [
     designation: "UI/UX Developer",
   },
 ];
-
 export const sidebarlinks = [
   {
     id: 0,
@@ -122,7 +118,6 @@ export const sidebarlinks = [
     ],
   },
 ];
-
 export const TableHeadiingForLeaves = [
   "Sr. No",
   "Employee Name",
@@ -132,7 +127,6 @@ export const TableHeadiingForLeaves = [
   "Status",
   "Actions",
 ];
-
 export const TableHeadiingForEmployee = [
   "Sr. No",
   "First Name",
@@ -143,7 +137,6 @@ export const TableHeadiingForEmployee = [
   "Status",
   "Action",
 ];
-
 export const attendancedata = [
   {
     id: 0,
@@ -202,66 +195,11 @@ export const employeProfetion = [
   { id: 2, label: "HR", value: "hr" },
   { id: 3, label: "Employee", value: "employee" },
 ];
-
 export const holidayType = [
   { id: 1, label: "National", value: "national" },
   { id: 1, label: "Regional", value: "regional" },
   { id: 1, label: "Event", value: "event" },
 ];
-
-// export const leavedata = [
-//   {
-//     name: "Athena Weissnat",
-//     leavetype: "Casual Leave",
-//     startdate: "12/43/2022",
-//     enddate: "13/67/7809",
-//     status: "Pending",
-//   },
-//   {
-//     name: "Asif Ali",
-//     leavetype: "Sick Leave",
-//     startdate: "12/43/2022",
-//     enddate: "13/67/7809",
-//     status: "Pending",
-//   },
-//   {
-//     name: "Shubham Kaushal",
-//     leavetype: "Casual Leave",
-//     startdate: "12/43/2022",
-//     enddate: "13/67/7809",
-//     status: "Pending",
-//   },
-//   {
-//     name: "Sagar Rana",
-//     leavetype: "Sick Leave",
-//     startdate: "12/43/2022",
-//     enddate: "13/67/7809",
-//     status: "Approved",
-//   },
-//   {
-//     name: "Gourav Kashyap",
-//     leavetype: "Sick Leave",
-//     startdate: "12/43/2022",
-//     enddate: "13/67/7809",
-//     status: "Approved",
-//   },
-//   {
-//     name: "Nisha Arora",
-//     leavetype: "Sick Leave",
-//     startdate: "12/43/2022",
-//     enddate: "13/67/7809",
-//     status: "Approved",
-//   },
-// ];
-// export const leaveTypes = [
-//   {
-//     id: 1,
-//     label: "Sick Leave",
-//     value: "sick-leave",
-//   },
-//   { id: 2, label: "Casual Leave", value: "casual-leave" },
-//   { id: 3, label: "Emergency Leave", value: "emergency-leave" },
-// ];
 export const holidayData = [
   { id: "1", label: "Half", value: "half" },
   { id: "2", label: "Full", value: "full" },
@@ -270,7 +208,6 @@ export const whichHalfData = [
   { id: "1", label: "First Half", value: "first" },
   { id: "2", label: "Secound Half", value: "second" },
 ];
-
 export const superadminimages = [
   "/images/wolfgang.jpg",
   "/images/milad.jpg",
@@ -282,5 +219,51 @@ export const superadminimages = [
   "/images/tree.jpg",
   "/images/stairs.jpg",
 ];
-
+export const baseUrl = "http://localhost:3001/api";
 export const tableDataLimit = 10;
+export const title = "Brainspack | HRMS";
+export const description =
+  "A modern, web-based Human Resource Management System (HRMS) designed to streamline employee management, leave tracking, and attendance monitoring with seamless authentication and powerful reporting features.";
+
+export const numberError = "Please Enter 10 Digit Number";
+
+export const firstNameError = "First Name is Required";
+
+export const lastNameError = "Last Name is Required";
+
+export const emailError = "Email Is Required";
+
+export const numberRequiredError = "Phone Number Is Required";
+
+export const roleError = "Role Is Required";
+
+export const departmentError = "Department Is Required";
+
+export const leaveNameError = "Please Select The Leave  Type";
+
+export const descriptionError = "Please Add The Description";
+
+export const holidayTitleError = "Please Add Holiday Title";
+
+export const holidayTypeError = "Select The Holiday Type";
+
+export const projectNameError = "Please Add Project Name";
+
+export const assignedToError = "Please Select Employees";
+
+export const reasonError = "Reason is Required";
+
+export const validNumberError =
+  "Please Enter a Valid Number Of Leaves Per Year";
+
+export const postiveNumberError = "Leaves number should Be a positive Number";
+
+export const integerNumberError = "Max leaves per year must be an integer";
+
+export const maxLeavesError = "Max leaves per year is required";
+
+export const minfNameError = "First name must be at least 3 characters";
+
+export const minlNameletter = "Last name must be at least 3 characters";
+
+export const invalidEmailError = "Invalid email format";

@@ -1,7 +1,6 @@
 "use client";
-import { useEffect, useState } from "react";
-import { useForm } from "@mantine/form";
-import { Button, Group, MantineProvider, Textarea } from "@mantine/core";
+import { useEffect } from "react";
+import { Button, Group, MantineProvider } from "@mantine/core";
 import {
   DateFormatConvertor,
   variantColorResolver,
@@ -12,9 +11,7 @@ import { useLazyGetAllDataApiByNameQuery } from "@/services/user/usersApi";
 import { DatePickerComponent } from "@/components/reusableComponents/CustomDatePicker/CustomDatePicker";
 import TextInputField from "@/components/Inputs/textInput/Input";
 import TextAreaField from "@/components/Inputs/textArea/TextArea";
-import SelectSearch from "@/components/reusableComponents/MultiSearchSelect";
 import MultiSearchSelect from "@/components/reusableComponents/MultiSearchSelect";
-
 interface AuthUser {
   userId: string;
 }
@@ -31,7 +28,6 @@ interface dataValue {
   authUser: AuthUser;
   form: any;
   createSuccess: boolean;
-  // editBy: string;
 }
 
 const ProjectForm: React.FC<dataValue> = ({
@@ -55,20 +51,8 @@ const ProjectForm: React.FC<dataValue> = ({
   }, [token, createSuccess]);
 
   const handleSubmit = async (data: any) => {
+    console.log(data, "update");
     try {
-      let adjustedEndDate = endDate;
-      if (endDate?.getTime() === startDate?.getTime()) {
-        adjustedEndDate = new Date(startDate);
-        adjustedEndDate.setDate(adjustedEndDate.getDate() + 1);
-      }
-      const projectdata = {
-        name: data?.name,
-        assigned_to: data?.assigned_to,
-        description: data?.description,
-        assigned_by: authUser?.userId,
-        start_date: DateFormatConvertor(startDate),
-        end_date: DateFormatConvertor(adjustedEndDate),
-      };
       if (data._id) {
         triggerUpdate(data);
         notifications.show({
@@ -79,6 +63,20 @@ const ProjectForm: React.FC<dataValue> = ({
           autoClose: 1000,
         });
       } else {
+        let adjustedEndDate = endDate;
+        if (endDate?.getTime() === startDate?.getTime()) {
+          adjustedEndDate = new Date(startDate);
+          adjustedEndDate.setDate(adjustedEndDate.getDate() + 1);
+        }
+        const projectdata = {
+          name: data?.name,
+          assigned_to: data?.assigned_to,
+          description: data?.description,
+          assigned_by: authUser?.userId,
+          start_date: DateFormatConvertor(startDate),
+          end_date: DateFormatConvertor(adjustedEndDate),
+        };
+
         const response = await triggerCreate({
           data: projectdata,
           token: token,
@@ -190,5 +188,4 @@ const ProjectForm: React.FC<dataValue> = ({
     </form>
   );
 };
-
 export default ProjectForm;

@@ -1,3 +1,4 @@
+import React from "react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -9,9 +10,7 @@ import ReduxProvider from "@/services/reduxProvider";
 import { SessionProviderWrapper } from "@/components/session/SessionProviderWrapper";
 import { Notifications } from "@mantine/notifications";
 import "@mantine/notifications/styles.css";
-
-import React from "react";
-
+import { description, title } from "../constants/constants";
 const inter = Inter({ subsets: ["latin"] });
 type SessionType = {
   user?: {
@@ -21,17 +20,14 @@ type SessionType = {
   };
   expires: string;
 } | null;
-
 export const metadata: Metadata = {
-  title: "Brainspack | HRMS",
-  description:
-    "A modern, web-based Human Resource Management System (HRMS) designed to streamline employee management, leave tracking, and attendance monitoring with seamless authentication and powerful reporting features.",
+  title: title,
+  description: description,
 };
 
 type PageProps = {
   session?: SessionType;
 };
-
 export default async function RootLayout({
   children,
   pageProps,
@@ -40,7 +36,6 @@ export default async function RootLayout({
   pageProps: PageProps;
 }) {
   const session = pageProps?.session;
-
   return (
     <html lang="en">
       <head>

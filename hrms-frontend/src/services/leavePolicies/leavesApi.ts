@@ -1,9 +1,14 @@
+import { baseUrl } from "@/constants/constants";
+import {
+  CreateLeavePolicyRequest,
+  CreateLeavePolicyResponse,
+} from "@/utils/interfaces/interfaces";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const leavePoliciesApi = createApi({
   reducerPath: "leavePoliciesApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:3001/api",
+    baseUrl: baseUrl,
   }),
   endpoints: (builder) => ({
     getAllLeavePoliciesApiApiByName: builder.query({
@@ -19,7 +24,10 @@ const leavePoliciesApi = createApi({
       },
     }),
 
-    createLeavePoliciesApi: builder.mutation({
+    createLeavePoliciesApi: builder.mutation<
+      CreateLeavePolicyResponse,
+      CreateLeavePolicyRequest
+    >({
       query: (props) => {
         const data = {
           leave_type_id: props?.leave_type_id,

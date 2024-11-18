@@ -1,3 +1,3 @@
 export const manageAuthUserSelector = (state: any) => {
-    return state.authUserSlice;
+  return state.authUserSlice;
 };

@@ -3,15 +3,13 @@ import { useEffect, useState } from "react";
 import { tableDataLimit } from "@/constants/constants";
 import Searchbar from "@/components/Searchbar/Searchbar";
 import { useDisclosure } from "@mantine/hooks";
-import { useForm } from "@mantine/form";
+import { useForm, yupResolver } from "@mantine/form";
 import { useDispatch, useSelector } from "react-redux";
 import { IconEdit, IconEye, IconMoodSad, IconTrash } from "@tabler/icons-react";
-
 import { DataTable } from "mantine-datatable";
-
 import { CustomModal } from "@/components/reusableComponents/CustomModal/CustomModal";
 import { manageAuthUserSelector } from "@/redux/authorizedUser/authorizedUserSelector";
-import { Box, Button, Group, Loader } from "@mantine/core";
+import { Box, Button, Group, Loader, Tooltip } from "@mantine/core";
 import ProjectForm from "@/containers/Project/ProjectForm";
 import {
   useCreateProjectApiMutation,
@@ -19,7 +17,7 @@ import {
   useLazyGetAllProjectByNameQuery,
   useUpdateProjectApiMutation,
 } from "@/services/project/projectApi";
-import { setAllproject, settotalProjects } from "@/redux/project/project";
+import { setAllProject, setTotalProjects } from "@/redux/project/project";
 import { manageProjectSelector } from "@/redux/project/projectSelector";
 import {
   DateFormatConvertor,
@@ -27,6 +25,7 @@ import {
 } from "@/utils/commonFunction";
 import { notifications } from "@mantine/notifications";
 import Link from "next/link";
+import { projectValidationSchema } from "./projectValidationSchema";
 interface ProjectData {
   _id?: string;
   name?: string;
@@ -51,7 +50,6 @@ export default function Projects() {
   const [createProject, { data, isSuccess }] = useCreateProjectApiMutation();
   const [search, setSearch] = useState("");
   const { allProjects, totalProjects } = useSelector(manageProjectSelector);
-
   const [currentpage, setCurrentPage] = useState(1);
   const [
     allProject,
@@ -72,11 +70,10 @@ export default function Projects() {
     close();
     form.reset();
   };
-
   useEffect(() => {
     if (allProjectData?.length && projectSuccess) {
-      dispatch(setAllproject(allProjectData?.assigned_to));
-      dispatch(settotalProjects(allProjectData?.length));
+      dispatch(setAllProject(allProjectData?.assigned_to));
+      dispatch(setTotalProjects(allProjectData?.length));
     }
   }, [allProjectData, authToken]);
   useEffect(() => {
@@ -99,14 +96,11 @@ export default function Projects() {
       limit: 10,
       token: authToken,
     };
-
     allProject(params);
   };
-
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const updatedSearch = event.target.value;
     setSearch(updatedSearch);
-    // renderData(currentpage, tableDataLimit, updatedSearch);
   };
   const viewProjectData = (row: any) => {
     return (
@@ -133,27 +127,36 @@ export default function Projects() {
       message: "Employee data deleted successfully",
     });
   };
-  const form = useForm({
+  interface ProjectFormValues {
+    _id?: string;
+    assigned_by?: string;
+    name?: string;
+    assigned_to?: string[];
+    description?: string;
+    start_date?: Date;
+    end_date?: Date | null;
+  }
+  const form = useForm<ProjectFormValues>({
     mode: "controlled",
     validateInputOnChange: true,
     initialValues: {
       assigned_by: "",
       name: "",
-      assigned_to: "",
+      assigned_to: [],
       description: "",
       start_date: startDate,
       end_date: endDate,
     },
-    validate: {
-      name: (value) => (value ? null : "Please select an employee."),
-      assigned_to: (value) => (value ? null : "Please select an employee."),
-      start_date: (value) =>
-        DateFormatConvertor(value) ? null : "Please select the start date.",
-      end_date: (value) =>
-        DateFormatConvertor(value) ? null : "Please select the end date.",
-    },
+    validate: yupResolver(projectValidationSchema),
+    // validate: {
+    //   name: (value) => (value ? null : "Please select an employee."),
+    //   assigned_to: (value) => (value ? null : "Please select an employee."),
+    //   start_date: (value) =>
+    //     DateFormatConvertor(value) ? null : "Please select the start date.",
+    //   end_date: (value) =>
+    //     DateFormatConvertor(value) ? null : "Please select the end date.",
+    // },
   });
-
   const triggerUpdate = async (row: any) => {
     const assignedToId = row?.assigned_to?.map((finalId: string) => {
       return finalId;
@@ -165,6 +168,7 @@ export default function Projects() {
       end_date: DateFormatConvertor(row.end_date),
       description: row.description,
     };
+    console.log(updateProjectData, "updateProjectData");
     try {
       const result = await updateUserData({
         data: updateProjectData,
@@ -183,13 +187,12 @@ export default function Projects() {
   type TableRow = {
     _id: string;
     name?: string;
-    assigned_to?: AssignedTo[] | string;
+    assigned_to?: AssignedTo[];
     assigned_by?: AssignedTo[];
     description?: string;
     start_date?: any;
     end_date?: any;
   };
-
   const records: any[] = allProjects?.slice(
     (currentpage - 1) * tableDataLimit,
     currentpage * tableDataLimit
@@ -202,7 +205,6 @@ export default function Projects() {
       render: (record: any, index: number) =>
         (currentpage - 1) * tableDataLimit + index + 1,
     },
-
     { accessor: "name", width: "12%" },
     {
       accessor: "assigned_by ",
@@ -215,13 +217,42 @@ export default function Projects() {
       accessor: "assigned_to ",
       width: "12%",
       render: (data: any) => {
-        const newData = data?.assigned_to.map((finalData: any) => {
-          return <>{finalData?.fname ?? "N/A"}</>;
-        });
-        return <>{newData ?? "N/A"}</>;
+        if (data?.assigned_to && data.assigned_to.length > 0) {
+          const firstTwoNames = data.assigned_to
+            .slice(0, 2)
+            .map((finalData: any) => finalData?.fname ?? "N/A");
+          const remainingCount = data.assigned_to.length - 2;
+          const remainingNames = data.assigned_to.slice(
+            2,
+            data.assigned_to.length
+          );
+
+          let overallLength = remainingNames[remainingNames.length - 1];
+          let stringForNames = "";
+          remainingNames.map((ele: any) => {
+            if (ele.fname === overallLength) {
+              stringForNames += ele.fname;
+            } else {
+              stringForNames += ele.fname + " , ";
+            }
+          });
+
+          return (
+            <>
+              {firstTwoNames.join(", ")}
+              {remainingCount > 0 && (
+                <Tooltip label={stringForNames}>
+                  <span className="more-info" style={{ color: "gray" }}>
+                    (+{remainingCount} more)
+                  </span>
+                </Tooltip>
+              )}
+            </>
+          );
+        }
+        return "N/A";
       },
     },
-
     {
       accessor: "start_date",
       width: "20%",
@@ -233,7 +264,6 @@ export default function Projects() {
         return <>{formattedDate}</>;
       },
     },
-
     {
       accessor: "end_date ",
       width: "20%",
@@ -245,7 +275,6 @@ export default function Projects() {
         return <>{formattedDate}</>;
       },
     },
-
     {
       accessor: "Action",
       width: "20%",
@@ -262,31 +291,36 @@ export default function Projects() {
             description: row?.description,
             start_date: row?.start_date,
             end_date: row?.end_date,
-            assigned_to: assignedToData ?? "",
+            assigned_to: assignedToData,
           });
         };
         return (
           <div className="flex justify-center gap-2">
-            <button onClick={() => editModal(data)}>
-              <IconEdit className="h-[25px] w-[25px] text-blue-600 cursor-pointer" />
-            </button>
-            <button onClick={() => openModal(data)}>
-              <IconTrash className="h-[25px] w-[25px] text-red-500 cursor-pointer" />
-            </button>
-            <Link
-              href={{
-                pathname: `/projects/${data._id}`,
-              }}
-              passHref
-            >
-              <IconEye className="h-[25px] w-[25px] text-blue-600 cursor-pointer" />
-            </Link>
+            <Tooltip label="edit">
+              <button onClick={() => editModal(data)}>
+                <IconEdit className="h-[25px] w-[25px] text-blue-600 cursor-pointer" />
+              </button>
+            </Tooltip>
+            <Tooltip label="delete">
+              <button onClick={() => openModal(data)}>
+                <IconTrash className="h-[25px] w-[25px] text-red-500 cursor-pointer" />
+              </button>
+            </Tooltip>
+            <Tooltip label="view">
+              <Link
+                href={{
+                  pathname: `/projects/${data._id}`,
+                }}
+                passHref
+              >
+                <IconEye className="h-[25px] w-[25px] text-blue-600 cursor-pointer" />
+              </Link>
+            </Tooltip>
           </div>
         );
       },
     },
   ];
-
   return (
     <>
       <div className=" customDiv flex justify-between items-center p-2 max-sm:flex-col-reverse max-sm:items-start">

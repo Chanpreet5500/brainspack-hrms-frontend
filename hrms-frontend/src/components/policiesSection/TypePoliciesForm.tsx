@@ -7,23 +7,26 @@ import { IconCheck } from "@tabler/icons-react";
 import TextInputField from "../Inputs/textInput/Input";
 import TextAreaField from "../Inputs/textArea/TextArea";
 import { UseFormReturnType } from "@mantine/form";
-
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { SerializedError } from "@reduxjs/toolkit";
 interface FormValues {
   _id?: string;
   name: string;
   description: string;
   [key: string]: any;
 }
-
 interface DataValue {
   onClose: () => void;
-  triggerCreate: (params: { data: FormValues; token: string }) => Promise<void>;
+  triggerCreate: (params: {
+    data: FormValues;
+    token: string;
+  }) => Promise<{ data?: any; error?: FetchBaseQueryError | SerializedError }>;
+
   triggerUpdate: (data: FormValues) => void;
   form: UseFormReturnType<FormValues>;
   token: string;
   createSuccess: boolean;
 }
-
 const TypeForm: React.FC<DataValue> = ({
   onClose,
   triggerCreate,
@@ -108,5 +111,4 @@ const TypeForm: React.FC<DataValue> = ({
     </form>
   );
 };
-
 export default TypeForm;

@@ -1,8 +1,9 @@
+import { baseUrl } from "@/constants/constants";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const leavesApi = createApi({
   reducerPath: "leavesApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:3001/api",
+    baseUrl: baseUrl,
   }),
   endpoints: (builder) => ({
     getAllLeaveDataApiByName: builder.query({

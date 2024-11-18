@@ -20,7 +20,6 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const dispatch = useDispatch();
   const isRegisterPage = pathname !== "/";
   const { authToken } = useSelector(manageAuthUserSelector);
-
   useEffect(() => {
     if (
       status == "authenticated" &&
@@ -32,7 +31,6 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
       dispatch(setAuthUser(decodedToken));
     }
   }, [status]);
-
   return (
     <>
       {isRegisterPage ? (
